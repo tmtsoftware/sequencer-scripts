@@ -19,7 +19,6 @@ lazy val `sequencer-scripts` = project
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
       Libs.`esw-ocs-dsl-kt`,
-      Libs.`esw-ocs-app`,
-      Libs.`scalaTest`
+      Libs.`esw-ocs-app`
     )
   )
