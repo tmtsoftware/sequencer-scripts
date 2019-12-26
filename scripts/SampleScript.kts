@@ -4,8 +4,8 @@ import kotlin.time.seconds
 
 script {
     val defaultTimeout = 5.seconds
-    val lgsfSequencer = Sequencer("lgsf", "darknight", defaultTimeout)
-    val testAssembly = Assembly("test", defaultTimeout)
+    val lgsfSequencer = Sequencer("lgsf", "a.darknight", defaultTimeout)
+    val testAssembly = Assembly("tcs.test", defaultTimeout)
 
     onSetup("command-for-assembly") { command ->
         testAssembly.submit(command)
@@ -20,7 +20,7 @@ script {
         val sequence = sequenceOf(setupCommand)
 
         // ESW-88, ESW-145, ESW-195
-        val tcsSequencer = Sequencer("tcs", "darknight", defaultTimeout)
+        val tcsSequencer = Sequencer("tcs", "a.darknight", defaultTimeout)
         tcsSequencer.submitAndWait(sequence, 10.milliseconds)
     }
 

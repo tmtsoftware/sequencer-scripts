@@ -5,7 +5,7 @@ import kotlin.time.seconds
 script {
     val defaultTimeout = 5.seconds
     val lgsfSequencer = Sequencer("lgsf", "darknight", defaultTimeout)
-    val testAssembly = Assembly("test", defaultTimeout)
+    val testAssembly = Assembly("esw.test", defaultTimeout)
 
     onSetup("command-for-assembly") { command ->
         testAssembly.submit(command)
