@@ -12,8 +12,10 @@ lazy val `sequencer-scripts` = project
     )),
 
     unmanagedSourceDirectories in Compile += (baseDirectory in Compile) (_ / "scripts").value,
+    excludeFilter in (Compile, unmanagedSources) := "*.conf",
     unmanagedSourceDirectories in Test += (baseDirectory in Test) (_ / "tests").value,
-    unmanagedResourceDirectories in Compile += (baseDirectory in Compile) (_ / "configs").value,
+    unmanagedResourceDirectories in Compile += (baseDirectory in Compile) (_ / "scripts").value,
+    includeFilter in (Compile, unmanagedResources) := "*.conf",
     mainClass in Compile := Some("esw.ocs.app.SequencerApp"),
     name := "sequencer-scripts",
     resolvers += "jitpack" at "https://jitpack.io",
