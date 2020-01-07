@@ -6,14 +6,16 @@ lazy val `sequencer-scripts` = project
     kotlinVersion := "1.3.50",
     kotlincOptions ++= Seq("-Xuse-experimental=kotlin.time.ExperimentalTime", "-jvm-target", "1.8"),
     inThisBuild(List(
-      organization := "com.github.tmtsoftware",
-      scalaVersion := "2.13.0",
+      organization := "com.github.tmtsoftware.sequencer-scripts",
+      scalaVersion := "2.13.1",
       version      := "0.1.0-SNAPSHOT"
     )),
 
     unmanagedSourceDirectories in Compile += (baseDirectory in Compile) (_ / "scripts").value,
+    excludeFilter in (Compile, unmanagedSources) := "*.conf",
     unmanagedSourceDirectories in Test += (baseDirectory in Test) (_ / "tests").value,
-    unmanagedResourceDirectories in Compile += (baseDirectory in Compile) (_ / "configs").value,
+    unmanagedResourceDirectories in Compile += (baseDirectory in Compile) (_ / "scripts").value,
+    includeFilter in (Compile, unmanagedResources) := "*.conf",
     mainClass in Compile := Some("esw.ocs.app.SequencerApp"),
     name := "sequencer-scripts",
     resolvers += "jitpack" at "https://jitpack.io",

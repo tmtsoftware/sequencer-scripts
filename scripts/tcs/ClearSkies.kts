@@ -1,9 +1,13 @@
+package tcs
+
 import esw.ocs.dsl.core.script
 import kotlin.time.milliseconds
+import kotlin.time.seconds
 
 script {
-    val lgsfSequencer = Sequencer("lgsf", "darknight")
-    val testAssembly = Assembly("test")
+    val defaultTimeout = 5.seconds
+    val lgsfSequencer = Sequencer("lgsf", "darknight", defaultTimeout)
+    val testAssembly = Assembly("esw.test", defaultTimeout)
 
     onSetup("command-for-assembly") { command ->
         testAssembly.submit(command)
@@ -18,7 +22,7 @@ script {
         val sequence = sequenceOf(setupCommand)
 
         // ESW-88, ESW-145, ESW-195
-        val tcsSequencer = Sequencer("tcs", "darknight")
+        val tcsSequencer = Sequencer("tcs", "darknight", defaultTimeout)
         tcsSequencer.submitAndWait(sequence, 10.milliseconds)
     }
 
