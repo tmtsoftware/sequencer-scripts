@@ -6,7 +6,7 @@ lazy val `sequencer-scripts` = project
     kotlinVersion := "1.3.50",
     kotlincOptions ++= Seq("-Xuse-experimental=kotlin.time.ExperimentalTime", "-jvm-target", "1.8"),
     inThisBuild(List(
-      organization := "com.github.tmtsoftware",
+      organization := "com.github.tmtsoftware.sequencer-scripts",
       scalaVersion := "2.13.1",
       version      := "0.1.0-SNAPSHOT"
     )),
