@@ -10,15 +10,15 @@ This repo contains subsystem specific sequencer scripts.
 For example, `IRIS` subsystems `Darknight.kts` script and its corresponding configuration file `iris.conf` can reside at the same level inside `scripts/iris` directory
 
 1. Script-specific configuration should include `scriptClass` property pointing to script file where script logic resides, for example,
-```hocon
-scripts {
-  iris {
-    darknight {
-      scriptClass = iris.Darknight
+    ```hocon
+    scripts {
+      iris {
+        darknight {
+          scriptClass = iris.Darknight
+        }
+      }
     }
-  }
-}
-```
+    ```
 
 1. Include new configuration file in the `scripts/application.conf`, 
 for example, if you have newly added `scripts/iris/iris.conf` then add line `include "iris/iris.conf"` in `scripts/application.conf` file
@@ -43,10 +43,15 @@ This is done by starting the `csw-services.sh` script, you can get the script as
 
 1. Run `sbt` command at root level of this repo
 
-1. Within the `sbt` shell, run `run sequencer -s <Subsystem> -m <Observing_Mode>`.
-This command will read _scripts.Subsystem.Observing_Mode.scriptClass_ configuration and start that script.
-For example, 
-```run sequencer -s IRIS -m darknight``` will start iris darknight script i.e. **_Darknight.kts_** script
+1. Within the `sbt` shell, run following command which will read _scripts.Subsystem.Observing_Mode.scriptClass_ configuration and start that script.
+    ```
+    run sequencer -s <Subsystem> -m <Observing_Mode>
+    ```
+
+    For example, following command will start iris darknight script i.e. **_Darknight.kts_** script 
+    ```
+    run sequencer -s IRIS -m darknight
+    ``` 
 
 1. At this stage, your `Sequencer` will be started with provided `script` and waiting for `Sequence` to be received for execution
 
