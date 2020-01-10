@@ -4,9 +4,11 @@ This repo contains subsystem specific sequencer scripts.
 
 ## Adding new scripts
 
-1. New scripts should be added to`scripts` directory under specific subsystem
-1. Scripts specific configuration file can be added to same directory where you are adding new script. 
+1. Add new scripts into`scripts` directory under specific `subsystem`
+
+1. Add scripts specific configuration file to the same directory where you have added new script. 
 For example, `IRIS` subsystems `Darknight.kts` script and its corresponding configuration file `iris.conf` can reside at the same level inside `scripts/iris` directory
+
 1. Script-specific configuration should include `scriptClass` property pointing to script file where script logic resides, for example,
 ```hocon
 scripts {
@@ -17,8 +19,9 @@ scripts {
   }
 }
 ```
-1. You need to include new configuration file in the `scripts/application.conf`, 
-for example, if you have newly added `scripts/iris/iris.conf` then you need to add line `include "iris/iris.conf"` in `scripts/application.conf` file
+
+1. Include new configuration file in the `scripts/application.conf`, 
+for example, if you have newly added `scripts/iris/iris.conf` then add line `include "iris/iris.conf"` in `scripts/application.conf` file
 
 ## Running script
 
@@ -27,17 +30,24 @@ The [CSW](https://github.com/tmtsoftware/csw) services need to be running before
 This is done by starting the `csw-services.sh` script, you can get the script as follows:
 
 1. Download `csw-apps` zip from https://github.com/tmtsoftware/csw/releases.
+
 1. Unzip the downloaded zip.
+
 1. Go to the bin directory where you will find `csw-services.sh` script.
+
 1. Run `./csw_services.sh --help` to get more information.
+
 1. Run `./csw_services.sh start` to start all the csw services, for example, _Location, Config, Alarm, AAS service_ etc
 
 ### Running Sequencer App with script
 
 1. Run `sbt` command at root level of this repo
+
 1. Within the `sbt` shell, run `run sequencer -s <Subsystem> -m <Observing_Mode>`.
-This command will read `scripts.Subsystem.Observing_Mode.scriptClass` configuration and start that script.
-For example, `run sequencer -s IRIS -m darknight` will start iris darknight script i.e. `Darknight.kts` script
+This command will read _scripts.Subsystem.Observing_Mode.scriptClass_ configuration and start that script.
+For example, 
+```run sequencer -s IRIS -m darknight``` will start iris darknight script i.e. **_Darknight.kts_** script
+
 1. At this stage, your `Sequencer` will be started with provided `script` and waiting for `Sequence` to be received for execution
 
 ## Submitting Sequence to Sequencer
