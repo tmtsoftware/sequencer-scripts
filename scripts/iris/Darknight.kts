@@ -1,14 +1,17 @@
 package iris
 
 import esw.ocs.dsl.core.script
+import esw.ocs.dsl.highlevel.models.ESW
+import esw.ocs.dsl.highlevel.models.LGSF
+import esw.ocs.dsl.highlevel.models.TCS
 import kotlin.time.milliseconds
 import kotlin.time.seconds
 
 script {
     println("Loaded iris darknight")
     val defaultTimeout = 5.seconds
-    val lgsfSequencer = Sequencer("lgsf", "darknight", defaultTimeout)
-    val testAssembly = Assembly("esw.test", defaultTimeout)
+    val lgsfSequencer = Sequencer(LGSF, "darknight", defaultTimeout)
+    val testAssembly = Assembly(ESW, "test", defaultTimeout)
 
     onSetup("command-for-assembly") { command ->
         testAssembly.submit(command)
@@ -23,7 +26,7 @@ script {
         val sequence = sequenceOf(setupCommand)
 
         // ESW-88, ESW-145, ESW-195
-        val tcsSequencer = Sequencer("tcs", "darknight", defaultTimeout)
+        val tcsSequencer = Sequencer(TCS, "darknight", defaultTimeout)
         tcsSequencer.submitAndWait(sequence, 10.milliseconds)
     }
 

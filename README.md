@@ -2,6 +2,12 @@
 
 This repo contains subsystem specific sequencer scripts.
 
+## Version Compaibilty
+-----------------------------------------------------------
+
+| sequencer-scripts | esw | csw |
+|-------------------|-----|-----|
+
 ## Adding new scripts
 
 1. Add new scripts into`scripts` directory under specific `subsystem`
@@ -29,7 +35,8 @@ for example, if you have newly added `scripts/iris/iris.conf` then add line `inc
 The [CSW](https://github.com/tmtsoftware/csw) services need to be running before starting the sequencer scripts.
 This is done by starting the `csw-services.sh` script, you can get the script as follows:
 
-1. Download `csw-apps` zip from https://github.com/tmtsoftware/csw/releases.
+1. Download compatible `csw-apps` zip from https://github.com/tmtsoftware/csw/releases.
+You can refer [version compatibility section](#-version-compaibilty).
 
 1. Unzip the downloaded zip.
 
