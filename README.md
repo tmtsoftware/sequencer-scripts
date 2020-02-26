@@ -7,14 +7,15 @@ This repo contains subsystem specific sequencer scripts.
 
 | sequencer-scripts | esw | csw |
 |-------------------|-----|-----|
-| v0.1.0 | v0.1.0 | v2.0.0 |
+| v0.1.0-RC2 | v0.1.0-RC2 | v2.0.0-RC2 |
 | v0.1.0-RC1 | v0.1.0-RC1 | v2.0.0-RC1 |
+
 
 ## Adding new scripts
 
 1. Add new scripts into`scripts` directory under specific `subsystem`
 
-1. Add scripts specific configuration file to the same directory where you have added new script. 
+1. Add scripts specific configuration file to the same directory where you have added new script.
 For example, `IRIS` subsystems `Darknight.kts` script and its corresponding configuration file `iris.conf` can reside at the same level inside `scripts/iris` directory
 
 1. Script-specific configuration should include `scriptClass` property pointing to script file where script logic resides, for example,
@@ -28,7 +29,7 @@ For example, `IRIS` subsystems `Darknight.kts` script and its corresponding conf
     }
     ```
 
-1. Include new configuration file in the `scripts/application.conf`, 
+1. Include new configuration file in the `scripts/application.conf`,
 for example, if you have newly added `scripts/iris/iris.conf` then add line `include "iris/iris.conf"` in `scripts/application.conf` file
 
 ## Running script
@@ -57,10 +58,10 @@ You can refer [version compatibility section](#-version-compaibilty).
     run sequencer -s <Subsystem> -m <Observing_Mode>
     ```
 
-    For example, following command will start iris darknight script i.e. **_Darknight.kts_** script 
+    For example, following command will start iris darknight script i.e. **_Darknight.kts_** script
     ```
     run sequencer -s IRIS -m darknight
-    ``` 
+    ```
 
 1. At this stage, your `Sequencer` will be started with provided `script` and waiting for `Sequence` to be received for execution
 
