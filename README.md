@@ -14,6 +14,14 @@ This repo contains subsystem specific sequencer scripts.
 
 ## Adding new scripts
 
+`sequencer-scripts` repo is restricted and limited people have admin access to make changes to master and merge pull requests.
+
+Script writers should follow steps mentioned below to add/update scripts
+
+1. Fork `sequencer-scripts` repo
+    1. One can fork it to their personal repository and keep working on that fork
+    1. Or fork it under your own organization
+
 1. Add new scripts into`scripts` directory under specific `subsystem`
 
 1. Add scripts specific configuration file to the same directory where you have added new script.
@@ -32,6 +40,10 @@ For example, `IRIS` subsystems `Darknight.kts` script and its corresponding conf
 
 1. Include new configuration file in the `scripts/application.conf`,
 for example, if you have newly added `scripts/iris/iris.conf` then add line `include "iris/iris.conf"` in `scripts/application.conf` file
+
+1. Once all the changes are completed in a forked repo, then you can submit a pull request to upstream which is `tmtsoftware/sequencer-scripts` repo in this case
+ 
+1. Admins of `sequencer-scripts` repo will then review changes and merge it to `master`
 
 ## Running script
 
