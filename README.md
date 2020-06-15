@@ -3,15 +3,13 @@
 This repo contains subsystem specific sequencer scripts.
 
 ## Version Compatibility
------------------------------------------------------------
 
-| sequencer-scripts | esw | csw |
-|-------------------|-----|-----|
-| v0.1.0 | v0.1.0 | v2.0.0 |
-| v0.1.0-RC3 | v0.1.0-RC3 | v2.0.0-RC3 |
-| v0.1.0-RC2 | v0.1.0-RC2 | v2.0.0-RC2 |
-| v0.1.0-RC1 | v0.1.0-RC1 | v2.0.0-RC1 |
-
+| sequencer-scripts | esw        | csw        |
+| ----------------- | ---------- | ---------- |
+| v0.1.0            | v0.1.0     | v2.0.0     |
+| v0.1.0-RC3        | v0.1.0-RC3 | v2.0.0-RC3 |
+| v0.1.0-RC2        | v0.1.0-RC2 | v2.0.0-RC2 |
+| v0.1.0-RC1        | v0.1.0-RC1 | v2.0.0-RC1 |
 
 ## Adding new scripts
 
@@ -26,24 +24,52 @@ Script writers should follow steps mentioned below to add/update scripts
 1. Add new scripts into`scripts` directory under specific `subsystem`.  If your subsystem doesn't exist, create a directory with the name of your subsystem in the `scripts` directory, e.g. `scripts/wfos`.  Also add an observing mode mapping configuration file to provide a mapping from observing modes to scripts in your new directory named your subsystem with the `.conf` extension, e.g. `scripts/wfos/wfos.conf`.  Then, include the new configuration file in the `scripts/application.conf`, for example, if you have newly created `scripts/wfos/wfos.conf`, then add line `include "wfos/wfos.conf"` in `scripts/application.conf` file
 
 1. Add an entry for each observing mode into the subsystem-specific observing mode mapping configuration.  It should include a `scriptClass` property pointing to script file where script logic resides, for example,
+
     ```hocon
-    scripts {
-      iris {
-        IRIS_darknight {
-          scriptClass = iris.Darknight
+      scripts {
+        iris {
+          IRIS_darknight {
+            scriptClass = iris.Darknight
+          }
         }
       }
-    }
     ```
-Note: the same script class can be used for multiple observing modes.
+
+    Note: the same script class can be used for multiple observing modes.
 
 1. Once all the changes are completed in a forked repo, then you can submit a pull request to upstream which is `tmtsoftware/sequencer-scripts` repo in this case
- 
+
 1. Admins of `sequencer-scripts` repo will then review changes and merge it to `master`
+
+## Adding third part library jar/dependency
+
+Script writer needs to request authors of this repository to add new third party library/dependency.
+This request should be in the following form:
+`OrgName %% ArtifactId % Version`
+
+For example, if you want to add squants library (*The Scala API for Quantities, Units of Measure and Dimensional Analysis*), then you can request in the following format:
+`"org.typelevel"  %% "squants"  % "1.6.0"`
+
+Authors or Maintainers of this repository then can take following steps:
+
+1. Add requested dependency in `project/Libs.scala` file
+
+1. Include added dependency in `build.sbt` file as shown below
+
+    ```scala
+      libraryDependencies ++= Seq(
+        Libs.`esw-ocs-dsl-kt`,
+        Libs.`esw-ocs-app`,
+        Libs.squants
+      )
+    ```
+
+1. Commit and push changes to remote
 
 ## Running script
 
 ### Prerequisite
+
 The [CSW](https://github.com/tmtsoftware/csw) services need to be running before starting the sequencer scripts.
 This is done by starting the `csw-services.sh` script, you can get the script as follows:
 
@@ -63,13 +89,15 @@ You can refer [version compatibility section](#-version-compaibilty).
 1. Run `sbt` command at root level of this repo
 
 1. Within the `sbt` shell, run following command which will read _scripts.Subsystem.Observing_Mode.scriptClass_ configuration and start that script.
-    ```
-    run sequencer -s <Subsystem> -m <Observing_Mode>
+
+    ```bash
+        run sequencer -s <Subsystem> -m <Observing_Mode>
     ```
 
     For example, following command will start iris darknight script i.e. **_Darknight.kts_** script
-    ```
-    run sequencer -s IRIS -m darknight
+
+    ```bash
+        run sequencer -s IRIS -m darknight
     ```
 
 1. At this stage, your `Sequencer` will be started with provided `script` and waiting for `Sequence` to be received for execution
@@ -77,4 +105,5 @@ You can refer [version compatibility section](#-version-compaibilty).
 ## Submitting Sequence to Sequencer
 
 Once you have started `Sequencer` with appropriate `script`, next step would be to submit a `Sequence` to the `Sequencer` for execution.
-Use [csw-shell](https://github.com/tmtsoftware/csw-shell) to do this and more which has detailed documentation on how to submit sequence to sequencer.
+
+Use [esw-shell](https://github.com/tmtsoftware/esw/tree/master/esw-shell) to do this and more which has detailed documentation on how to submit sequence to sequencer.
