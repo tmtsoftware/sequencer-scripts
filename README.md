@@ -41,31 +41,6 @@ Script writers should follow steps mentioned below to add/update scripts
 
 1. Admins of `sequencer-scripts` repo will then review changes and merge it to `master`
 
-## Adding third part library jar/dependency
-
-Script writer needs to request authors of this repository to add new third party library/dependency.
-This request should be in the following form:
-`OrgName %% ArtifactId % Version`
-
-For example, if you want to add squants library (*The Scala API for Quantities, Units of Measure and Dimensional Analysis*), then you can request in the following format:
-`"org.typelevel"  %% "squants"  % "1.6.0"`
-
-Authors or Maintainers of this repository then can take following steps:
-
-1. Add requested dependency in `project/Libs.scala` file
-
-1. Include added dependency in `build.sbt` file as shown below
-
-    ```scala
-      libraryDependencies ++= Seq(
-        Libs.`esw-ocs-dsl-kt`,
-        Libs.`esw-ocs-app`,
-        Libs.squants
-      )
-    ```
-
-1. Commit and push changes to remote
-
 ## Running script
 
 ### Prerequisite
