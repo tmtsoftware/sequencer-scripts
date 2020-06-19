@@ -15,9 +15,7 @@ jobs:
           java-version: adopt@1.11
 
       - name: Build
-        run: |
-          sbt scalafmtCheck
-          sbt ';set every Seq(enableFatalWarnings := true); test:compile'
+        run: sbt ';set every Seq(enableFatalWarnings := true); test:compile'
 
       - name: Test
         run: sbt test
