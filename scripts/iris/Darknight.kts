@@ -8,7 +8,7 @@ import kotlin.time.milliseconds
 import kotlin.time.seconds
 
 script {
-    println("Loaded iris darknight")
+    println("********** Loaded iris darknight *********")
     val defaultTimeout = 5.seconds
     val lgsfSequencer = Sequencer(LGSF, "darknight", defaultTimeout)
     val testAssembly = Assembly(ESW, "test", defaultTimeout)
