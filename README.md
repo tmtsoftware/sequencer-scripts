@@ -68,11 +68,14 @@ You can refer [version compatibility section](#-version-compaibilty).
     ```bash
         run sequencer -s <Subsystem> -m <Observing_Mode>
     ```
+    Please note that configuration for IRIS (subsystem) and IRIS_darknight (observing mode) should be there in
+    config file.
 
-    For example, following command will start iris darknight script i.e. **_Darknight.kts_** script
-
+    For example, following command will start IRIS IRIS_darknight script i.e. **_Darknight.kts_** script
+    Confiuration for this exist in iris.conf file under iris scripts folder.
+    
     ```bash
-        run sequencer -s IRIS -m darknight
+        run sequencer -s IRIS -m IRIS_darknight
     ```
 
 1. At this stage, your `Sequencer` will be started with provided `script` and waiting for `Sequence` to be received for execution
