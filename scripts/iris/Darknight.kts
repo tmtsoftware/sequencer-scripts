@@ -9,6 +9,11 @@ import kotlin.time.seconds
 
 script {
     println("Loaded iris darknight")
+
+    onSetup("test") {
+        println("onSetup::test")
+    }
+    /*
     val defaultTimeout = 5.seconds
     val lgsfSequencer = Sequencer(LGSF, "darknight", defaultTimeout)
     val testAssembly = Assembly(ESW, "test", defaultTimeout)
@@ -36,39 +41,39 @@ script {
         val setupCommand = Setup("LGSF.test", "command-lgsf")
         lgsfSequencer.submitAndWait(sequenceOf(setupCommand), 10.milliseconds)
     }
-
+    */
     onDiagnosticMode { startTime, hint ->
         // do some actions to go to diagnostic mode based on hint
-        testAssembly.diagnosticMode(startTime, hint)
+        //testAssembly.diagnosticMode(startTime, hint)
     }
 
     onOperationsMode {
         // do some actions to go to operations mode
-        testAssembly.operationsMode()
+        //testAssembly.operationsMode()
     }
 
     onGoOffline {
         // do some actions to go offline
-        testAssembly.goOffline()
+        //testAssembly.goOffline()
     }
 
     onGoOnline {
         // do some actions to go online
-        testAssembly.goOnline()
+        //testAssembly.goOnline()
     }
 
     onAbortSequence {
         //do some actions to abort sequence
 
         //send abortSequence command to downstream sequencer
-        lgsfSequencer.abortSequence()
+        //lgsfSequencer.abortSequence()
     }
 
     onStop {
         //do some actions to stop
 
         //send stop command to downstream sequencer
-        lgsfSequencer.stop()
+        //lgsfSequencer.stop()
     }
 
 }
