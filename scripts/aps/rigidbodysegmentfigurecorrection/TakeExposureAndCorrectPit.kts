@@ -1,4 +1,4 @@
-package aps
+package aps.rigidbodysegmentfigurecorrection
 
 import csw.params.commands.CommandResponse
 import csw.params.commands.SequenceCommand
@@ -13,43 +13,28 @@ import kotlin.time.milliseconds
 import kotlin.time.seconds
 
 script {
-    println("Loaded aps test1")
+    println("Loaded aps takeExposureAndCorrrectPit")
 
-   val obsMode1 = ObsMode("takeFrame")
-    val obsMode2 = ObsMode("processFrame")
-    val defaultTimeout = 5.seconds
-    val frametakingSequencer = Sequencer(APS, obsMode1, defaultTimeout)
-    val frameprocessingSequencer = Sequencer(APS, obsMode2, defaultTimeout)
 
-    suspend fun executeSingleLoop() {
-        val apsCommand1: SequenceCommand = Setup("APS.test", "command1")
-        val apsCommand2: SequenceCommand = Setup("APS.test", "command2")
-        val sequence1: Sequence = sequenceOf(apsCommand1, apsCommand2)
-        val submitResponse1: CommandResponse.SubmitResponse = frametakingSequencer.submit(sequence1)
-        println(submitResponse1)
-
-        val apsCommand3: SequenceCommand = Setup("APS.test", "command1")
-        val apsCommand4: SequenceCommand = Setup("APS.test", "command2")
-        val sequence2: Sequence = sequenceOf(apsCommand3, apsCommand4)
-        val submitResponse2: CommandResponse.SubmitResponse = frameprocessingSequencer.submit(sequence2)
-        println(submitResponse2)
-
-        // wait until both are completed before finishing
-        val finalResponse1: CommandResponse.SubmitResponse = frametakingSequencer.queryFinal(submitResponse1.runId())
-        println(finalResponse1)
-        val finalResponse2: CommandResponse.SubmitResponse = frameprocessingSequencer.queryFinal(submitResponse2.runId())
-        println(finalResponse2)
-    }
-
-    onSetup("test") {
-        println("onSetup::test")
-
-        executeSingleLoop()
+    onSetup("takeShExposure") {
+        println("takeExposureAndCorrrectPit::onSetup::takeShExposure")
 
     }
 
+    onSetup("findAndIdentify") {
+        println("takeExposureAndCorrrectPit::onSetup::findAndIdentify")
 
+    }
 
+    onSetup("calcImageAndPrOffsets") {
+        println("takeExposureAndCorrrectPit::onSetup::calcImageAndPrOffsets")
+
+    }
+
+    onSetup("correctPitTracking") {
+        println("takeExposureAndCorrrectPit::onSetup::correctPitTracking")
+
+    }
 
 
 
