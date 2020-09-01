@@ -10,61 +10,56 @@ import esw.ocs.dsl.params.*
 FsmScript("OFF") {
 
     var pitLoopControlFlag = false
+    var pitLoopStoppedFlag = false
 
-        state("ON") { params ->
+    suspend fun runPitLoopIteration() {
+        println("running PIT Loop iteration")
+        Thread.sleep(1_000)  // simulate time spent doing something
+        // make assembly calls directly here or run an additional sequencer
+    }
 
-            onSetup("stop-pit-loop") {
-                pitLoopControlFlag = false
-                become("OFF")
-            }
+    suspend fun setupPitTracking() {
+        // make assembly calls directly here or run an additional sequencer
+    }
 
-            onSetup("correct-pit-tracking") { command ->
-                    // TODO
-                    correctPitTracking()
+    suspend fun correctPitTracking() {
+        // make assembly calls directly here or run an additional sequencer
+    }
 
-            }
+    state("ON") {
+
+        onSetup("stop-pit-loop") {
+            pitLoopControlFlag = false
+            waitFor { pitLoopStoppedFlag } // wait until async loop is completed
+            println("becoming OFF")
+            become("OFF")
         }
 
-        state("OFF") {
+        onSetup("correct-pit-tracking") {
+            correctPitTracking()
+        }
+        
+    }
 
-            onSetup("start-pit-loop") { command ->
+    state("OFF") {
 
-                pitLoopControlFlag = true
-                loopAsync {
-                    runPitLoopIteration()
-                    stopWhen(pitLoopControlFlag)
-                }
+        onSetup("start-pit-loop") {
+            pitLoopControlFlag = true
 
-                become("ON", command.params)
+            val pitLoop = loopAsync {
+                runPitLoopIteration()
+                // possibly send an event here when stop condition is true
+                stopWhen(!pitLoopControlFlag)
             }
-
-            onSetup("pit-tracking-setup") { command ->
-                setupPitTracking()
-            }
-
+            pitLoop.invokeOnCompletion { pitLoopStoppedFlag = true }
+            println("becoming ON")
+            become("ON")
         }
 
-}
+        onSetup("pit-tracking-setup") {
+            setupPitTracking()
+        }
 
-suspend fun setupPitTracking() {
-    println("setupPitTracking")
-
-    // make assembly calls directly here or run an additional sequencer
-
-}
-
-suspend fun runPitLoopIteration() {
-
-    println("runPitLoopIteration")
-    Thread.sleep(1_000)
-    // make assembly calls directly here or run an additional sequencer
-
-}
-
-suspend fun correctPitTracking() {
-    println("correctPitTracking")
-
-    // make assembly calls directly here or run an additional sequencer
-
+    }
 }
 
