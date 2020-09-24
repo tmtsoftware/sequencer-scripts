@@ -6,6 +6,7 @@ This repo contains subsystem specific sequencer scripts.
 
 | sequencer-scripts | esw        | csw        |
 | ----------------- | ---------- | ---------- |
+| v0.2.0-M1         | v0.2.0-M1  | v3.0.0-M1  |
 | v0.1.0            | v0.1.0     | v2.0.0     |
 | v0.1.0-RC3        | v0.1.0-RC3 | v2.0.0-RC3 |
 | v0.1.0-RC2        | v0.1.0-RC2 | v2.0.0-RC2 |
