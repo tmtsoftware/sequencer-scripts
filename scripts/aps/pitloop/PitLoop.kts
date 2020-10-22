@@ -2,6 +2,8 @@
 
 package aps.pitloop
 
+import csw.params.core.generics.KeyType
+import csw.params.events.SystemEvent
 import esw.ocs.dsl.core.FsmScript
 import esw.ocs.dsl.params.*
 
@@ -11,11 +13,15 @@ FsmScript("OFF") {
 
     var pitLoopControlFlag = false
     var pitLoopStoppedFlag = false
+    //var counter = 35L
 
     suspend fun runPitLoopIteration() {
         println("running PIT Loop iteration")
+        //println(counter)
         Thread.sleep(1_000)  // simulate time spent doing something
         // make assembly calls directly here or run an additional sequencer
+
+         //counter--
     }
 
     suspend fun setupPitTracking() {
@@ -46,8 +52,16 @@ FsmScript("OFF") {
         onSetup("start-pit-loop") {
             pitLoopControlFlag = true
 
+            val stabilityKey = longKey("stability").set(1L)
+            val pitStateEvent = SystemEvent("APS.pit", "state", stabilityKey)
+            // send the PIT Loop Status event
+            publishEvent(pitStateEvent)
+
+
             val pitLoop = loopAsync {
                 runPitLoopIteration()
+
+
                 // possibly send an event here when stop condition is true
                 stopWhen(!pitLoopControlFlag)
             }

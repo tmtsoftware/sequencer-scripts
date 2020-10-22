@@ -14,6 +14,7 @@ import esw.ocs.dsl.par
 import kotlin.time.milliseconds
 import kotlin.time.seconds
 
+
 script {
     println("Loaded aps takeExposureWhileProcessingPrevious")
 
@@ -35,13 +36,13 @@ script {
             val correctPitTrackingCommand: SequenceCommand = Setup("APS.takeExposureWhileProcessingPrevious", "correctPitTracking")
             val exposureSequence: Sequence = sequenceOf(takeShExposureCommand, findAndIdentifyCommand, calcImageAndPrOffsetsCommand, correctPitTrackingCommand)
             val exposureResponse: CommandResponse.SubmitResponse = exposureSequencer.submit(exposureSequence)
-            println(exposureResponse)
+            //println(exposureResponse)
             val finalExposureResponse: CommandResponse.SubmitResponse = exposureSequencer.queryFinal(exposureResponse.runId())
 
             // This is where we would deal with exposure problems, retaking frames or aborting
-
-            return finalExposureResponse
+             return finalExposureResponse
         }
+
 
         return CommandResponse.Cancelled(Id(""))
     }
@@ -57,7 +58,7 @@ script {
             val calcSegPttCommand: SequenceCommand = Setup("APS.takeExposureWhileProcessingPrevious", "calcSegPtt")
             val calcSequence: Sequence = sequenceOf(calcCentroidOffsetsCommand, calcM2PttCommand, calcSegPttCommand)
             val calcResponse: CommandResponse.SubmitResponse = calcSequencer.submit(calcSequence)
-            println(calcResponse)
+            //println(calcResponse)
             val finalCalcResponse: CommandResponse.SubmitResponse = calcSequencer.queryFinal(calcResponse.runId())
 
             return finalCalcResponse
