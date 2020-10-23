@@ -4,13 +4,14 @@ import csw.params.commands.CommandResponse.Completed
 import csw.params.commands.{CommandName, Sequence, Setup}
 import csw.prefix.models.Prefix
 import csw.prefix.models.Subsystem.APS
+import csw.testkit.scaladsl.CSWService.EventServer
 import esw.ocs.api.SequencerApi
 import esw.ocs.api.models.ObsMode
 import esw.ocs.testkit.EswTestKit
 
-class PitLoopTest extends EswTestKit {
+class PitLoopTest extends EswTestKit(EventServer) {
 
-  /*
+
 
   private var pitLoopSequencerClient: SequencerApi = _
   private var achieveStableTrackSequencerClient: SequencerApi = _
@@ -20,16 +21,16 @@ class PitLoopTest extends EswTestKit {
 
   override protected def beforeEach(): Unit = {
     spawnSequencer(subsystem, ObsMode("pitLoop"))
-    //spawnSequencer(subsystem, ObsMode("achieveStablePitTracking"))
+    spawnSequencer(subsystem, ObsMode("achieveStablePitTracking"))
 
     pitLoopSequencerClient = sequencerClient(subsystem, ObsMode("pitLoop"))
-    //achieveStableTrackSequencerClient = sequencerClient(subsystem, ObsMode("achieveStablePitTracking"))
+    achieveStableTrackSequencerClient = sequencerClient(subsystem, ObsMode("achieveStablePitTracking"))
   }
 
   override protected def afterEach(): Unit = shutdownAllSequencers()
 
-  /*
-  "should submitAndWait sequence and get Completed" in {
+
+  "should turn pit loop on and off" in {
 
     val command1 = Setup(Prefix("esw.test"), CommandName("start-pit-loop"), None)
     val sequence1 = Sequence(command1)
@@ -46,10 +47,9 @@ class PitLoopTest extends EswTestKit {
     Thread.sleep(1100)  // wait 1 second for completion
 
   }
-*/
 
 
-  "should send messages to pitloop and wait until stable" in {
+  "should start pit loop and evaluate state events and wait until stable" in {
 
     val command1 = Setup(Prefix("esw.test"), CommandName("start-pit-loop"), None)
     val sequence1 = Sequence(command1)
@@ -57,14 +57,14 @@ class PitLoopTest extends EswTestKit {
     val sequence2 = Sequence(command2)
 
     pitLoopSequencerClient.submitAndWait(sequence1).futureValue shouldBe a[Completed]
-    Thread.sleep(10000)  // wait 10 seconds so that some looping occurs
 
-    //achieveStableTrackSequencerClient.submitAndWait(sequence2).futureValue shouldBe a[Completed]
+
+    achieveStableTrackSequencerClient.submitAndWait(sequence2).futureValue shouldBe a[Completed]
 
   }
 
 
-   */
+
 
 }
 

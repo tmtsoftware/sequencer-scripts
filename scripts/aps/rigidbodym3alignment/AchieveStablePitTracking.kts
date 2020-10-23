@@ -19,7 +19,7 @@ script {
 
     // Event-based variable for current temperature
     val stabilityKey = longKey("stability")
-    val stabilityVar = ParamVariable(0, "aps.pit.state.stability", stabilityKey)
+    val stabilityVar = ParamVariable(30, "aps.pit.state", stabilityKey)
 
 
     // FSM definition
@@ -27,6 +27,7 @@ script {
 
 
         state(NOT_STABLE) {
+            println("state = not stable")
             val currentStability = stabilityVar.first()
 
             println(currentStability)
@@ -37,6 +38,7 @@ script {
         }
 
         state(STABLE) {
+            println("state = stable")
             completeFsm()
         }
     }
@@ -49,7 +51,7 @@ script {
     onSetup("wait-for-pit-stable") {
         pitStabilityFsm.start()
         pitStabilityFsm.await()
-        info("FSM is no longer running.")
+        println("FSM is no longer running.")
     }
 
 

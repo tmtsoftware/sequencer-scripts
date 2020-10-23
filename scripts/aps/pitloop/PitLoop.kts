@@ -13,15 +13,19 @@ FsmScript("OFF") {
 
     var pitLoopControlFlag = false
     var pitLoopStoppedFlag = false
-    //var counter = 35L
+    var counter = 26L
 
     suspend fun runPitLoopIteration() {
         println("running PIT Loop iteration")
-        //println(counter)
+        println(counter)
         Thread.sleep(1_000)  // simulate time spent doing something
         // make assembly calls directly here or run an additional sequencer
+        val stabilityKey = longKey("stability").set(counter)
+        val pitStateEvent = SystemEvent("APS.pit", "state", stabilityKey)
+        // send the PIT Loop Status event
+        publishEvent(pitStateEvent)
 
-         //counter--
+         counter--
     }
 
     suspend fun setupPitTracking() {
@@ -52,10 +56,6 @@ FsmScript("OFF") {
         onSetup("start-pit-loop") {
             pitLoopControlFlag = true
 
-            val stabilityKey = longKey("stability").set(1L)
-            val pitStateEvent = SystemEvent("APS.pit", "state", stabilityKey)
-            // send the PIT Loop Status event
-            publishEvent(pitStateEvent)
 
 
             val pitLoop = loopAsync {
