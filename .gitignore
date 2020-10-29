@@ -13,3 +13,4 @@ target
 .DS_Store
 .bloop/
 .metals
+.gradle/

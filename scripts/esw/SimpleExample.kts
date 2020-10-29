@@ -1,16 +1,23 @@
 package esw
 
-import csw.params.core.generics.Key
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.ESW
+import esw.ocs.dsl.onFailed
 import esw.ocs.dsl.params.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlin.time.seconds
 
 script {
+
+    onGlobalError { exception ->
+        val errorEvent = SystemEvent("ESW.IRIS_DARKNIGHT", exception.reason)
+        publishEvent(errorEvent)
+    }
+
     val assemblySleepTimeKey = longKey("timeInMs")
     val myPrefix = "esw.seq"
+
     onSetup("SimpleSleep") { command  ->
         val componentNames = command(stringKey("AssemblyNames"))
         val sleepTimes = command(longKey("sleepTimes"))
@@ -24,6 +31,8 @@ script {
             }
         }
         val submitResponses = submitResponsesD.awaitAll()
-
+    }.onError {scriptError ->
+        val errorEvent = SystemEvent("ESW.IRIS_DARKNIGH", "Error occurred in setup block $scriptError")
+        publishEvent(errorEvent)
     }
 }
