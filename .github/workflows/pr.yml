@@ -10,15 +10,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: olafurpg/setup-scala@v7
+      - uses: laughedelic/coursier-setup@v1
         with:
-          java-version: adopt@1.11
+          jvm: 11
+          apps: sbt sbtn
+      - uses: coursier/cache-action@v5
 
       - name: Build
-        run: sbt test:compile
+        run: sbtn test:compile
 
       - name: Test
-        run: sbt test
+        run: sbtn test
 
       - name: Notify slack
         if: always()
