@@ -7,8 +7,8 @@ lazy val `sequencer-scripts` = project
     kotlincOptions ++= Seq("-Xuse-experimental=kotlin.time.ExperimentalTime", "-jvm-target", "1.8"),
     inThisBuild(List(
       organization := "com.github.tmtsoftware.sequencer-scripts",
-      scalaVersion := "2.13.1",
-      version      := "0.1.0-SNAPSHOT"
+      scalaVersion := "2.13.3",
+      version      := "0.2.0-RC1"
     )),
 
     unmanagedSourceDirectories in Compile += (baseDirectory in Compile) (_ / "scripts").value,
@@ -22,5 +22,6 @@ lazy val `sequencer-scripts` = project
     libraryDependencies ++= Seq(
       Libs.`esw-ocs-dsl-kt`,
       Libs.`esw-ocs-app`
-    )
+    ),
+    fork in Test := true
   )
