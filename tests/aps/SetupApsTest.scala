@@ -62,6 +62,7 @@ class SetupApsTest extends EswTestKit {
     apsSequencerClient.submitAndWait(sequence).futureValue shouldBe a[Completed]
   }
 
+
   "case where procedure is standalone reference map should return Completed" in {
 
     val needNewRefMapKey: Key[Boolean] = KeyType.BooleanKey.make("needNewRefMap")
