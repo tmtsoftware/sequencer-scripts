@@ -11,7 +11,7 @@ import esw.ocs.testkit.EswTestKit
 
 class PitLoopTest extends EswTestKit(EventServer) {
 
-
+/*
 
   private var pitLoopSequencerClient: SequencerApi = _
   private var achieveStableTrackSequencerClient: SequencerApi = _
@@ -64,7 +64,7 @@ class PitLoopTest extends EswTestKit(EventServer) {
   }
 
 
-
+*/
 
 }
 
