@@ -38,6 +38,18 @@ script {
 
 
     onSetup("parallelObservation") { command ->
+
+        // exposure parameters
+        val imagerItime = command(seqImagerItimeKey)
+        val imagerRamps = command(seqImagerRampsKey)
+        val imagerRepeats = command(seqImagerRepeatsKey).head()
+
+        val numIfsConfigs = command(seqIfsConfigurationsKey).head()
+        val ifsItimes = command(seqIfsItimeKey)
+        val ifsRamps = command(seqIfsRampsKey)
+        val ifsRepeats = command(seqIfsRepeatsKey)
+
+
 // configure IRIS filter (and other upstream optics)
         val filter = command(seqFilterKey)
         val filterResponse = async {
@@ -54,27 +66,17 @@ script {
                                 .add(scaleKey.set(scales.head())))
                     },
                     {
-                        spectralResAssembly.submit(Setup(IrisConstants.iseq.prefixStr, "GRATING_SELECT", command.obsId)
+                        spectralResAssembly.submit(Setup(IrisConstants.iseq.prefixStr, "GRATING_SELECT",
+                                command.obsId)
                                 .add(spectralResolutionKey.set(resolutions.head())))
                     }
             )
         }
 
-        // exposure parameters
-        val imagerItime = command(seqImagerItimeKey)
-        val imagerRamps = command(seqImagerRampsKey)
-        val imagerRepeats = command(seqImagerRepeatsKey).head()
-
-        val numIfsConfigs = command(seqIfsConfigurationsKey).head()
-        val ifsItimes = command(seqIfsItimeKey)
-        val ifsRamps = command(seqIfsRampsKey)
-        val ifsRepeats = command(seqIfsRepeatsKey)
-
 
         // filter needs to finish, but IFS doesn't
         val response = filterResponse.await()
 
-        // start Imager Exposure loop
         // Imager loop
         var imagerExposureCounter = 0
         val imagerExposureLoop = loop {
@@ -94,7 +96,6 @@ script {
             stopWhen(imagerExposureCounter == imagerRepeats)
         }
 
-
         scaleAndResolutionResponses.await()
 
         // start IFS Exposure Loop
@@ -112,7 +113,8 @@ script {
                         {
                             spectralResAssembly.submit(
                                     Setup(IrisConstants.iseq.prefixStr, "GRATING_SELECT", command.obsId)
-                                            .add(spectralResolutionKey.set(resolutions.get(ifsConfigurationCounter).get()))
+                                            .add(spectralResolutionKey.set(
+                                                    resolutions.get(ifsConfigurationCounter).get()))
                             )
 
                         }
