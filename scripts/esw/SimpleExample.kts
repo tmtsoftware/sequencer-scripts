@@ -1,9 +1,11 @@
 package esw
 
-import csw.params.core.generics.Key
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.ESW
-import esw.ocs.dsl.params.*
+import esw.ocs.dsl.params.invoke
+import esw.ocs.dsl.params.longKey
+import esw.ocs.dsl.params.stringKey
+import esw.ocs.dsl.params.values
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlin.time.seconds
