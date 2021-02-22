@@ -3,7 +3,6 @@ package iris
 import csw.params.core.generics.Key
 import csw.params.core.models.Choice
 import csw.params.core.models.Choices
-import csw.params.events.EventName
 import csw.prefix.models.Prefix
 import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.params.*
@@ -52,7 +51,7 @@ object IrisConstants {
             val imagerObserveKey: Key<Choice> = choiceKey("imagerObserve", imagerObserveChoices)
         }
         object event {
-            val observerKeywordsEvent = EventName("observerKeywords")
+            val observerKeywordsEvent = "observerKeywords"
         }
     }
 
@@ -94,6 +93,9 @@ object IrisConstants {
             val samplingModeKey: Key<Choice> = choiceKey("imagerSamplingMode", samplingModeChoices)
         }
         object event {
+            val exposureState = "IRIS.imager.detector.exposureState"
+        }
+        object eventParameter {
             val exposureInProgressKey: Key<Boolean> = booleanKey("exposureInProgress")
 
         }
