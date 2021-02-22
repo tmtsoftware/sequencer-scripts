@@ -25,7 +25,7 @@ script {
                 assembly.submitAndWait(setup)
             }
         }
-        val submitResponses = submitResponsesD.awaitAll()
+        submitResponsesD.awaitAll()
 
     }
 }

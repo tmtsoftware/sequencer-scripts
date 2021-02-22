@@ -104,12 +104,10 @@ script {
         val startExposureCommand = Setup(prefix, "exposure", command.obsId)
                 .add(oiwfsExposureModeKey.setAll(probeExpModes))
 
-        val response = oiwfsDetectorAssembly.submitAndWait(startExposureCommand)
-
-        when (response) {
+        when (val response = oiwfsDetectorAssembly.submitAndWait(startExposureCommand)) {
             is CommandResponse.Completed -> {
                 val guideStarLockedThreshold = 5 // number of consecutive loops without an offset to consider stable
-                var timesGuideStarLocked: Int = 0
+                var timesGuideStarLocked = 0
                 val maxAttempts = 20 // maximum number of loops on this guide star before rejecting
                 var attempts = 0
 
@@ -117,7 +115,7 @@ script {
                     when {
                         ttfFluxLow -> increaseExposureTime() // period tbd
                         isOffsetRequired(xoffset, yoffset) -> {
-                            val offsetResponse = offsetTcs(xoffset, yoffset, ttfProbeNum, command.obsId)
+                            offsetTcs(xoffset, yoffset, ttfProbeNum, command.obsId)
                             timesGuideStarLocked = 0
                         }
                         else -> timesGuideStarLocked += 1

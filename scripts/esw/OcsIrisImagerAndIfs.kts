@@ -91,7 +91,7 @@ script {
         val imagerObserveSequence = sequenceOf(*Array(imagerRepeats){imagerObserveCommand})
 
         // should this command be submitAndWait?  in async block?
-        val imagerObserveResponse = irisImagerSeq.submit(imagerObserveSequence)
+        irisImagerSeq.submit(imagerObserveSequence)
 
 
         // create IFS sequence

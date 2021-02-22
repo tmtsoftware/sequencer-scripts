@@ -1,29 +1,27 @@
 package iris
 
-import csw.prefix.models.Prefix
-import csw.prefix.models.Subsystem
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.par
-import esw.ocs.dsl.params.*
-import iris.IrisConstants.ifsDetectorAssembly.command.itimeKey as ifsItimeKey
-import iris.IrisConstants.ifsDetectorAssembly.command.rampsKey as ifsRampsKey
-import iris.IrisConstants.imagerDetectorAssembly.command.itimeKey as imagerItimeKey
-import iris.IrisConstants.imagerDetectorAssembly.command.rampsKey as imagerRampsKey
-import iris.IrisConstants.iseq.command.ifsConfigurationsKey as seqIfsConfigurationsKey
-import iris.IrisConstants.iseq.command.ifsItimeKey as seqIfsItimeKey
-import iris.IrisConstants.iseq.command.ifsRampsKey as seqIfsRampsKey
-import iris.IrisConstants.iseq.command.ifsRepeatsKey as seqIfsRepeatsKey
-import iris.IrisConstants.iseq.command.imagerRampsKey as seqImagerRampsKey
-import iris.IrisConstants.iseq.command.imagerRepeatsKey as seqImagerRepeatsKey
-import iris.IrisConstants.iseq.command.imagerItimeKey as seqImagerItimeKey
-import iris.IrisConstants.iseq.command.scaleKey as seqScaleKey
-import iris.IrisConstants.iseq.command.filterKey as seqFilterKey
-import iris.IrisConstants.iseq.command.resolutionKey as seqResolutionKey
+import esw.ocs.dsl.params.invoke
 import iris.IrisConstants.sciResolutionAssembly.command.spectralResolutionKey
 import iris.IrisConstants.sciScaleAssembly.command.scaleKey
 import kotlinx.coroutines.async
 import kotlin.time.seconds
+import iris.IrisConstants.ifsDetectorAssembly.command.itimeKey as ifsItimeKey
+import iris.IrisConstants.ifsDetectorAssembly.command.rampsKey as ifsRampsKey
+import iris.IrisConstants.imagerDetectorAssembly.command.itimeKey as imagerItimeKey
+import iris.IrisConstants.imagerDetectorAssembly.command.rampsKey as imagerRampsKey
+import iris.IrisConstants.iseq.command.filterKey as seqFilterKey
+import iris.IrisConstants.iseq.command.ifsConfigurationsKey as seqIfsConfigurationsKey
+import iris.IrisConstants.iseq.command.ifsItimeKey as seqIfsItimeKey
+import iris.IrisConstants.iseq.command.ifsRampsKey as seqIfsRampsKey
+import iris.IrisConstants.iseq.command.ifsRepeatsKey as seqIfsRepeatsKey
+import iris.IrisConstants.iseq.command.imagerItimeKey as seqImagerItimeKey
+import iris.IrisConstants.iseq.command.imagerRampsKey as seqImagerRampsKey
+import iris.IrisConstants.iseq.command.imagerRepeatsKey as seqImagerRepeatsKey
+import iris.IrisConstants.iseq.command.resolutionKey as seqResolutionKey
+import iris.IrisConstants.iseq.command.scaleKey as seqScaleKey
 
 
 script {
@@ -32,10 +30,6 @@ script {
     val spectralResAssembly = Assembly(IRIS, IrisConstants.sciResolutionAssembly.componentName, 5.seconds)
     val imagerDetectorAssembly = Assembly(IRIS, IrisConstants.imagerDetectorAssembly.componentName, 5.seconds)
     val ifsDetectorAssembly = Assembly(IRIS, IrisConstants.ifsDetectorAssembly.componentName, 5.seconds)
-
-    fun prefixStr(subsystem: Subsystem, componentName: String) = Prefix(subsystem, componentName).toString()
-
-
 
     onSetup("parallelObservation") { command ->
 
@@ -79,7 +73,7 @@ script {
 
         // Imager loop
         var imagerExposureCounter = 0
-        val imagerExposureLoop = loop {
+        loop {
             // configure exposure
             imagerDetectorAssembly.submit(
                     Setup(IrisConstants.iseq.prefixStr, "configureExposure", command.obsId)
@@ -143,8 +137,5 @@ script {
             stopWhen(ifsConfigurationCounter == numIfsConfigs)
 
         }
-
-        // if results are successful, updated CRM
-        //addOrUpdateCommand(CommandResponse.Completed(command.runId))
     }
 }
