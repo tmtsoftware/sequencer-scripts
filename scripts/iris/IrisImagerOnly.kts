@@ -14,10 +14,7 @@ import kotlin.time.seconds
 script {
 
     val filterAssembly = Assembly(IRIS, IrisConstants.sciFilterAssembly.componentName, 5.seconds)
-    val scaleAssembly = Assembly(IRIS, IrisConstants.sciScaleAssembly.componentName, 5.seconds)
-    val spectralResAssembly = Assembly(IRIS, IrisConstants.sciResolutionAssembly.componentName, 5.seconds)
     val imagerDetectorAssembly = Assembly(IRIS, IrisConstants.imagerDetectorAssembly.componentName, 5.seconds)
-    val ifsDetectorAssembly = Assembly(IRIS, IrisConstants.ifsDetectorAssembly.componentName, 5.seconds)
 
     onSetup("setupObservation") { command ->
 
@@ -56,8 +53,9 @@ script {
                 *command.jParamSet().toTypedArray()))
     }
 
-    // start a subscription to track exposure status (shown as an exampe, not currently used)
-    // note this is done in constuctor of Script, so it is always running (not part of a command).
+    // start a subscription to track exposure status (shown as an example, not currently used)
+    // note this is done in constructor of Script, so it is always running (not part of a command).
+    @Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
     var currentExposureInProgressEventValue = false
     onEvent(IrisConstants.imagerDetectorAssembly.event.exposureState) { event ->
         when (event) {
@@ -66,7 +64,7 @@ script {
         }
     }
 
-    // Start a loop in the contructor that is always running
+    // Start a loop in the constructor that is always running
     // Take imager exposures while takeImagerExposures flag is set
     // This flag is set on observe commands in the observe handler below
     var takeImagerExposures = false
@@ -76,8 +74,7 @@ script {
     loopAsync {
         if (takeImagerExposures) {
             val observeCommand = Observe(prefix, "START_EXPOSURE", getObsId())
-            val response = imagerDetectorAssembly.submitAndWait(observeCommand)
-            // check response
+            imagerDetectorAssembly.submitAndWait(observeCommand)
         }
         stopWhen(stopExposureLoop) // loop forever.  can be set to true on shutdown.
     }
@@ -96,7 +93,7 @@ script {
         when (event) {
             is SystemEvent -> {
                 val thisThermalState = event(IrisConstants.cryoenvAssembly.event.cryoenvVacuumStateKey).head()
-                allThermalStatesMap.put(event.eventName().name(), (thisThermalState == Choice("COLD")))
+                allThermalStatesMap[event.eventName().name()] = (thisThermalState == Choice("COLD"))
 
                 if (!okForExposures()) {
                     // if any state is not cold, stop taking exposures and abort
