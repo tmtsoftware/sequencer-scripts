@@ -1,7 +1,6 @@
 lazy val `sequencer-scripts` = project
   .in(file("."))
   .enablePlugins(KotlinPlugin)
-  .aggregate(`ignore`)
   .settings(
     kotlinVersion := "1.4.10",
     kotlincOptions ++= Seq("-Xuse-experimental=kotlin.time.ExperimentalTime", "-jvm-target", "1.8"),
