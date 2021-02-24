@@ -2,6 +2,7 @@
 lazy val `sequencer-scripts` = project
   .in(file("."))
   .enablePlugins(KotlinPlugin)
+  .aggregate(`ignore`)
   .settings(
     kotlinVersion := "1.4.10",
     kotlincOptions ++= Seq("-Xuse-experimental=kotlin.time.ExperimentalTime", "-jvm-target", "1.8"),
@@ -25,3 +26,5 @@ lazy val `sequencer-scripts` = project
     ),
     fork in Test := true
   )
+
+lazy val `ignore` = project.in(file(".ignore"))
