@@ -13,3 +13,8 @@ target
 .DS_Store
 .bloop/
 .metals
+.gradle/
+gradlew
+gradlew.bat
+gradle/
+.bsp/
