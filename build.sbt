@@ -8,7 +8,7 @@ lazy val `sequencer-scripts` = project
     inThisBuild(List(
       organization := "com.github.tmtsoftware.sequencer-scripts",
       scalaVersion := "2.13.3",
-      version      := "0.2.0"
+      version      := "0.1.0-SNAPSHOT"
     )),
 
     unmanagedSourceDirectories in Compile += (baseDirectory in Compile) (_ / "scripts").value,
