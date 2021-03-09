@@ -15,13 +15,15 @@ lazy val `sequencer-scripts` = project
     excludeFilter in (Compile, unmanagedSources) := "*.conf",
     unmanagedSourceDirectories in Test += (baseDirectory in Test) (_ / "tests").value,
     unmanagedResourceDirectories in Compile += (baseDirectory in Compile) (_ / "scripts").value,
+    unmanagedResourceDirectories in Test += (baseDirectory in Test) (_ / "tests/resources").value,
     includeFilter in (Compile, unmanagedResources) := "*.conf",
     mainClass in Compile := Some("esw.ocs.app.SequencerApp"),
     name := "sequencer-scripts",
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
       Libs.`esw-ocs-dsl-kt`,
-      Libs.`esw-ocs-app`
+      Libs.`esw-ocs-app`,
+      Libs.`esw-testkit`
     ),
     fork in Test := true
   )
