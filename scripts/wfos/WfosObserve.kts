@@ -9,7 +9,7 @@ script {
     var stopObserving = false
     val detectorAssembly = Assembly(WFOS, "detectorAssembly")
 
-    onObserve("observe") { command ->
+    onObserve("repeatedObserve") { command ->
         val repeats = command(intKey("repeats")).head()
         var counter = 0
         loopAsync {
