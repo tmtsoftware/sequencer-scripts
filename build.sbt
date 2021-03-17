@@ -24,5 +24,6 @@ lazy val `sequencer-scripts` = project
       Libs.`esw-ocs-dsl-kt`,
       Libs.`esw-ocs-app`,
       Libs.`esw-testkit` % Test
-    )
+    ),
+    fork in Test := true
   )

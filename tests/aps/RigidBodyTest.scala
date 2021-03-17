@@ -9,9 +9,9 @@ import esw.ocs.api.SequencerApi
 import esw.ocs.api.models.ObsMode
 import esw.ocs.testkit.EswTestKit
 
-class Test1Test extends EswTestKit {
+class RigidBodyTest extends EswTestKit {
 
-/*
+
   private var apsSequencerClient: SequencerApi = _
   private val subsystem = APS
   private val obsMode = ObsMode("takeExposureWhileProcessingPrevious")
@@ -30,7 +30,7 @@ class Test1Test extends EswTestKit {
   "should submitAndWait sequence and get Completed" in {
     apsSequencerClient.submitAndWait(sequence).futureValue shouldBe a[Completed]
   }
-*/
+
 
 
 }
