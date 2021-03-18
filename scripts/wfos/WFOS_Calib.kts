@@ -1,17 +1,17 @@
-package iris
+package wfos
+
 
 import esw.ocs.api.models.ObsMode
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.ESW
-import esw.ocs.dsl.highlevel.models.LGSF
-import esw.ocs.dsl.highlevel.models.TCS
+import esw.ocs.dsl.highlevel.models.WFOS
 import kotlin.time.milliseconds
 import kotlin.time.seconds
 
 script {
-    println("********** Loaded iris darknight new script *********")
+    println("********** Loaded wfos WFOS_Calib new script *********")
     val defaultTimeout = 5.seconds
-    val lgsfSequencer = Sequencer(LGSF, ObsMode("darknight"), defaultTimeout)
+    val wfosSequencer = Sequencer(WFOS, ObsMode("WFOS_Calib"), defaultTimeout)
     val testAssembly = Assembly(ESW, "test", defaultTimeout)
 
     onSetup("command-for-assembly") { command ->
@@ -27,15 +27,16 @@ script {
         val sequence = sequenceOf(setupCommand)
 
         // ESW-88, ESW-145, ESW-195
-        val tcsSequencer = Sequencer(TCS, ObsMode("darknight"), defaultTimeout)
-        tcsSequencer.submitAndWait(sequence, 10.milliseconds)
+        val wfosSequencer = Sequencer(WFOS, ObsMode("WFOS_Calib"), defaultTimeout)
+        wfosSequencer.submitAndWait(sequence, 10.milliseconds)
+
     }
 
     onSetup("command-lgsf") {
         // NOT update command response to avoid sequencer to finish immediately
         // so that other Add, Append command gets time
         val setupCommand = Setup("LGSF.test", "command-lgsf")
-        lgsfSequencer.submitAndWait(sequenceOf(setupCommand), 10.milliseconds)
+        wfosSequencer.submitAndWait(sequenceOf(setupCommand), 10.milliseconds)
     }
 
     onDiagnosticMode { startTime, hint ->
@@ -62,14 +63,14 @@ script {
         //do some actions to abort sequence
 
         //send abortSequence command to downstream sequencer
-        lgsfSequencer.abortSequence()
+        wfosSequencer.abortSequence()
     }
 
     onStop {
         //do some actions to stop
 
         //send stop command to downstream sequencer
-        lgsfSequencer.stop()
+        wfosSequencer.stop()
     }
 
 }
