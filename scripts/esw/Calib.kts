@@ -1,4 +1,4 @@
-package iris
+package esw
 
 import esw.ocs.api.models.ObsMode
 import esw.ocs.dsl.core.script

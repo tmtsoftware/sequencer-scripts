@@ -1,16 +1,16 @@
-package esw
+package tcs
 
 import esw.ocs.api.models.ObsMode
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.ESW
-import esw.ocs.dsl.highlevel.models.IRIS
+import esw.ocs.dsl.highlevel.models.TCS
 import kotlin.time.milliseconds
 import kotlin.time.seconds
 
 script {
     println("********** Loaded esw darknight new script *********")
     val defaultTimeout = 5.seconds
-    val irisSequencer = Sequencer(IRIS, ObsMode("IRIS_Darknight"), defaultTimeout)
+    val irisSequencer = Sequencer(TCS, ObsMode("IRIS_Darknight"), defaultTimeout)
     val testAssembly = Assembly(ESW, "test", defaultTimeout)
 
     onSetup("command-for-assembly") { command ->
@@ -26,7 +26,7 @@ script {
         val sequence = sequenceOf(setupCommand)
 
         // ESW-88, ESW-145, ESW-195
-        val irisSequencer = Sequencer(IRIS, ObsMode("IRIS_Darknight"), defaultTimeout)
+        val irisSequencer = Sequencer(TCS, ObsMode("IRIS_Darknight"), defaultTimeout)
         irisSequencer.submitAndWait(sequence, 10.milliseconds)
     }
 
