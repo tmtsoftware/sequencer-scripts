@@ -4,11 +4,11 @@ lazy val `sequencer-scripts` = project
   .enablePlugins(KotlinPlugin)
   .aggregate(`ignore`)
   .settings(
-    kotlinVersion := "1.4.10",
+    kotlinVersion := "1.4.21",
     kotlincOptions ++= Seq("-Xuse-experimental=kotlin.time.ExperimentalTime", "-jvm-target", "1.8"),
     inThisBuild(List(
       organization := "com.github.tmtsoftware.sequencer-scripts",
-      scalaVersion := "2.13.3",
+      scalaVersion := "2.13.5",
       version      := "0.1.0-SNAPSHOT"
     )),
 
