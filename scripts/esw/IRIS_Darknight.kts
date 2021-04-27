@@ -51,4 +51,22 @@ script {
         println("[ESW IRIS_Darknight]: observe-command3 command completed")
     }
 
+    onSetup("fail-setup") {
+        throw RuntimeException("handle-setup-failed")
+    }
+
+    onSetup("setup-both") { command1 ->
+        println("[ESW IRIS_Darknight]: setup-both command received")
+
+        val command2 = Setup(command1.source().toString(), "iris-command2")
+        val command3 = Setup(command1.source().toString(), "iris-command3")
+        val command2t = Setup(command1.source().toString(), "tcs-command2")
+        val command3t = Setup(command1.source().toString(), "tcs-command3")
+
+        val irisRes = irisSequencer.submit(sequenceOf(command2, command3))
+        val tcsRes = tcsSequencer.submit(sequenceOf(command2t, command3t))
+        println("[ESW IRIS_Darknight]: setup-both command completed")
+
+    }
+
 }
