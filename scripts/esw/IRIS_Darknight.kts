@@ -1,5 +1,9 @@
 package esw
 
+import esw.SetupCommands.getIrisCommand2
+import esw.SetupCommands.getIrisCommand3
+import esw.SetupCommands.getTcsCommand2
+import esw.SetupCommands.getTcsCommand3
 import esw.ocs.api.models.ObsMode
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.IRIS
@@ -13,20 +17,19 @@ script {
     val irisSequencer = Sequencer(IRIS, obsMode)
     val tcsSequencer = Sequencer(TCS, obsMode)
     val delayDuration = 30000L //30sec
-    val setupCommands = SetupCommands()
 
     onSetup("setup-iris") { command1 ->
         println("[ESW IRIS_Darknight]: setup-iris command received")
-        val command2 = setupCommands.getIrisCommand2(command1.source())
-        val command3 = setupCommands.getIrisCommand3(command1.source())
+        val command2 = getIrisCommand2(command1.source(), command1.obsId)
+        val command3 = getIrisCommand3(command1.source(), command1.obsId)
         irisSequencer.submitAndWait(sequenceOf(command1, command2, command3))
         println("[ESW IRIS_Darknight]: setup-iris command completed")
     }
 
     onSetup("setup-tcs") { command1 ->
         println("[ESW IRIS_Darknight]: setup-tcs command received")
-        val command2 = setupCommands.getTcsCommand2(command1.source())
-        val command3 = setupCommands.getTcsCommand3(command1.source())
+        val command2 = getTcsCommand2(command1.source(), command1.obsId)
+        val command3 = getTcsCommand3(command1.source(), command1.obsId)
         tcsSequencer.submitAndWait(sequenceOf(command1, command2, command3))
         println("[ESW IRIS_Darknight]: setup-tcs command completed")
 

@@ -20,7 +20,7 @@ script {
         println("[TCS IRIS_Darknight]: tcs-command2 command completed")
     }
 
-    onSetup("tcs-command3") {
+    onObserve("tcs-command3") {
         println("[TCS IRIS_Darknight]: tcs-command3 command received")
         delay(delayDuration)
         println("[TCS IRIS_Darknight]: tcs-command3 command completed")

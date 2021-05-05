@@ -20,7 +20,7 @@ script {
         println("[IRIS IRIS_Darknight]: iris-command2 command completed")
     }
 
-    onSetup("iris-command3") {
+    onObserve("iris-command3") {
         println("[IRIS IRIS_Darknight]: iris-command3 command received")
         delay(delayDuration)
         println("[IRIS IRIS_Darknight]: iris-command3 command completed")
