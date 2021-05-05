@@ -13,20 +13,20 @@ script {
     val irisSequencer = Sequencer(IRIS, obsMode)
     val tcsSequencer = Sequencer(TCS, obsMode)
     val delayDuration = 30000L //30sec
+    val setupCommands = SetupCommands()
 
     onSetup("setup-iris") { command1 ->
         println("[ESW IRIS_Darknight]: setup-iris command received")
-
-        val command2 = Setup(command1.source().toString(), "iris-command2")
-        val command3 = Setup(command1.source().toString(), "iris-command3")
+        val command2 = setupCommands.getIrisCommand2(command1.source())
+        val command3 = setupCommands.getIrisCommand3(command1.source())
         irisSequencer.submitAndWait(sequenceOf(command1, command2, command3))
         println("[ESW IRIS_Darknight]: setup-iris command completed")
     }
 
     onSetup("setup-tcs") { command1 ->
         println("[ESW IRIS_Darknight]: setup-tcs command received")
-        val command2 = Setup(command1.source().toString(), "tcs-command2")
-        val command3 = Setup(command1.source().toString(), "tcs-command3")
+        val command2 = setupCommands.getTcsCommand2(command1.source())
+        val command3 = setupCommands.getTcsCommand3(command1.source())
         tcsSequencer.submitAndWait(sequenceOf(command1, command2, command3))
         println("[ESW IRIS_Darknight]: setup-tcs command completed")
 
