@@ -83,6 +83,25 @@ You can refer [version compatibility section](#-version-compaibilty).
 
 1. At this stage, your `Sequencer` will be started with provided `script` and waiting for `Sequence` to be received for execution
 
+## Developing Scripts while interacting from ESW Eng UI
+### Initial test setup
+This setup assumes `esw`, `csw`, `sequencer-script` repo available on machine.
+
+1) In ESW repo, execute command `sbt publishLocal`
+1) In Sequencer-Scripts repo, execute command `sbt -Ddev=true publishLocal`            
+1) Checkout compatible SHA of CSW and Start CSW services (config service and keycloak) command : `sbt csw-services/run start -c`
+1) Start ESW services, command : `sbt esw-services/run start-eng-ui-services --scripts-version 0.1.0-SNAPSHOT`
+1) Start UI server in ESW-OCS-Eng-UI repo, command : `npm start`
+1) Once the browser opens and UI loads
+    - Login  
+    - Provision sequence components
+    - Configure obs mode (say IRIS_Darknight)
+
+### Script development flow
+To develop Script and reflect changes in Sequencer and UI.
+1) Unload the Sequencer being developed development, say ESW.IRIS_Darknight.
+1) Go to Sequencer-scripts repo and start Sequencer in watch mode by executing `sbt -Ddev=true ~reStart sequencer -s ESW -m IRIS_Darknight`
+
 ## Submitting Sequence to Sequencer
 
 Once you have started `Sequencer` with appropriate `script`, next step would be to submit a `Sequence` to the `Sequencer` for execution.
