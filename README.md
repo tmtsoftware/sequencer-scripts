@@ -49,8 +49,8 @@ Script writers should follow steps mentioned below to add/update scripts
 ### Prerequisite
 
 The [CSW](https://github.com/tmtsoftware/csw) services need to be running before starting the sequencer scripts.
-Compatible version of `csw-services` (refer [version compatibility section](#-version-compaibilty)) can be started using `Coursier` (also referred as `cs`).
-To install `Coursier` and add TMT apps channel, refer [here](https://tmtsoftware.github.io/esw//technical/apps/getting-apps.html#1-install-coursier)
+Compatible version of `csw-services` (refer [version compatibility section](#-version-compaibilty)) can be started using `Coursier` (also called `cs`).
+To install `Coursier` and add TMT apps channel, refer [this](https://tmtsoftware.github.io/esw//technical/apps/getting-apps.html#1-install-coursier)
 
 For help about csw services, execute `cs launch csw-services:<version|SHA> -- --help`
 
@@ -85,7 +85,7 @@ This setup assumes `esw`, `csw`, `sequencer-script` repo available on machine.
 1. In Sequencer-Scripts repo, execute command `sbt -Ddev=true publishLocal`            
 1. Checkout compatible SHA of CSW and Start CSW services (config service and keycloak) command : `sbt csw-services/run start -c`. 
    
-   If CSW repo is available on machine, use `Coursier` to start csw-services, Refer [this](#prerequisite). 
+   If CSW repo is available on machine, use `Coursier` to start csw-services, refer [this](#prerequisite). 
 1. Start ESW services, command : `sbt esw-services/run start-eng-ui-services --scripts-version 0.1.0-SNAPSHOT`
 1. Start UI server in ESW-OCS-Eng-UI repo, command : `npm start`
 1. Once the browser opens and UI loads
