@@ -83,7 +83,9 @@ This setup assumes `esw`, `csw`, `sequencer-script` repo available on machine.
 
 1. In ESW repo, execute command `sbt publishLocal`
 1. In Sequencer-Scripts repo, execute command `sbt -Ddev=true publishLocal`            
-1. Checkout compatible SHA of CSW and Start CSW services (config service and keycloak) command : `sbt csw-services/run start -c`
+1. Checkout compatible SHA of CSW and Start CSW services (config service and keycloak) command : `sbt csw-services/run start -c`. 
+   
+   If CSW repo is available on machine, use `Coursier` to start csw-services, Refer [this](#prerequisite). 
 1. Start ESW services, command : `sbt esw-services/run start-eng-ui-services --scripts-version 0.1.0-SNAPSHOT`
 1. Start UI server in ESW-OCS-Eng-UI repo, command : `npm start`
 1. Once the browser opens and UI loads
