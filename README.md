@@ -16,17 +16,17 @@ This repo contains subsystem specific sequencer scripts.
 
 ## Adding new scripts
 
-`sequencer-scripts` repo is restricted and limited people have admin access to make changes to master and merge pull requests.
+The `sequencer-scripts` repo is restricted and limited people have admin access to make changes to master and merge pull requests.
 
-Script writers should follow steps mentioned below to add/update scripts
+Script writers should follow steps mentioned below to add/update scripts:
 
-1. Fork `sequencer-scripts` repo
-    1. One can fork it to their personal repository and keep working on that fork
-    1. Or fork it under your own organization
+1. Fork `sequencer-scripts` repo:
+    1. You can fork it to your personal repository and keep working on that fork.
+    1. Or you can fork it under your own organization.
 
-1. Add new scripts into`scripts` directory under specific `subsystem`.  If your subsystem doesn't exist, create a directory with the name of your subsystem in the `scripts` directory, e.g. `scripts/wfos`.  Also add an observing mode mapping configuration file to provide a mapping from observing modes to scripts in your new directory named your subsystem with the `.conf` extension, e.g. `scripts/wfos/wfos.conf`.  Then, include the new configuration file in the `scripts/application.conf`, for example, if you have newly created `scripts/wfos/wfos.conf`, then add line `include "wfos/wfos.conf"` in `scripts/application.conf` file
+1. Add new scripts into the `scripts` directory under the specific `subsystem` directory.  If the subsystem directory doesn't exist yet, create a directory with the name of your subsystem under the `scripts` directory, e.g. `scripts/wfos`.  Also add an observing mode mapping configuration file in your new directory, named `subsystem`.conf , e.g. `scripts/wfos/wfos.conf`.  This provides a mapping from observing modes to script files. Then, include the new configuration file in the `scripts/application.conf`. For example, if you have created `scripts/wfos/wfos.conf`, then add line `include "wfos/wfos.conf"` in the `scripts/application.conf` file.
 
-1. Add an entry for each observing mode into the subsystem-specific observing mode mapping configuration.  It should include a `scriptClass` property pointing to script file where script logic resides, for example,
+1. Add an entry for each observing mode into the subsystem-specific observing mode mapping configuration file.  It should include a `scriptClass` property pointing to script file where script logic resides, for example,
 
     ```hocon
       scripts {
@@ -40,66 +40,66 @@ Script writers should follow steps mentioned below to add/update scripts
 
     Note: the same script class can be used for multiple observing modes.
 
-1. Once all the changes are completed in a forked repo, then you can submit a pull request to upstream which is `tmtsoftware/sequencer-scripts` repo in this case
+1. Once all the changes are completed in a forked repo, you can submit a pull request to the upstream repository, which is `tmtsoftware/sequencer-scripts` in this case.
 
-1. Admins of `sequencer-scripts` repo will then review changes and merge it to `master`
+1. Admins of the `sequencer-scripts` repo will then review the changes and merge them to `master`.
 
 ## Running script
 
 ### Prerequisite
 
 The [CSW](https://github.com/tmtsoftware/csw) services need to be running before starting the sequencer scripts.
-Compatible version of `csw-services` (refer [version compatibility section](#-version-compaibilty)) can be started using `Coursier` (also called `cs`).
-To install `Coursier` and add TMT apps channel, refer [this](https://tmtsoftware.github.io/esw//technical/apps/getting-apps.html#1-install-coursier)
+A compatible version of `csw-services` (See [version compatibility section](#-version-compaibilty)) can be started using `Coursier` (using the `cs` command).
+To install `Coursier` and add the TMT apps channel, see [here](https://tmtsoftware.github.io/esw//technical/apps/getting-apps.html#1-install-coursier)
 
-For help about csw services, execute `cs launch csw-services:<version|SHA> -- --help`
+For help on using csw-services, run `cs launch csw-services:<version|SHA> -- --help`.
 
-To start all the csw services, for example, _Location, Config, Alarm, AAS service_ etc, execute `cs launch csw-services:<version|SHA> -- start`
+To start all the csw services, for example, _Location, Config, Alarm, AAS service_ etc, run `cs launch csw-services:<version|SHA> -- start`.
 
 ### Running Sequencer App with script
 
-1. Run `sbt` command at root level of this repo
+1. Run the `sbt` command at the root level of this repo
 
-1. Within the `sbt` shell, run following command which will read _scripts.Subsystem.Observing_Mode.scriptClass_ configuration and start that script.
+1. Within the `sbt` shell, run the following command which will read the _scripts.Subsystem.Observing_Mode.scriptClass_ configuration and start that script.
 
     ```bash
         run sequencer -s <Subsystem> -m <Observing_Mode>
     ```
-    Please note that configuration for IRIS (subsystem) and IRIS_darknight (observing mode) should be there in
-    config file.
+    Please note that the configuration for the IRIS (subsystem) and the IRIS_darknight observing mode should be there in
+    the config file.
 
-    For example, following command will start IRIS IRIS_darknight script i.e. **_Darknight.kts_** script
-    Confiuration for this exist in iris.conf file under iris scripts folder.
+    For example, the following command will start the IRIS IRIS_darknight script i.e. **_Darknight.kts_**.
+    The Configuration for this exists in the iris.conf file under the iris scripts folder.
     
     ```bash
         run sequencer -s IRIS -m IRIS_darknight
     ```
 
-1. At this stage, your `Sequencer` will be started with provided `script` and waiting for `Sequence` to be received for execution
+1. At this stage, your `Sequencer` will be started with a provided `script` and will be waiting for a `Sequence` to be received for execution.
 
 ## Developing Scripts while interacting from ESW Eng UI
 ### Initial test setup
-This setup assumes `esw`, `csw`, `sequencer-script` repo available on machine.
+This setup assumes the `esw`, `csw`, and `sequencer-script` repos are available on the local machine.
 
-1. In ESW repo, execute command `sbt publishLocal`
-1. In Sequencer-Scripts repo, execute command `sbt -Ddev=true publishLocal`            
-1. Checkout compatible SHA of CSW and Start CSW services (config service and keycloak) command : `sbt csw-services/run start -c`. 
+1. In the ESW repo, run `sbt publishLocal`
+1. In the Sequencer-Scripts repo, run `sbt -Ddev=true publishLocal`            
+1. Checkout a compatible SHA of CSW and Start CSW services (including config service and keycloak) with the command : `sbt csw-services/run start -c`. 
    
-   If CSW repo is available on machine, use `Coursier` to start csw-services, refer [this](#prerequisite). 
-1. Start ESW services, command : `sbt esw-services/run start-eng-ui-services --scripts-version 0.1.0-SNAPSHOT`
-1. Start UI server in ESW-OCS-Eng-UI repo, command : `npm start`
-1. Once the browser opens and UI loads
+   If the CSW repo is available on the local machine, use `Coursier` to start csw-services (See [here](#prerequisite)). 
+1. Start ESW services with the command : `sbt esw-services/run start-eng-ui-services --scripts-version 0.1.0-SNAPSHOT`
+1. Start the UI server in the ESW-OCS-Eng-UI repo with the command : `npm start`
+1. Once the browser opens and the UI loads
     - Login  
     - Provision sequence components
     - Configure obs mode (say IRIS_Darknight)
 
 ### Script development flow
-To develop Script and reflect changes in Sequencer and UI.
-1. Unload the Sequencer being developed development, say ESW.IRIS_Darknight.
-1. Go to Sequencer-scripts repo and start Sequencer in watch mode by executing `sbt -Ddev=true ~reStart sequencer -s ESW -m IRIS_Darknight`
+To develop a script so that the changes are reflected in the Sequencer and UI:
+1. Unload the Sequencer being developed, for example ESW.IRIS_Darknight.
+1. Go to the Sequencer-scripts repo and start the Sequencer in watch mode by executing `sbt -Ddev=true ~reStart sequencer -s ESW -m IRIS_Darknight`
 
 ## Submitting Sequence to Sequencer
 
-Once you have started `Sequencer` with appropriate `script`, next step would be to submit a `Sequence` to the `Sequencer` for execution.
+Once you have started the `Sequencer` with the appropriate `script`, the next step would be to submit a `Sequence` to the `Sequencer` for execution.
 
-Use [esw-shell](https://github.com/tmtsoftware/esw/tree/master/esw-shell) to do this and more which has detailed documentation on how to submit sequence to sequencer.
+This can be done using the [esw-shell](https://github.com/tmtsoftware/esw/tree/master/esw-shell), which has detailed documentation on how to submit a sequence to the sequencer.
