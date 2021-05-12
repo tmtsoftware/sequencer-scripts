@@ -96,7 +96,11 @@ This setup assumes the `esw`, `csw`, and `sequencer-script` repos are available 
 ### Script development flow
 To develop a script so that the changes are reflected in the Sequencer and UI:
 1. Unload the Sequencer being developed, for example ESW.IRIS_Darknight.
+1. Since the script under development will be in a specific directory, eg: `scripts/esw`, the changes in other directories should not cause the sequencer to restart.
+1. This can be done using the `watchSources` task in sbt, which defines the sources that will be watched while using sbt revolver. Since we need to watch changes only of a specific directory we can set it accordingly.
+   For eg: `set watchSources := Seq(WatchSource(baseDirectory.value /"scripts/esw/"))`
 1. Go to the Sequencer-scripts repo and start the Sequencer in watch mode by executing `sbt -Ddev=true ~reStart sequencer -s ESW -m IRIS_Darknight`
+
 
 ## Submitting Sequence to Sequencer
 
