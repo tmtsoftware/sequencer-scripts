@@ -8,7 +8,7 @@ import esw.ocs.dsl.params.stringKey
 import esw.ocs.dsl.params.values
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlin.time.seconds
+import kotlin.time.Duration
 
 script {
 
@@ -27,7 +27,7 @@ script {
         val tupleList = componentNames.values.zip(sleepTimes.values)
         val submitResponsesD = tupleList.map {
             val setup = Setup(myPrefix, "sleep").add(assemblySleepTimeKey.set(it.second))
-            val assembly = Assembly(ESW, it.first, 5.seconds)
+            val assembly = Assembly(ESW, it.first, Duration.seconds(5))
             async {
                 assembly.submitAndWait(setup)
             }

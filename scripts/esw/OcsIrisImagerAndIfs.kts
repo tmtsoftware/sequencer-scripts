@@ -16,7 +16,7 @@ import iris.IrisConstants.iseq.command.imagerRepeatsKey
 import iris.IrisConstants.iseq.command.resolutionKey
 import iris.IrisConstants.iseq.command.scaleKey
 import kotlinx.coroutines.async
-import kotlin.time.minutes
+import kotlin.time.Duration
 
 script {
 
@@ -49,7 +49,7 @@ script {
                 .add(ifsConfigurationsKey.set(ifsConfigurations))
 
         val iris = Sequencer(IRIS, ObsMode("IrisImagerAndIfs"))
-        iris.submitAndWait(sequenceOf(irisCommand), 5.minutes)
+        iris.submitAndWait(sequenceOf(irisCommand), Duration.minutes(5))
     }
 
     onSetup("irisImagerAndIfsSeparate") { command ->

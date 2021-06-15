@@ -9,14 +9,13 @@ import esw.ocs.dsl.highlevel.models.Prefix
 import esw.ocs.dsl.highlevel.models.TCS
 import esw.ocs.dsl.params.*
 import kotlin.math.sqrt
-import kotlin.time.milliseconds
-import kotlin.time.seconds
+import kotlin.time.Duration
 
 script {
 
-    val oiwfsDetectorAssembly = Assembly(Prefix("iris.oiwfs.detector.oiwfs-detector-assembly"), 5.seconds)
+    val oiwfsDetectorAssembly = Assembly(Prefix("iris.oiwfs.detector.oiwfs-detector-assembly"), Duration.seconds(5))
     val rtcPrefix = "nfiraos.rtc.nfiraos-rtc-assembly"
-    val tcsSequencer = Sequencer(TCS, ObsMode("darknight"), 5.seconds)
+    val tcsSequencer = Sequencer(TCS, ObsMode("darknight"), Duration.seconds(5))
 
     val oiwfsExposureModeChoices = choicesOf("SINGLE", "CONTINUOUS", "STOP", "NOOP")
     val oiwfsExposureModeKey = choiceKey("mode", oiwfsExposureModeChoices)
@@ -111,7 +110,7 @@ script {
                 val maxAttempts = 20 // maximum number of loops on this guide star before rejecting
                 var attempts = 0
 
-                loop(500.milliseconds) {
+                loop(Duration.milliseconds(500)) {
                     when {
                         ttfFluxLow -> increaseExposureTime() // period tbd
                         isOffsetRequired(xoffset, yoffset) -> {

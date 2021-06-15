@@ -5,7 +5,7 @@ import esw.ocs.dsl.highlevel.models.TCS
 import esw.ocs.dsl.params.floatKey
 import esw.ocs.dsl.params.invoke
 import esw.ocs.dsl.params.taiTimeKey
-import kotlin.time.seconds
+import kotlin.time.Duration
 
 script {
     val tcsOffsetTime = taiTimeKey("scheduledTime")
@@ -13,7 +13,7 @@ script {
     val tcsOffsetYKey = floatKey("y")
     val tpkOffsetXKey = floatKey("x")
     val tpkOffsetYKey = floatKey("y")
-    val tpkAssembly = Assembly(TCS, "tpk", 5.seconds)
+    val tpkAssembly = Assembly(TCS, "tpk", Duration.seconds(5))
 
     onSetup("offset") { command ->
         // extract parameters and time to perform offset move from command

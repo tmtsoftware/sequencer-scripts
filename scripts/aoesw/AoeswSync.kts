@@ -5,7 +5,7 @@ import esw.ocs.dsl.highlevel.models.NFIRAOS
 import esw.ocs.dsl.params.floatKey
 import esw.ocs.dsl.params.invoke
 import esw.ocs.dsl.params.taiTimeKey
-import kotlin.time.seconds
+import kotlin.time.Duration
 
 script {
     val aoeswOffsetTime = taiTimeKey(name = "scheduledTime")
@@ -13,7 +13,7 @@ script {
     val aoeswOffsetYKey = floatKey("y")
     val probeOffsetXKey = floatKey("x")
     val probeOffsetYKey = floatKey("y")
-    val probeAssembly = Assembly(NFIRAOS, "probeAssembly", 5.seconds)
+    val probeAssembly = Assembly(NFIRAOS, "probeAssembly", Duration.seconds(5))
 
     onSetup("offset") { command ->
 

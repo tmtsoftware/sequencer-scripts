@@ -6,7 +6,7 @@ import esw.ocs.dsl.highlevel.models.AOESW
 import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.highlevel.models.TCS
 import esw.ocs.dsl.par
-import kotlin.time.minutes
+import kotlin.time.Duration
 
 script {
     val tcs = Sequencer(TCS, ObsMode("LGSAcquisition"))
@@ -20,9 +20,9 @@ script {
         val slewIRISCommand = Setup(prefix, "Slew IRIS", command.obsId)
 
         par (
-                { tcs.submitAndWait(sequenceOf(slewTCSCommand), 2.minutes) },
-                { aosq.submitAndWait(sequenceOf(slewAOSQCommand), 2.minutes)},
-                { iris.submitAndWait(sequenceOf(slewIRISCommand), 2.minutes) }
+                { tcs.submitAndWait(sequenceOf(slewTCSCommand), Duration.minutes(2)) },
+                { aosq.submitAndWait(sequenceOf(slewAOSQCommand), Duration.minutes(2))},
+                { iris.submitAndWait(sequenceOf(slewIRISCommand), Duration.minutes(2)) }
         )
     }
 

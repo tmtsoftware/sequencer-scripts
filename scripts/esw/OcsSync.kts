@@ -8,11 +8,11 @@ import esw.ocs.dsl.par
 import esw.ocs.dsl.params.floatKey
 import esw.ocs.dsl.params.invoke
 import esw.ocs.dsl.params.taiTimeKey
-import kotlin.time.seconds
+import kotlin.time.Duration
 
 script {
-    val aosq = Sequencer(AOESW, ObsMode("OcsSync"), 5.seconds)
-    val tcs = Sequencer(TCS, ObsMode("OcsSync"), 5.seconds)
+    val aosq = Sequencer(AOESW, ObsMode("OcsSync"), Duration.seconds(5))
+    val tcs = Sequencer(TCS, ObsMode("OcsSync"), Duration.seconds(5))
 
     val offsetTime = taiTimeKey(name = "scheduledTime")
     val offsetXKey = floatKey("x")

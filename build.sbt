@@ -4,8 +4,8 @@ lazy val `sequencer-scripts` = project
   .in(file("."))
   .enablePlugins(KotlinPlugin)
   .settings(
-    kotlinVersion := "1.4.21",
-    kotlincOptions ++= Seq("-Xuse-experimental=kotlin.time.ExperimentalTime", "-jvm-target", "1.8"),
+    kotlinVersion := "1.5.10",
+    kotlincOptions ++= Seq("-Xopt-in=kotlin.time.ExperimentalTime", "-jvm-target", "1.8"),
     inThisBuild(List(
       organization := "com.github.tmtsoftware.sequencer-scripts",
       scalaVersion := "2.13.5",
@@ -14,9 +14,9 @@ lazy val `sequencer-scripts` = project
 
     Compile / unmanagedSourceDirectories += (Compile / baseDirectory) (_ / "scripts").value,
     Compile / unmanagedSources / excludeFilter := "*.conf",
-    Test / unmanagedSourceDirectories += (Test / baseDirectory ) (_ / "tests").value,
-    Compile / unmanagedResourceDirectories += (Compile / baseDirectory ) (_ / "scripts").value,
-    Test / unmanagedResourceDirectories += (Test / baseDirectory ) (_ / "tests/resources").value,
+    Test / unmanagedSourceDirectories += (Test / baseDirectory) (_ / "tests").value,
+    Compile / unmanagedResourceDirectories += (Compile / baseDirectory) (_ / "scripts").value,
+    Test / unmanagedResourceDirectories += (Test / baseDirectory) (_ / "tests/resources").value,
     Compile / unmanagedResources / includeFilter := "*.conf",
     reStart / mainClass := Some("esw.ocs.app.SequencerApp"),
     name := "sequencer-scripts",

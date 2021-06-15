@@ -7,7 +7,7 @@ import esw.ocs.dsl.params.invoke
 import iris.IrisConstants.sciResolutionAssembly.command.spectralResolutionKey
 import iris.IrisConstants.sciScaleAssembly.command.scaleKey
 import kotlinx.coroutines.async
-import kotlin.time.seconds
+import kotlin.time.Duration
 import iris.IrisConstants.ifsDetectorAssembly.command.itimeKey as ifsItimeKey
 import iris.IrisConstants.ifsDetectorAssembly.command.rampsKey as ifsRampsKey
 import iris.IrisConstants.imagerDetectorAssembly.command.itimeKey as imagerItimeKey
@@ -25,11 +25,11 @@ import iris.IrisConstants.iseq.command.scaleKey as seqScaleKey
 
 
 script {
-    val filterAssembly = Assembly(IRIS, IrisConstants.sciFilterAssembly.componentName, 5.seconds)
-    val scaleAssembly = Assembly(IRIS, IrisConstants.sciScaleAssembly.componentName, 5.seconds)
-    val spectralResAssembly = Assembly(IRIS, IrisConstants.sciResolutionAssembly.componentName, 5.seconds)
-    val imagerDetectorAssembly = Assembly(IRIS, IrisConstants.imagerDetectorAssembly.componentName, 5.seconds)
-    val ifsDetectorAssembly = Assembly(IRIS, IrisConstants.ifsDetectorAssembly.componentName, 5.seconds)
+    val filterAssembly = Assembly(IRIS, IrisConstants.sciFilterAssembly.componentName, Duration.seconds(5))
+    val scaleAssembly = Assembly(IRIS, IrisConstants.sciScaleAssembly.componentName, Duration.seconds(5))
+    val spectralResAssembly = Assembly(IRIS, IrisConstants.sciResolutionAssembly.componentName, Duration.seconds(5))
+    val imagerDetectorAssembly = Assembly(IRIS, IrisConstants.imagerDetectorAssembly.componentName, Duration.seconds(5))
+    val ifsDetectorAssembly = Assembly(IRIS, IrisConstants.ifsDetectorAssembly.componentName, Duration.seconds(5))
 
     onSetup("parallelObservation") { command ->
 
