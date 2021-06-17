@@ -1,10 +1,13 @@
+val KotlincOptions = Seq("-Xopt-in=kotlin.time.ExperimentalTime", "-jvm-target", "1.8")
+val KotlinVersion  = "1.5.10"
+
 lazy val `sequencer-scripts` = project
   .in(file("."))
   .enablePlugins(KotlinPlugin)
   .aggregate(`ignore`)
   .settings(
-    kotlinVersion := "1.4.21",
-    kotlincOptions ++= Seq("-Xuse-experimental=kotlin.time.ExperimentalTime", "-jvm-target", "1.8"),
+    kotlinVersion := KotlinVersion,
+    kotlincOptions ++= KotlincOptions,
     inThisBuild(
       List(
         organization := "com.github.tmtsoftware.sequencer-scripts",
