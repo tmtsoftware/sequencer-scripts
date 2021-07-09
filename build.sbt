@@ -5,7 +5,7 @@ lazy val `sequencer-scripts` = project
   .aggregate(`ignore`)
   .settings(
     kotlinVersion := "1.5.20",
-    kotlincOptions ++= Seq("-Xuse-experimental=kotlin.time.ExperimentalTime", "-jvm-target", "1.8"),
+    kotlincOptions ++= Seq("-Xopt-in=kotlin.time.ExperimentalTime", "-jvm-target", "1.8"),
     inThisBuild(
       List(
         organization := "com.github.tmtsoftware.sequencer-scripts",
