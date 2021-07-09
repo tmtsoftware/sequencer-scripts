@@ -24,9 +24,16 @@ Script writers should follow steps mentioned below to add/update scripts
     1. One can fork it to their personal repository and keep working on that fork
     1. Or fork it under your own organization
 
-1. Add new scripts into`scripts` directory under specific `subsystem`.  If your subsystem doesn't exist, create a directory with the name of your subsystem in the `scripts` directory, e.g. `scripts/wfos`.  Also add an observing mode mapping configuration file to provide a mapping from observing modes to scripts in your new directory named your subsystem with the `.conf` extension, e.g. `scripts/wfos/wfos.conf`.  Then, include the new configuration file in the `scripts/application.conf`, for example, if you have newly created `scripts/wfos/wfos.conf`, then add line `include "wfos/wfos.conf"` in `scripts/application.conf` file
+1. Add new scripts into`scripts` directory under specific `subsystem`. If 
+   your subsystem doesn't exist, create a directory with the name of your subsystem in the `scripts` directory, 
+   e.g. `scripts/wfos`. Also add an observing mode mapping configuration file to provide a mapping from 
+   observing modes to scripts in your new directory named your subsystem with the `.conf` extension, 
+   e.g. `scripts/wfos/wfos.conf`. Then, include the new configuration file in the `scripts/application.conf`, 
+   for example, if you have newly created `scripts/wfos/wfos.conf`, 
+   then add line `include "wfos/wfos.conf"` in `scripts/application.conf` file
 
-1. Add an entry for each observing mode into the subsystem-specific observing mode mapping configuration.  It should include a `scriptClass` property pointing to script file where script logic resides, for example,
+1. Add an entry for each observing mode into the subsystem-specific observing mode mapping configuration. It 
+   should include a `scriptClass` property pointing to script file where script logic resides, for example,
 
     ```hocon
       scripts {
@@ -40,7 +47,8 @@ Script writers should follow steps mentioned below to add/update scripts
 
     Note: the same script class can be used for multiple observing modes.
 
-1. Once all the changes are completed in a forked repo, then you can submit a pull request to upstream which is `tmtsoftware/sequencer-scripts` repo in this case
+1. Once all the changes are completed in a forked repo, then you can submit 
+   a pull request to upstream which is `tmtsoftware/sequencer-scripts` repo in this case
 
 1. Admins of `sequencer-scripts` repo will then review changes and merge it to `master`
 
@@ -52,7 +60,7 @@ The [CSW](https://github.com/tmtsoftware/csw) services need to be running before
 This is done by starting the `csw-services.sh` script, you can get the script as follows:
 
 1. Download compatible `csw-apps` zip from https://github.com/tmtsoftware/csw/releases.
-You can refer [version compatibility section](#-version-compaibilty).
+You can refer [version compatibility section](#version-compatibility).
 
 1. Unzip the downloaded zip.
 
