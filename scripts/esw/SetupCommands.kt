@@ -34,10 +34,10 @@ object SetupCommands : CommandServiceDsl {
         val longArrayParam = longArrayKey("LongArrayKey1").set(arrayData(arrayOf(5, 6)))
 
         val eqCoord = JEqCoord.make("12:13:14.15", "-30:31:32.3")
-        val solarSystemCoord = Coords.SolarSystemCoord(Coords.Tag("BASE"), JCoords.Venus())
-        val minorPlanetCoord = Coords.MinorPlanetCoord(Coords.Tag("GUIDER1"), 2000.0, Angle(9), Angle(2), Angle(100), 1.4, 0.234, Angle(220))
-        val cometCoord = Coords.CometCoord(Coords.Tag("BASE"), 2000.0, Angle(90), Angle(2), Angle(100), 1.4, 0.234)
-        val altAzCoord = Coords.AltAzCoord(Coords.Tag("BASE"), Angle(301), JAngle.degree(42.5))
+        val solarSystemCoord = Coords.SolarSystemCoord(Coords.Tag("GUIDER1"), JCoords.Venus())
+        val minorPlanetCoord = Coords.MinorPlanetCoord(Coords.Tag("GUIDER2"), 2000.0, JAngle.degree(25.0), JAngle.degree(90.0), JAngle.degree(80.88), 1.4, 0.234,  JAngle.degree(120.9))
+        val cometCoord = Coords.CometCoord(Coords.Tag("GUIDER3"), 2000.0, JAngle.degree(90.0), JAngle.degree(2.0), JAngle.degree(100.12341), 1.4, 0.234)
+        val altAzCoord = Coords.AltAzCoord(Coords.Tag("GUIDER4"), JAngle.degree(180.0), JAngle.degree(42.5))
         val coordKeyParam = coordKey("CoordKey1").set(eqCoord, solarSystemCoord, minorPlanetCoord, cometCoord, altAzCoord)
 
         return Observe(source.toString(), "iris-command3", obsId)
