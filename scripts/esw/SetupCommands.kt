@@ -33,9 +33,9 @@ object SetupCommands : CommandServiceDsl {
         val shortArrayParam = shortArrayKey("ShortArrayKey1").set(arrayData(arrayOf(3, 4)))
         val longArrayParam = longArrayKey("LongArrayKey1").set(arrayData(arrayOf(5, 6)))
 
-        val eqCoord = JEqCoord.make("12:13:14.15", "-30:31:32.3")
+        val eqCoord = JEqCoord.make(JAngle.degree(25.0), JAngle.degree(-50.65))
         val solarSystemCoord = Coords.SolarSystemCoord(Coords.Tag("GUIDER1"), JCoords.Venus())
-        val minorPlanetCoord = Coords.MinorPlanetCoord(Coords.Tag("GUIDER2"), 2000.0, JAngle.degree(25.0), JAngle.degree(90.0), JAngle.degree(80.88), 1.4, 0.234,  JAngle.degree(120.9))
+        val minorPlanetCoord = Coords.MinorPlanetCoord(Coords.Tag("GUIDER2"), 2000.0, JAngle.degree(25.0), JAngle.degree(90.0), JAngle.degree(80.88), 1.4, 0.234, JAngle.degree(120.9))
         val cometCoord = Coords.CometCoord(Coords.Tag("GUIDER3"), 2000.0, JAngle.degree(90.0), JAngle.degree(2.0), JAngle.degree(100.12341), 1.4, 0.234)
         val altAzCoord = Coords.AltAzCoord(Coords.Tag("GUIDER4"), JAngle.degree(180.0), JAngle.degree(42.5))
         val coordKeyParam = coordKey("CoordKey1").set(eqCoord, solarSystemCoord, minorPlanetCoord, cometCoord, altAzCoord)
