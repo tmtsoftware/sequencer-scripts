@@ -56,19 +56,14 @@ Script writers should follow steps mentioned below to add/update scripts
 
 ### Prerequisite
 
-The [CSW](https://github.com/tmtsoftware/csw) services need to be running before starting the sequencer scripts.
-This is done by starting the `csw-services.sh` script, you can get the script as follows:
+The [CSW](https://github.com/tmtsoftware/csw) services need to be running before starting the components.
+This is done by starting the `csw-services`
+If you are not building csw from the sources, you can run `csw-services` as follows:
 
-1. Download compatible `csw-apps` zip from https://github.com/tmtsoftware/csw/releases.
-You can refer [version compatibility section](#version-compatibility).
-
-1. Unzip the downloaded zip.
-
-1. Go to the bin directory where you will find `csw-services.sh` script.
-
-1. Run `./csw_services.sh --help` to get more information.
-
-1. Run `./csw_services.sh start` to start all the csw services, for example, _Location, Config, Alarm, AAS service_ etc
+- Install `coursier` using steps described [here](https://tmtsoftware.github.io/csw/apps/csinstallation.html) and add TMT channel.
+- Run `cs install csw-services:<CSW version | SHA>`. This will create an executable file named `csw-services` in the default installation directory.
+- Run `csw-services --help` to get more information.
+- Run `csw-services start` to start all the csw services, for example, Location, Config, Alarm, AAS service etc
 
 ### Running Sequencer App with script
 
