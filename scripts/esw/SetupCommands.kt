@@ -61,12 +61,11 @@ object SetupCommands : CommandServiceDsl {
         val intMatrixKeyParam = intMatrixKey("IntMatrix1").set(matrixData(arrayOf(12, 13), arrayOf(14, 15)))
         val floatMatrixKeyParam = floatMatrixKey("FloatMatrix1").set(matrixData(arrayOf(16.5f, 17.4f), arrayOf(18.2f, 19.0f)))
         val doubleMatrixKeyParam = doubleMatrixKey("DoubleMatrix1").set(matrixData(arrayOf(20.4, 21.1), arrayOf(22.7, 23.8)))
-        val radecParam = raDecKey("RaDecKey1").set(RaDec(7.3, 12.1))
         val choiceParam = choiceKey("ChoiceKey1", choicesOf("A", "B", "C")).set(Choice("A"), Choice("C"))
         val stringParam = stringKey("StringKey1").set("ABC", "PGRSTUV", "abcdefghi")
 
         return Observe(source.toString(), "tcs-command3", obsId)
-                .madd(longMatrixKeyParam, intMatrixKeyParam, floatMatrixKeyParam, doubleMatrixKeyParam, radecParam, choiceParam, stringParam)
+                .madd(longMatrixKeyParam, intMatrixKeyParam, floatMatrixKeyParam, doubleMatrixKeyParam, choiceParam, stringParam)
     }
 
 }
