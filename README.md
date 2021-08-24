@@ -6,8 +6,10 @@ This repo contains subsystem specific sequencer scripts.
 
 | sequencer-scripts | esw        | csw        |
 | ----------------- | ---------- | ---------- |
-| v0.2.0            | v0.2.1     | v3.0.1     |    
-| v0.2.0-RC1        | v0.2.0-RC1 | v3.0.0-RC1 |    
+| v0.3.0-RC1        | v0.3.0-RC1 | v4.0.0-RC1 |
+| v0.3.0-M1         | v0.3.0-M1  | v4.0.0-M1  |
+| v0.2.0            | v0.2.1     | v3.0.1     |
+| v0.2.0-RC1        | v0.2.0-RC1 | v3.0.0-RC1 |
 | v0.2.0-M1         | v0.2.0-M1  | v3.0.0-M1  |
 | v0.1.0            | v0.1.0     | v2.0.0     |
 | v0.1.0-RC3        | v0.1.0-RC3 | v2.0.0-RC3 |
@@ -74,12 +76,13 @@ If you are not building csw from the sources, you can run `csw-services` as foll
     ```bash
         run sequencer -s <Subsystem> -m <Observing_Mode>
     ```
+
     Please note that configuration for IRIS (subsystem) and IRIS_darknight (observing mode) should be there in
     config file.
 
     For example, following command will start IRIS IRIS_darknight script i.e. **_Darknight.kts_** script
     Confiuration for this exist in iris.conf file under iris scripts folder.
-    
+
     ```bash
         run sequencer -s IRIS -m IRIS_darknight
     ```
