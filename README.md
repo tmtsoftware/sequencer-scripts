@@ -6,8 +6,10 @@ This repo contains subsystem specific sequencer scripts.
 
 | sequencer-scripts | esw        | csw        |
 | ----------------- | ---------- | ---------- |
-| v0.2.0            | v0.2.1     | v3.0.1     |    
-| v0.2.0-RC1        | v0.2.0-RC1 | v3.0.0-RC1 |    
+| v0.3.0-RC1        | v0.3.0-RC1 | v4.0.0-RC1 |
+| v0.3.0-M1         | v0.3.0-M1  | v4.0.0-M1  |
+| v0.2.0            | v0.2.1     | v3.0.1     |
+| v0.2.0-RC1        | v0.2.0-RC1 | v3.0.0-RC1 |
 | v0.2.0-M1         | v0.2.0-M1  | v3.0.0-M1  |
 | v0.1.0            | v0.1.0     | v2.0.0     |
 | v0.1.0-RC3        | v0.1.0-RC3 | v2.0.0-RC3 |
@@ -24,9 +26,16 @@ Script writers should follow steps mentioned below to add/update scripts
     1. One can fork it to their personal repository and keep working on that fork
     1. Or fork it under your own organization
 
-1. Add new scripts into`scripts` directory under specific `subsystem`.  If your subsystem doesn't exist, create a directory with the name of your subsystem in the `scripts` directory, e.g. `scripts/wfos`.  Also add an observing mode mapping configuration file to provide a mapping from observing modes to scripts in your new directory named your subsystem with the `.conf` extension, e.g. `scripts/wfos/wfos.conf`.  Then, include the new configuration file in the `scripts/application.conf`, for example, if you have newly created `scripts/wfos/wfos.conf`, then add line `include "wfos/wfos.conf"` in `scripts/application.conf` file
+1. Add new scripts into`scripts` directory under specific `subsystem`. If 
+   your subsystem doesn't exist, create a directory with the name of your subsystem in the `scripts` directory, 
+   e.g. `scripts/wfos`. Also add an observing mode mapping configuration file to provide a mapping from 
+   observing modes to scripts in your new directory named your subsystem with the `.conf` extension, 
+   e.g. `scripts/wfos/wfos.conf`. Then, include the new configuration file in the `scripts/application.conf`, 
+   for example, if you have newly created `scripts/wfos/wfos.conf`, 
+   then add line `include "wfos/wfos.conf"` in `scripts/application.conf` file
 
-1. Add an entry for each observing mode into the subsystem-specific observing mode mapping configuration.  It should include a `scriptClass` property pointing to script file where script logic resides, for example,
+1. Add an entry for each observing mode into the subsystem-specific observing mode mapping configuration. It 
+   should include a `scriptClass` property pointing to script file where script logic resides, for example,
 
     ```hocon
       scripts {
@@ -40,7 +49,8 @@ Script writers should follow steps mentioned below to add/update scripts
 
     Note: the same script class can be used for multiple observing modes.
 
-1. Once all the changes are completed in a forked repo, then you can submit a pull request to upstream which is `tmtsoftware/sequencer-scripts` repo in this case
+1. Once all the changes are completed in a forked repo, then you can submit 
+   a pull request to upstream which is `tmtsoftware/sequencer-scripts` repo in this case
 
 1. Admins of `sequencer-scripts` repo will then review changes and merge it to `master`
 
@@ -48,19 +58,14 @@ Script writers should follow steps mentioned below to add/update scripts
 
 ### Prerequisite
 
-The [CSW](https://github.com/tmtsoftware/csw) services need to be running before starting the sequencer scripts.
-This is done by starting the `csw-services.sh` script, you can get the script as follows:
+The [CSW](https://github.com/tmtsoftware/csw) services need to be running before starting the components.
+This is done by starting the `csw-services`
+If you are not building csw from the sources, you can run `csw-services` as follows:
 
-1. Download compatible `csw-apps` zip from https://github.com/tmtsoftware/csw/releases.
-You can refer [version compatibility section](#-version-compaibilty).
-
-1. Unzip the downloaded zip.
-
-1. Go to the bin directory where you will find `csw-services.sh` script.
-
-1. Run `./csw_services.sh --help` to get more information.
-
-1. Run `./csw_services.sh start` to start all the csw services, for example, _Location, Config, Alarm, AAS service_ etc
+- Install `coursier` using steps described [here](https://tmtsoftware.github.io/csw/apps/csinstallation.html) and add TMT channel.
+- Run `cs install csw-services:<CSW version | SHA>`. This will create an executable file named `csw-services` in the default installation directory.
+- Run `csw-services --help` to get more information.
+- Run `csw-services start` to start all the csw services, for example, Location, Config, Alarm, AAS service etc
 
 ### Running Sequencer App with script
 
@@ -71,12 +76,13 @@ You can refer [version compatibility section](#-version-compaibilty).
     ```bash
         run sequencer -s <Subsystem> -m <Observing_Mode>
     ```
+
     Please note that configuration for IRIS (subsystem) and IRIS_darknight (observing mode) should be there in
     config file.
 
     For example, following command will start IRIS IRIS_darknight script i.e. **_Darknight.kts_** script
     Confiuration for this exist in iris.conf file under iris scripts folder.
-    
+
     ```bash
         run sequencer -s IRIS -m IRIS_darknight
     ```

@@ -5,12 +5,11 @@ import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.ESW
 import esw.ocs.dsl.highlevel.models.LGSF
 import esw.ocs.dsl.highlevel.models.TCS
-import kotlin.time.milliseconds
-import kotlin.time.seconds
+import kotlin.time.Duration
 
 script {
     println("********** Loaded iris darknight new script *********")
-    val defaultTimeout = 5.seconds
+    val defaultTimeout = Duration.seconds(5)
     val lgsfSequencer = Sequencer(LGSF, ObsMode("darknight"), defaultTimeout)
     val testAssembly = Assembly(ESW, "test", defaultTimeout)
 
@@ -28,14 +27,14 @@ script {
 
         // ESW-88, ESW-145, ESW-195
         val tcsSequencer = Sequencer(TCS, ObsMode("darknight"), defaultTimeout)
-        tcsSequencer.submitAndWait(sequence, 10.milliseconds)
+        tcsSequencer.submitAndWait(sequence, Duration.milliseconds(10))
     }
 
     onSetup("command-lgsf") {
         // NOT update command response to avoid sequencer to finish immediately
         // so that other Add, Append command gets time
         val setupCommand = Setup("LGSF.test", "command-lgsf")
-        lgsfSequencer.submitAndWait(sequenceOf(setupCommand), 10.milliseconds)
+        lgsfSequencer.submitAndWait(sequenceOf(setupCommand), Duration.milliseconds(10))
     }
 
     onDiagnosticMode { startTime, hint ->
