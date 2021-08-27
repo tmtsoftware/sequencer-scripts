@@ -1,5 +1,5 @@
 val KotlincOptions = Seq("-Xopt-in=kotlin.time.ExperimentalTime", "-jvm-target", "1.8")
-val KotlinVersion  = "1.5.10"
+val KotlinVersion  = "1.5.20"
 
 lazy val `sequencer-scripts` = project
   .in(file("."))
@@ -11,7 +11,7 @@ lazy val `sequencer-scripts` = project
     inThisBuild(
       List(
         organization := "com.github.tmtsoftware.sequencer-scripts",
-        scalaVersion := "2.13.5",
+        scalaVersion := "2.13.6",
         version := "0.1.0-SNAPSHOT"
       )
     ),
@@ -20,7 +20,7 @@ lazy val `sequencer-scripts` = project
     Test / unmanagedSourceDirectories += (Test / baseDirectory)(_ / "tests").value,
     Compile / unmanagedResourceDirectories += (Compile / baseDirectory)(_ / "scripts").value,
     Compile / unmanagedResources / includeFilter := "*.conf",
-    reStart / mainClass := Some("esw.ocs.app.SequencerApp"),
+    Compile / mainClass := Some("esw.ocs.app.SequencerApp"),
     name := "sequencer-scripts",
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
