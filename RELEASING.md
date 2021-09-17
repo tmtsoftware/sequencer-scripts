@@ -15,4 +15,9 @@
 **Note:** `PROD=true` environment variable needs to be set before running `release.sh`
 
 **Note:** For *pre-release* tag using `releash.sh $VERSION$` as above plugin doesn't support our pre-release format.
+
+
+# After Final Release
+- Upgrade the `esw-ocs-app` version in [here](https://github.com/tmtsoftware/osw-apps/blob/master/apps.json)
+
     

@@ -6,6 +6,7 @@ This repo contains subsystem specific sequencer scripts.
 
 | sequencer-scripts | esw        | csw        |
 | ----------------- | ---------- | ---------- |
+| v0.3.0-RC2        | v0.3.0-RC2 | v4.0.0-RC2 |
 | v0.3.0-RC1        | v0.3.0-RC1 | v4.0.0-RC1 |
 | v0.3.0-M1         | v0.3.0-M1  | v4.0.0-M1  |
 | v0.2.0            | v0.2.1     | v3.0.1     |
@@ -63,7 +64,7 @@ This is done by starting the `csw-services`
 If you are not building csw from the sources, you can run `csw-services` as follows:
 
 - Install `coursier` using steps described [here](https://tmtsoftware.github.io/csw/apps/csinstallation.html) and add TMT channel.
-- Run `cs install csw-services:<CSW version | SHA>`. This will create an executable file named `csw-services` in the default installation directory.
+- Run `cs install csw-services`. This will create an executable file named `csw-services` in the default installation directory.
 - Run `csw-services --help` to get more information.
 - Run `csw-services start` to start all the csw services, for example, Location, Config, Alarm, AAS service etc
 
