@@ -11,9 +11,13 @@
     - `#major <commit message>`  : for upgrading major version.
     - `#minor <commit message>`  : for upgrading minor version. 
     - `#patch <commit message>`  : for upgrading patch version. 
-9. Applicable for final release only - Upgrade the `esw-ocs-app` version in [here](https://github.com/tmtsoftware/osw-apps/blob/master/apps.json)
 
 **Note:** `PROD=true` environment variable needs to be set before running `release.sh`
 
 **Note:** For *pre-release* tag using `releash.sh $VERSION$` as above plugin doesn't support our pre-release format.
+
+
+# After Final Release
+- Upgrade the `esw-ocs-app` version in [here](https://github.com/tmtsoftware/osw-apps/blob/master/apps.json)
+
     

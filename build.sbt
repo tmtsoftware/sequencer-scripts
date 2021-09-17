@@ -1,4 +1,3 @@
-
 lazy val `sequencer-scripts` = project
   .in(file("."))
   .enablePlugins(KotlinPlugin)
@@ -10,7 +9,7 @@ lazy val `sequencer-scripts` = project
       List(
         organization := "com.github.tmtsoftware.sequencer-scripts",
         scalaVersion := "2.13.6",
-        version := "0.3.0-RC1"
+        version := "0.3.0-RC2"
       )
     ),
     Compile / unmanagedSourceDirectories += (Compile / baseDirectory)(_ / "scripts").value,
