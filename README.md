@@ -63,7 +63,7 @@ This is done by starting the `csw-services`
 If you are not building csw from the sources, you can run `csw-services` as follows:
 
 - Install `coursier` using steps described [here](https://tmtsoftware.github.io/csw/apps/csinstallation.html) and add TMT channel.
-- Run `cs install csw-services:<CSW version | SHA>`. This will create an executable file named `csw-services` in the default installation directory.
+- Run `cs install csw-services`. This will create an executable file named `csw-services` in the default installation directory.
 - Run `csw-services --help` to get more information.
 - Run `csw-services start` to start all the csw services, for example, Location, Config, Alarm, AAS service etc
 
