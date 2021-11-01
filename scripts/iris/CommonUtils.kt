@@ -21,8 +21,7 @@ import kotlin.time.Duration
 suspend fun <T> CommandHandlerScope.setupAssembly(assembly: RichComponent, commandName: String, key: Key<T>, assemblyKey: Key<T>, params: Params) {
     val assemblyParam = params.get(key)
     if (assemblyParam.isDefined) {
-        assemblyKey.set(assemblyParam.get().first)
-        val command = Setup(assembly.prefix.toString(), commandName).add(assemblyParam.get())
+        val command = Setup(assembly.prefix.toString(), commandName).add(assemblyKey.set(assemblyParam.get().first))
         val initialRes = assembly.submit(command)
 
         loop(Duration.milliseconds(100)) {
@@ -51,9 +50,9 @@ suspend fun CommandHandlerScope.startExposure(assembly: RichComponent, obsId: Ob
 }
 
 suspend fun CommandHandlerScope.setupAdcAssembly(adcAssembly: RichComponent, params: Params) {
-    val followParam = params.get(scienceAdcFollowKey)
-    if (followParam.isDefined) {
-        val angle = followParam.get().first
+    val followParam = params(scienceAdcFollowKey).head()
+    if (followParam) {
+        val angle = params(scienceAdcTargetKey).head()
         val retractParam = retractSelectKey.set(Choice("IN"))
         val retractCommand = Setup(adcAssembly.prefix.toString(), "RETRACT_SELECT").add(retractParam)
         adcAssembly.submitAndWait(retractCommand)
