@@ -16,6 +16,8 @@ script {
     val imagerDetector = Assembly(IRIS, "imager.detector")
     val ifsDetector = Assembly(IRIS, "ifs.detector")
 
+    ifsDetector.submitAndWait(Setup(this.prefix, "INIT"))
+    imagerDetector.submitAndWait(Setup(this.prefix, "INIT"))
 
     onSetup("setupObservation") { command ->
         val params = command.params
@@ -49,5 +51,10 @@ script {
                 { startExposure(imagerDetector, obsId) },
                 { startExposure(ifsDetector, obsId) }
         )
+    }
+
+    onShutdown {
+        ifsDetector.submitAndWait(Setup(this.prefix, "SHUTDOWN"))
+        imagerDetector.submitAndWait(Setup(this.prefix, "SHUTDOWN"))
     }
 }

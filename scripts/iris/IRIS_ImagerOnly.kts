@@ -13,6 +13,7 @@ script {
     val adcAssembly = Assembly(IRIS, "imager.adc")
     val imagerDetector = Assembly(IRIS, "imager.detector")
 
+    imagerDetector.submitAndWait(Setup(this.prefix, "INIT"))
 
     onSetup("setupObservation") { command ->
         val params = command.params
@@ -33,5 +34,9 @@ script {
 
         loadConfiguration(imagerDetector, obsId, directory, ExposureId(imagerExposureId), imagerIntegrationTime, imagerNumRamps)
         startExposure(imagerDetector, obsId)
+    }
+
+    onShutdown {
+        imagerDetector.submitAndWait(Setup(this.prefix, "SHUTDOWN"))
     }
 }

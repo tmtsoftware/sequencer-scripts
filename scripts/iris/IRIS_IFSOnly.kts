@@ -15,6 +15,7 @@ script {
     val adcAssembly = Assembly(IRIS, "imager.adc")
     val ifsDetector = Assembly(IRIS, "ifs.detector")
 
+    ifsDetector.submitAndWait(Setup(this.prefix, "INIT"))
 
     onSetup("setupObservation") { command ->
         val params = command.params
@@ -37,5 +38,9 @@ script {
 
         loadConfiguration(ifsDetector, obsId, directory, ExposureId(ifsExposureId), ifsIntegrationTime, ifsNumRamps)
         startExposure(ifsDetector, obsId)
+    }
+
+    onShutdown {
+        ifsDetector.submitAndWait(Setup(this.prefix, "SHUTDOWN"))
     }
 }
