@@ -53,10 +53,6 @@ suspend fun CommandHandlerScope.setupAdcAssembly(adcAssembly: RichComponent, par
     val followParam = params(scienceAdcFollowKey).head()
     if (followParam) {
         val angle = params(scienceAdcTargetKey).head()
-        val retractParam = retractSelectKey.set(Choice("IN"))
-        val retractCommand = Setup(adcAssembly.prefix.toString(), "RETRACT_SELECT").add(retractParam)
-        adcAssembly.submitAndWait(retractCommand)
-
         val prismFollowParam = targetAngleKey.set(angle)
         val followCommand = Setup(adcAssembly.prefix.toString(), "PRISM_FOLLOW").add(prismFollowParam)
         adcAssembly.submitAndWait(followCommand)
@@ -72,4 +68,10 @@ suspend fun CommandHandlerScope.setupAdcAssembly(adcAssembly: RichComponent, par
             onTarget
         }
     }
+}
+
+suspend fun CommandHandlerScope.retractAdcAssemblyIN(adcAssembly: RichComponent) {
+    val retractParam = retractSelectKey.set(Choice("IN"))
+    val retractCommand = Setup(adcAssembly.prefix.toString(), "RETRACT_SELECT").add(retractParam)
+    adcAssembly.submitAndWait(retractCommand)
 }
