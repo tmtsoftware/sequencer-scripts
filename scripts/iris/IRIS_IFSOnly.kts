@@ -14,8 +14,18 @@ script {
     val scaleAssembly = Assembly(IRIS, "ifs.scale")
     val adcAssembly = Assembly(IRIS, "imager.adc")
     val ifsDetector = Assembly(IRIS, "ifs.detector")
+    val imagerDetector = Assembly(IRIS, "imager.detector")
 
     ifsDetector.submitAndWait(Setup(this.prefix, "INIT"))
+
+    onSetup("setupAcquisition") { command ->
+        val params = command.params
+
+        par(
+                { setupAssembly(imagerAssembly, "SELECT", filterKey, wheel1Key, params) },
+                { setupAdcAssembly(adcAssembly, params) }
+        )
+    }
 
     onSetup("setupObservation") { command ->
         val params = command.params
@@ -26,6 +36,18 @@ script {
                 { setupAssembly(gratingAssembly, "GRATING_SELECT", spectralResolutionKey, spectralResolutionKey, params) },
                 { setupAdcAssembly(adcAssembly, params) }
         )
+    }
+
+    onObserve("acquisitionExposure") { command ->
+        val directory = command(directoryKey).head()
+        val obsId = command.obsId?.let { id -> ObsId(id) }
+
+        val imagerExposureId = command(imagerExposureIdKey).head()
+        val imagerIntegrationTime = command(imagerIntegrationTimeKey).head()
+        val imagerNumRamps = command(imagerNumRampsKey).head()
+
+        loadConfiguration(imagerDetector, obsId, directory, ExposureId(imagerExposureId), imagerIntegrationTime, imagerNumRamps)
+        startExposure(imagerDetector, obsId)
     }
 
     onObserve("singleExposure") { command ->
@@ -42,5 +64,6 @@ script {
 
     onShutdown {
         ifsDetector.submitAndWait(Setup(this.prefix, "SHUTDOWN"))
+        imagerDetector.submitAndWait(Setup(this.prefix, "SHUTDOWN"))
     }
 }
