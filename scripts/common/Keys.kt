@@ -28,4 +28,10 @@ val imagerNumRampsKey = intKey("imagerNumRamps")
 val ifsExposureIdKey = stringKey("ifsExposureId")
 val ifsIntegrationTimeKey = intKey("ifsIntegrationTime")
 val ifsNumRampsKey = intKey("ifsNumRamps")
-val imageExposureTypeKey = stringKey("imageExposureType")
+val imagerExposureTypeKey = stringKey("imagerExposureType")
+val ifsExposureTypeKey = stringKey("ifsExposureType")
+
+enum class DET {
+    IMG,
+    IFS
+}
