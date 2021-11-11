@@ -1,5 +1,7 @@
 package iris
 
+import common.*
+import csw.params.commands.SequenceCommand
 import csw.params.core.generics.Key
 import csw.params.core.models.Choice
 import csw.params.core.models.ExposureId
@@ -28,7 +30,7 @@ suspend fun <T> CommandHandlerScope.setupAssembly(assembly: RichComponent, comma
             val query = assembly.query(initialRes.runId())
             stopWhen(!query.isStarted)
         }
-    }
+    } else throw Error("Param of $key not found for ${assembly.prefix}")
 }
 
 suspend fun CommandHandlerScope.loadConfiguration(assembly: RichComponent, obsId: ObsId?, directory: String, exposureId: ExposureId, rampIntegrationTime: Int, ramps: Int) {
@@ -67,7 +69,7 @@ suspend fun CommandHandlerScope.setupAdcAssembly(adcAssembly: RichComponent, par
             }
             onTarget
         }
-    }
+    } else throw Error("Param of $scienceAdcFollowKey not found for ${adcAssembly.prefix}")
 }
 
 suspend fun CommandHandlerScope.retractAdcAssemblyIN(adcAssembly: RichComponent) {

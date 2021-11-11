@@ -1,5 +1,6 @@
 package iris
 
+import common.*
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.ExposureId
 import esw.ocs.dsl.highlevel.models.IRIS
@@ -42,7 +43,7 @@ script {
 
     onObserve("acquisitionExposure") { command ->
         val directory = command(directoryKey).head()
-        val obsId = command.obsId?.let { id -> ObsId(id) }
+        val obsId = getObsId(command)
 
         val imagerExposureId = command(imagerExposureIdKey).head()
         val imagerIntegrationTime = command(imagerIntegrationTimeKey).head()
@@ -54,7 +55,7 @@ script {
 
     onObserve("singleExposure") { command ->
         val directory = command(directoryKey).head()
-        val obsId = command.obsId?.let { id -> ObsId(id) }
+        val obsId = getObsId(command)
 
         val imagerExposureId = command(imagerExposureIdKey).head()
         val imagerIntegrationTime = command(imagerIntegrationTimeKey).head()

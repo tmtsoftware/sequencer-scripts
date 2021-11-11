@@ -1,4 +1,4 @@
-package iris
+package common
 
 import csw.params.javadsl.JUnits
 import esw.ocs.dsl.params.*
@@ -28,4 +28,4 @@ val imagerNumRampsKey = intKey("imagerNumRamps")
 val ifsExposureIdKey = stringKey("ifsExposureId")
 val ifsIntegrationTimeKey = intKey("ifsIntegrationTime")
 val ifsNumRampsKey = intKey("ifsNumRamps")
-
+val imageExposureTypeKey = stringKey("imageExposureType")
