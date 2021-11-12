@@ -18,12 +18,16 @@ script {
     val ifsDetector = Assembly(IRIS, "ifs.detector")
     val imagerDetector = Assembly(IRIS, "imager.detector")
 
-    ifsDetector.submitAndWait(Setup(this.prefix, "INIT"))
+    onSetup("observationStart") {
+        ifsDetector.submitAndWait(Setup(this.prefix, "INIT"))
+        imagerDetector.submitAndWait(Setup(this.prefix, "INIT"))
+        retractAdcAssembly(adcAssembly, "IN")
+    }
 
     onSetup("setupAcquisition") { command ->
         val params = command.params
 
-        retractAdcAssemblyIN(adcAssembly)
+        retractAdcAssembly(adcAssembly, "IN")
         par(
                 { setupAssembly(imagerAssembly, "SELECT", filterKey, wheel1Key, params) },
                 { setupAdcAssembly(adcAssembly, params) }
@@ -65,8 +69,11 @@ script {
         startExposure(ifsDetector, obsId)
     }
 
-    onShutdown {
+    onSetup("observationEnd") { command ->
         ifsDetector.submitAndWait(Setup(this.prefix, "SHUTDOWN"))
         imagerDetector.submitAndWait(Setup(this.prefix, "SHUTDOWN"))
+        adcAssembly.submitAndWait(Setup(this.prefix, "PRISM_STOP"))
+        retractAdcAssembly(adcAssembly, "OUT")
     }
+
 }

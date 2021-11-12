@@ -14,12 +14,15 @@ script {
     val adcAssembly = Assembly(IRIS, "imager.adc")
     val imagerDetector = Assembly(IRIS, "imager.detector")
 
-    imagerDetector.submitAndWait(Setup(this.prefix, "INIT"))
+    onSetup("observationStart") {
+        imagerDetector.submitAndWait(Setup(this.prefix, "INIT"))
+        retractAdcAssembly(adcAssembly, "IN")
+    }
 
     onSetup("setupAcquisition") { command ->
         val params = command.params
 
-        retractAdcAssemblyIN(adcAssembly)
+
         par(
                 { setupAssembly(imagerAssembly, "SELECT", filterKey, wheel1Key, params) },
                 { setupAdcAssembly(adcAssembly, params) }
@@ -57,9 +60,12 @@ script {
 
         loadConfiguration(imagerDetector, obsId, directory, ExposureId(imagerExposureId), imagerIntegrationTime, imagerNumRamps)
         startExposure(imagerDetector, obsId)
+
     }
 
-    onShutdown {
+    onSetup("observationEnd") {
         imagerDetector.submitAndWait(Setup(this.prefix, "SHUTDOWN"))
+        adcAssembly.submitAndWait(Setup(this.prefix, "PRISM_STOP"))
+        retractAdcAssembly(adcAssembly, "OUT")
     }
 }

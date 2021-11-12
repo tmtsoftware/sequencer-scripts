@@ -11,21 +11,20 @@ script {
     // sequence :  Preset CoarseAcquisition FineAcquisition setupObservation Observe setupObservation Observe setupObservation Observe
     loadScripts(commonHandlers(irisSequencer))
 
-    onObserve("CoarseAcquisition") { command ->
+    onObserve("coarseAcquisition") { command ->
         val obsId = getObsId(command)
         publishEvent(guidestarAcqStart(obsId))
 
         observeCounter++
-        val ifsExposureId = observeWithExposureId(command, observeCounter, DET.IFS, ifsExposureTypeKey)
         val imgExposureId = observeWithExposureId(command, observeCounter, DET.IMG, imagerExposureTypeKey)
-
-        submitAndWaitForStart(irisSequencer, command.madd(ifsExposureIdKey.set(ifsExposureId), imagerExposureIdKey.set(imgExposureId)))
+        val observe = Observe(command.source().toString(), "acquisitionExposure", command.obsId).madd(command.paramSet())
+        submitAndWaitForStart(irisSequencer, observe.madd(imagerExposureIdKey.set(imgExposureId)))
 
         publishEvent(guidestarAcqEnd(obsId))
     }
 
 
-    onObserve("Observe") { command ->
+    onObserve("observe") { command ->
         val obsId = getObsId(command)
 
         publishEvent(observeStart(obsId))
@@ -34,7 +33,8 @@ script {
         val ifsExposureId = observeWithExposureId(command, observeCounter, DET.IFS, ifsExposureTypeKey)
         val imgExposureId = observeWithExposureId(command, observeCounter, DET.IMG, imagerExposureTypeKey)
 
-        submitAndWaitForStart(irisSequencer, command.madd(ifsExposureIdKey.set(ifsExposureId), imagerExposureIdKey.set(imgExposureId)))
+        val observe = Observe(command.source().toString(), "singleExposure", command.obsId).madd(command.paramSet())
+        submitAndWaitForStart(irisSequencer, observe.madd(ifsExposureIdKey.set(ifsExposureId), imagerExposureIdKey.set(imgExposureId)))
 
         publishEvent(observeEnd(obsId))
     }

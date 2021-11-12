@@ -72,8 +72,8 @@ suspend fun CommandHandlerScope.setupAdcAssembly(adcAssembly: RichComponent, par
     } else throw Error("Param of $scienceAdcFollowKey not found for ${adcAssembly.prefix}")
 }
 
-suspend fun CommandHandlerScope.retractAdcAssemblyIN(adcAssembly: RichComponent) {
-    val retractParam = retractSelectKey.set(Choice("IN"))
+suspend fun CommandHandlerScope.retractAdcAssembly(adcAssembly: RichComponent, position: String) {
+    val retractParam = retractSelectKey.set(Choice(position))
     val retractCommand = Setup(adcAssembly.prefix.toString(), "RETRACT_SELECT").add(retractParam)
     adcAssembly.submitAndWait(retractCommand)
 }

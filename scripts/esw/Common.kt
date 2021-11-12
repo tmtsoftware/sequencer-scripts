@@ -2,6 +2,7 @@ package esw
 
 import common.DET
 import common.getObsId
+import csw.params.commands.CommandName
 import csw.params.commands.Observe
 import csw.params.commands.SequenceCommand
 import csw.params.core.generics.Key
@@ -16,41 +17,44 @@ import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.highlevel.models.TYPLevel
 import esw.ocs.dsl.isStarted
 import esw.ocs.dsl.params.invoke
+import esw.ocs.dsl.params.params
 import kotlin.time.Duration
 
 fun commonHandlers(sequencer: RichSequencer): ReusableScriptResult {
     return reusableScript {
 
-        onSetup("startObservation") { command ->
+        onSetup("observationStart") { command ->
             val obsId = getObsId(command)
             publishEvent(observationStart(obsId))
+            submitAndWaitForStart(sequencer, command)
         }
 
-        onSetup("Preset") { command ->
+        onSetup("preset") { command ->
             val obsId = getObsId(command)
 
             publishEvent(presetStart(obsId))
+            val setup = Setup(command.source().toString(), "setupAcquisition", command.obsId).madd(command.paramSet())
 
-            submitAndWaitForStart(sequencer, command)
+            submitAndWaitForStart(sequencer, setup)
 
             publishEvent(presetEnd(obsId))
         }
 
-        onObserve("FineAcquisition") {
+        onObserve("fineAcquisition") {
             info("In FineAcquisition handler. Currently NOOP.")
         }
 
         onSetup("setupObservation") { command ->
             val obsId = getObsId(command)
             publishEvent(scitargetAcqStart(obsId))
-
             submitAndWaitForStart(sequencer, command)
 
             publishEvent(scitargetAcqEnd(obsId))
         }
 
-        onSetup("endObservation") { command ->
+        onSetup("observationEnd") { command ->
             val obsId = getObsId(command)
+            submitAndWaitForStart(sequencer, command)
             publishEvent(observationEnd(obsId))
         }
     }
@@ -59,7 +63,7 @@ fun commonHandlers(sequencer: RichSequencer): ReusableScriptResult {
 fun getExposureId(obsId: String?, typLevel: String, observeCounter: Int, det: String): String {
     val exposureNumber = ExposureNumber("%04d".format(observeCounter))
     val typLevelStr = TYPLevel(typLevel + 1)
-    return obsId?.let { it + IRIS + det + typLevelStr + exposureNumber }
+    return obsId?.let { "$it-$IRIS-$det-$typLevelStr-$exposureNumber" }
             ?: StandaloneExposureId(UTCTime.now(), IRIS, det, typLevelStr, exposureNumber).toString()
 
 }
