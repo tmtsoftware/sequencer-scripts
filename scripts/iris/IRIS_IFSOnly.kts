@@ -27,7 +27,6 @@ script {
     onSetup("setupAcquisition") { command ->
         val params = command.params
 
-        retractAdcAssembly(adcAssembly, "IN")
         par(
                 { setupAssembly(imagerAssembly, "SELECT", filterKey, wheel1Key, params) },
                 { setupAdcAssembly(adcAssembly, params) }
