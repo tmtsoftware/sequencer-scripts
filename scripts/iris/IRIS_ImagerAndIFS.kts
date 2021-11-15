@@ -82,10 +82,10 @@ script {
         val errorEvent = SystemEvent(this.prefix, "onError-event")
         publishEvent(errorEvent)
         error(exception.reason, exception.cause)
-        cleanUp(ifsDetector, imagerDetector, adcAssembly)
+        cleanUp(imagerDetector, adcAssembly, ifsDetector)
     }
 
     onSetup("observationEnd") {
-        cleanUp(ifsDetector, imagerDetector, adcAssembly)
+        cleanUp(imagerDetector, adcAssembly, ifsDetector)
     }
 }
