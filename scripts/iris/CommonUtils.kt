@@ -81,3 +81,10 @@ suspend fun HandlerScope.retractAdcAssembly(adcAssembly: RichComponent, position
 suspend fun HandlerScope.sendCommandToAssembly(assembly: RichComponent, commandName: String) {
     assembly.submitAndWait(Setup(this.prefix, commandName))
 }
+
+suspend fun HandlerScope.cleanUp(imagerDetector: RichComponent, adcAssembly: RichComponent, ifsDetector: RichComponent? = null) {
+    ifsDetector?.let { ifsAssembly -> sendCommandToAssembly(ifsAssembly, "SHUTDOWN") }
+    sendCommandToAssembly(imagerDetector, "SHUTDOWN")
+    sendCommandToAssembly(adcAssembly, "PRISM_STOP")
+    retractAdcAssembly(adcAssembly, "OUT")
+}
