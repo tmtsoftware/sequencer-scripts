@@ -1,10 +1,11 @@
 package iris
 
 import common.*
+import esw.ocs.dsl.core.HandlerScope
 import esw.ocs.dsl.core.script
+import esw.ocs.dsl.highlevel.RichComponent
 import esw.ocs.dsl.highlevel.models.ExposureId
 import esw.ocs.dsl.highlevel.models.IRIS
-import esw.ocs.dsl.highlevel.models.ObsId
 import esw.ocs.dsl.par
 import esw.ocs.dsl.params.invoke
 import esw.ocs.dsl.params.params
@@ -19,8 +20,8 @@ script {
 
 
     onSetup("observationStart") {
-        ifsDetector.submitAndWait(Setup(this.prefix, "INIT"))
-        imagerDetector.submitAndWait(Setup(this.prefix, "INIT"))
+        sendCommandToAssembly(ifsDetector, "INIT")
+        sendCommandToAssembly(imagerDetector, "INIT")
         retractAdcAssembly(adcAssembly, "IN")
     }
 
@@ -79,10 +80,21 @@ script {
         )
     }
 
-    onSetup("observationEnd") { command ->
-        ifsDetector.submitAndWait(Setup(this.prefix, "SHUTDOWN"))
-        imagerDetector.submitAndWait(Setup(this.prefix, "SHUTDOWN"))
-        adcAssembly.submitAndWait(Setup(this.prefix, "PRISM_STOP"))
-        retractAdcAssembly(adcAssembly, "OUT")
+    onGlobalError { exception ->
+        val errorEvent = SystemEvent(this.prefix, "onError-event")
+        publishEvent(errorEvent)
+        error(exception.reason, exception.cause)
+        cleanUp(ifsDetector, imagerDetector, adcAssembly)
     }
+
+    onSetup("observationEnd") {
+        cleanUp(ifsDetector, imagerDetector, adcAssembly)
+    }
+}
+
+suspend fun HandlerScope.cleanUp(ifsDetector: RichComponent, imagerDetector: RichComponent, adcAssembly: RichComponent) {
+    sendCommandToAssembly(ifsDetector, "SHUTDOWN")
+    sendCommandToAssembly(imagerDetector, "SHUTDOWN")
+    sendCommandToAssembly(adcAssembly, "PRISM_STOP")
+    retractAdcAssembly(adcAssembly, "OUT")
 }

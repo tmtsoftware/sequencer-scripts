@@ -1,7 +1,6 @@
 package iris
 
 import common.*
-import csw.params.commands.SequenceCommand
 import csw.params.core.generics.Key
 import csw.params.core.models.Choice
 import csw.params.core.models.ExposureId
@@ -11,6 +10,7 @@ import csw.params.events.EventName
 import csw.params.events.SystemEvent
 import csw.prefix.models.Prefix
 import esw.ocs.dsl.core.CommandHandlerScope
+import esw.ocs.dsl.core.HandlerScope
 import esw.ocs.dsl.highlevel.RichComponent
 import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.isStarted
@@ -72,8 +72,12 @@ suspend fun CommandHandlerScope.setupAdcAssembly(adcAssembly: RichComponent, par
     } else throw Error("Param of $scienceAdcFollowKey not found for ${adcAssembly.prefix}")
 }
 
-suspend fun CommandHandlerScope.retractAdcAssembly(adcAssembly: RichComponent, position: String) {
+suspend fun HandlerScope.retractAdcAssembly(adcAssembly: RichComponent, position: String) {
     val retractParam = retractSelectKey.set(Choice(position))
     val retractCommand = Setup(adcAssembly.prefix.toString(), "RETRACT_SELECT").add(retractParam)
     adcAssembly.submitAndWait(retractCommand)
+}
+
+suspend fun HandlerScope.sendCommandToAssembly(assembly: RichComponent, commandName: String) {
+    assembly.submitAndWait(Setup(this.prefix, commandName))
 }

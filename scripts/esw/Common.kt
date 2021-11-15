@@ -2,7 +2,6 @@ package esw
 
 import common.DET
 import common.getObsId
-import csw.params.commands.CommandName
 import csw.params.commands.Observe
 import csw.params.commands.SequenceCommand
 import csw.params.core.generics.Key
@@ -17,11 +16,16 @@ import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.highlevel.models.TYPLevel
 import esw.ocs.dsl.isStarted
 import esw.ocs.dsl.params.invoke
-import esw.ocs.dsl.params.params
 import kotlin.time.Duration
 
 fun commonHandlers(sequencer: RichSequencer): ReusableScriptResult {
     return reusableScript {
+
+        onGlobalError { exception ->
+            val errorEvent = SystemEvent(this.prefix, "onError-event")
+            publishEvent(errorEvent)
+            error(exception.reason, exception.cause)
+        }
 
         onSetup("observationStart") { command ->
             val obsId = getObsId(command)
