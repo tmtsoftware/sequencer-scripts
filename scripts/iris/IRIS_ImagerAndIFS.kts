@@ -27,7 +27,7 @@ script {
         val params = command.params
 
         par(
-                { setupAssembly(imagerAssembly, "SELECT", filterKey, wheel1Key, params) },
+                { setupAssembly(imagerAssembly, "SELECT", irisFilterKey, irisWheel1Key, params) },
                 { setupAdcAssembly(adcAssembly, params) }
         )
     }
@@ -36,7 +36,7 @@ script {
         val params = command.params
 
         par(
-                { setupAssembly(imagerAssembly, "SELECT", filterKey, wheel1Key, params) },
+                { setupAssembly(imagerAssembly, "SELECT", irisFilterKey, irisWheel1Key, params) },
                 { setupAssembly(scaleAssembly, "SELECT", scaleKey, scaleKey, params) },
                 { setupAssembly(gratingAssembly, "GRATING_SELECT", spectralResolutionKey, spectralResolutionKey, params) },
                 { setupAdcAssembly(adcAssembly, params) }

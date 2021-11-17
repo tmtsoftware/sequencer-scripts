@@ -1,6 +1,5 @@
-package iris
+package common
 
-import common.*
 import csw.params.core.generics.Key
 import csw.params.core.models.Choice
 import csw.params.core.models.ExposureId

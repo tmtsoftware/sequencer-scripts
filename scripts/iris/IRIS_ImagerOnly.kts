@@ -22,7 +22,7 @@ script {
         val params = command.params
 
         par(
-                { setupAssembly(imagerAssembly, "SELECT", filterKey, wheel1Key, params) },
+                { setupAssembly(imagerAssembly, "SELECT", irisFilterKey, irisWheel1Key, params) },
                 { setupAdcAssembly(adcAssembly, params) }
         )
     }
@@ -31,7 +31,7 @@ script {
         val params = command.params
 
         par(
-                { setupAssembly(imagerAssembly, "SELECT", filterKey, wheel1Key, params) },
+                { setupAssembly(imagerAssembly, "SELECT", irisFilterKey, irisWheel1Key, params) },
                 { setupAdcAssembly(adcAssembly, params) }
         )
     }
