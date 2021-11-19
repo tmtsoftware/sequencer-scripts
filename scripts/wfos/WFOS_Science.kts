@@ -19,13 +19,13 @@ script {
     redDetector.submitAndWait(Setup(this.prefix, "INIT"))
 
     onSetup("setupAcquisition") { command ->
-        setupAssembly(blueFilterAssembly, "SELECT", wfosBlueFilterKey, wfosWheel1Key, command.params)
+        setupAssembly(blueFilterAssembly, "SELECT", wfosBlueFilterKey, wfosBlueWheel1Key, command.params)
     }
 
     onSetup("setupObservation") { command ->
         par(
-                { setupAssembly(blueFilterAssembly, "SELECT", wfosBlueFilterKey, wfosWheel1Key, command.params) },
-                { setupAssembly(redFilterAssembly, "SELECT", wfosRedFilterKey, wfosWheel1Key, command.params) }
+                { setupAssembly(blueFilterAssembly, "SELECT", wfosBlueFilterKey, wfosBlueWheel1Key, command.params) },
+                { setupAssembly(redFilterAssembly, "SELECT", wfosRedFilterKey, wfosRedFilterKey, command.params) }
         )
     }
 

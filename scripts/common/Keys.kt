@@ -53,10 +53,15 @@ enum class DET {
 }
 
 //************************wfos filter wheel keys************************\\
-val wfosFilterChoices = irisFilterChoices
-val wfosWheel1Key = choiceKey("wheel1", JUnits.NoUnits, wfosFilterChoices)
-val wfosRedFilterKey = choiceKey("redFilter", JUnits.NoUnits, wfosFilterChoices)
-val wfosBlueFilterKey = choiceKey("blueFilter", JUnits.NoUnits, wfosFilterChoices)
+
+
+val blueFilterChoices = choicesOf("u'", "g'", "fused-silica")
+val wfosBlueWheel1Key = choiceKey("wheel1", JUnits.NoUnits, blueFilterChoices)
+val wfosBlueFilterKey = choiceKey("blueFilter", JUnits.NoUnits, blueFilterChoices)
+
+val redFilterChoice = choicesOf("r'", "i'", "z'", "fused-silica")
+val wfosRedWheel1Key = choiceKey("wheel1", JUnits.NoUnits, redFilterChoice)
+val wfosRedFilterKey = choiceKey("redFilter", JUnits.NoUnits, redFilterChoice)
 //*************************************************************\\
 
 //*******************wfos detector keys***********************\\
