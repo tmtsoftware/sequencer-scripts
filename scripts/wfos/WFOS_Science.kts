@@ -25,7 +25,7 @@ script {
     onSetup("setupObservation") { command ->
         par(
                 { setupAssembly(blueFilterAssembly, "SELECT", wfosBlueFilterKey, wfosBlueWheel1Key, command.params) },
-                { setupAssembly(redFilterAssembly, "SELECT", wfosRedFilterKey, wfosRedFilterKey, command.params) }
+                { setupAssembly(redFilterAssembly, "SELECT", wfosRedFilterKey, wfosRedWheel1Key, command.params) }
         )
     }
 
