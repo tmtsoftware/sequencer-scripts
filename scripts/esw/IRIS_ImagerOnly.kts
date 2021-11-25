@@ -1,6 +1,6 @@
 package esw
 
-import common.DET
+import common.IRISDET
 import common.getObsId
 import common.imagerExposureIdKey
 import common.imagerExposureTypeKey
@@ -19,7 +19,7 @@ script {
         publishEvent(guidestarAcqStart(obsId))
 
         observeCounter++
-        val exposureId = observeWithExposureId(command, observeCounter, DET.IMG, imagerExposureTypeKey)
+        val exposureId = observeWithExposureId(command, observeCounter, IRISDET.IMG.name, imagerExposureTypeKey)
         val observe = Observe(command.source().toString(), "acquisitionExposure", command.obsId).madd(command.paramSet())
         submitAndWaitForStart(irisSequencer, observe.madd(imagerExposureIdKey.set(exposureId)))
 
@@ -32,7 +32,7 @@ script {
         publishEvent(observeStart(obsId))
 
         observeCounter++
-        val exposureId = observeWithExposureId(command, observeCounter, DET.IMG, imagerExposureTypeKey)
+        val exposureId = observeWithExposureId(command, observeCounter, IRISDET.IMG.name, imagerExposureTypeKey)
         val observe = Observe(command.source().toString(), "singleExposure", command.obsId).madd(command.paramSet())
         submitAndWaitForStart(irisSequencer, observe.madd(imagerExposureIdKey.set(exposureId)))
 

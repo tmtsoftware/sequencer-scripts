@@ -47,9 +47,14 @@ val imagerExposureTypeKey = stringKey("imagerExposureType")
 val ifsExposureTypeKey = stringKey("ifsExposureType")
 //*************************************************************\\
 
-enum class DET {
+enum class IRISDET {
     IMG,
     IFS
+}
+
+enum class WFOSDET {
+    BLU,
+    RED
 }
 
 //************************wfos filter wheel keys************************\\
@@ -71,4 +76,6 @@ val blueNumRampsKey = intKey("blueNumRamps")
 val redExposureIdKey = stringKey("redExposureId")
 val redIntegrationTimeKey = intKey("redIntegrationTime")
 val redNumRampsKey = intKey("redNumRamps")
+val blueExposureTypeKey = stringKey("blueExposureType")
+val redExposureTypeKey = stringKey("redExposureType")
 //*************************************************************\\

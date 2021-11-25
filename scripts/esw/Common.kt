@@ -1,6 +1,5 @@
 package esw
 
-import common.DET
 import common.getObsId
 import csw.params.commands.Observe
 import csw.params.commands.SequenceCommand
@@ -72,10 +71,10 @@ fun getExposureId(obsId: String?, typLevel: String, observeCounter: Int, det: St
 
 }
 
-fun observeWithExposureId(observe: Observe, observeCounter: Int, det: DET, exposureTypekey: Key<String>): String {
+fun observeWithExposureId(observe: Observe, observeCounter: Int, det: String, exposureTypekey: Key<String>): String {
     val imageExposureType = observe(exposureTypekey).head()
     val obsId = getObsId(observe).toString()
-    return getExposureId(obsId, imageExposureType, observeCounter, det.name)
+    return getExposureId(obsId, imageExposureType, observeCounter, det)
 }
 
 
