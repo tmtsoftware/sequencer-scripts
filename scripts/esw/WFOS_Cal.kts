@@ -1,12 +1,11 @@
 package esw
 
 import common.*
-import esw.ocs.api.models.ObsMode
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.WFOS
 
 script {
-    val wfosSequencer = Sequencer(WFOS, ObsMode("WFOS_Science"))
+    val wfosSequencer = Sequencer(WFOS, this.obsMode)
     var observeCounter = 0
 
     onSetup("observationStart") { command ->
