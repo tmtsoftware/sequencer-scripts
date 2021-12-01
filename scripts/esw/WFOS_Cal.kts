@@ -32,7 +32,7 @@ script {
         publishEvent(observeStart(obsId))
 
         observeCounter++
-        val redExposureId = observeWithExposureId(command, observeCounter, WFOSDET.RED.name, ifsExposureTypeKey)
+        val redExposureId = observeWithExposureId(command, observeCounter, WFOSDET.RED.name, redExposureTypeKey)
         val blueExposureId = observeWithExposureId(command, observeCounter, WFOSDET.BLU.name, blueExposureTypeKey)
 
         val observe = Observe(command.source().toString(), "singleExposure", command.obsId).madd(command.paramSet())
