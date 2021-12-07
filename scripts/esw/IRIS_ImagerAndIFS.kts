@@ -3,9 +3,10 @@ package esw
 import common.*
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.IRIS
+import esw.ocs.dsl.highlevel.models.Prefix
 
 script {
-    val irisSequencer = Sequencer(IRIS, this.obsMode)
+    val irisSequencer = Sequencer(IRIS, obsMode)
     var observeCounter = 0
     // sequence :  Preset CoarseAcquisition FineAcquisition setupObservation Observe setupObservation Observe setupObservation Observe
     loadScripts(commonHandlers(irisSequencer))
