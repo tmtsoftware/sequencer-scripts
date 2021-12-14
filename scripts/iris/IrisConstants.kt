@@ -55,6 +55,33 @@ object IrisConstants {
         }
     }
 
+    object adcAssembly {
+        val componentName = "imager.adc"
+
+        object command {
+            val retractSelectKey: Key<Choice> = choiceKey("position", choicesOf("IN", "OUT"))
+        }
+        object event {
+            val state = "IRIS.imager.adc.state"
+        }
+        object eventParameter {
+            val stateOnTargetKey: Key<Boolean> = booleanKey("onTarget")
+        }
+    }
+
+    object coldstopAssembly {
+        val componentName = "imager.coldstop"
+
+        object command {
+        }
+        object event {
+            val state = "IRIS.imager.coldstop.state"
+        }
+        object eventParameter {
+            val stateOnTargetKey: Key<Boolean> = booleanKey("onTarget")
+        }
+    }
+
     object sciFilterAssembly {
         val componentName = "imager.filter"
 
