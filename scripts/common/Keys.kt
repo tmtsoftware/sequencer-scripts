@@ -4,7 +4,7 @@ import csw.params.javadsl.JUnits
 import esw.ocs.dsl.params.*
 
 //************************iris filter wheel keys************************\\
-val irisFilterChoices = choicesOf("Z", "Y", "J", "H", "K", "Ks", "H+K notch", "CO", "BrGamma", "PaBeta", "H2", "FeII", "HeI", "CaII Trip", "J Cont", "H Cont", "K Cont", "Zn1", "Zn2", "Zn3", "Zn4", "Yn1", "Yn2", "Yn3", "Yn4", "Jn1", "Jn2", "Jn3", "Jn4", "Jn5", "Hn1", "Hn2", "Hn3", "Hn4", "Hn5", "Kn1", "Kn2", "Kn3", "Kn4", "Kn5")
+val irisFilterChoices = choicesOf("Z", "Y", "J", "H", "K", "Ks", "H+K notch", "CO", "BrGamma", "PaBeta", "H2", "FeII", "HeI", "CaII Trip", "J Cont", "H Cont", "K Cont")
 val irisWheel1Key = choiceKey("wheel1", JUnits.NoUnits, irisFilterChoices)
 val irisFilterKey = choiceKey("filter", JUnits.NoUnits, irisFilterChoices)
 //******************************************************************\\
