@@ -53,9 +53,7 @@ suspend fun CommandHandlerScope.startExposure(assembly: RichComponent, obsId: Ob
 suspend fun CommandHandlerScope.setupAdcAssembly(adcAssembly: RichComponent, params: Params) {
     val followParam = params(scienceAdcFollowKey).head()
     if (followParam) {
-        val angle = params(scienceAdcTargetKey).head()
-        val prismFollowParam = targetAngleKey.set(angle)
-        val followCommand = Setup(adcAssembly.prefix.toString(), "PRISM_FOLLOW").add(prismFollowParam)
+        val followCommand = Setup(adcAssembly.prefix.toString(), "PRISM_FOLLOW")
         adcAssembly.submitAndWait(followCommand)
         waitFor {
             var onTarget = false

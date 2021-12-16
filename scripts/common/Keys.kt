@@ -24,7 +24,6 @@ val spectralResolutionKey = choiceKey("spectralResolution", JUnits.NoUnits, spec
 
 //******************iris adc keys******************************\\
 val scienceAdcFollowKey = booleanKey("scienceAdcFollow")
-val scienceAdcTargetKey = doubleKey("scienceAdcTarget")
 val targetAngleKey = doubleKey("targetAngle")
 //*************************************************************\\
 
