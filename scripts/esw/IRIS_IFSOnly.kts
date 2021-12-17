@@ -3,7 +3,6 @@ package esw
 import common.*
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.IRIS
-import esw.ocs.dsl.highlevel.models.Prefix
 
 script {
     val irisSequencer = Sequencer(IRIS, obsMode)
@@ -19,7 +18,7 @@ script {
         observeCounter++
         val exposureId = observeWithExposureId(command, observeCounter, IRISDET.IMG.name, imagerExposureTypeKey)
         val observe = Observe(command.source().toString(), "acquisitionExposure", command.obsId).madd(command.paramSet())
-        submitAndWaitForStart(irisSequencer, observe.madd(imagerExposureIdKey.set(exposureId)))
+        irisSequencer.submitAndWait(sequenceOf(observe.madd(imagerExposureIdKey.set(exposureId))))
 
         publishEvent(guidestarAcqEnd(obsId))
     }
@@ -32,7 +31,7 @@ script {
         observeCounter++
         val exposureId = observeWithExposureId(command, observeCounter, IRISDET.IFS.name, ifsExposureTypeKey)
         val observe = Observe(command.source().toString(), "singleExposure", command.obsId).madd(command.paramSet())
-        submitAndWaitForStart(irisSequencer, observe.madd(ifsExposureIdKey.set(exposureId)))
+        irisSequencer.submitAndWait(sequenceOf(observe.madd(ifsExposureIdKey.set(exposureId))))
 
         publishEvent(observeEnd(obsId))
     }

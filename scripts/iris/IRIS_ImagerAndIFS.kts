@@ -18,8 +18,8 @@ script {
 
 
     onSetup("observationStart") {
-        sendCommandToAssembly(ifsDetector, "INIT")
-        sendCommandToAssembly(imagerDetector, "INIT")
+        sendSetupCommandToAssembly(ifsDetector, "INIT")
+        sendSetupCommandToAssembly(imagerDetector, "INIT")
         retractAdcAssembly(adcAssembly, "IN")
     }
 

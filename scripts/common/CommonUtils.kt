@@ -12,23 +12,16 @@ import esw.ocs.dsl.core.CommandHandlerScope
 import esw.ocs.dsl.core.HandlerScope
 import esw.ocs.dsl.highlevel.RichComponent
 import esw.ocs.dsl.highlevel.models.IRIS
-import esw.ocs.dsl.isStarted
 import esw.ocs.dsl.params.Params
 import esw.ocs.dsl.params.booleanKey
 import esw.ocs.dsl.params.first
 import esw.ocs.dsl.params.invoke
-import kotlin.time.Duration
 
 suspend fun <T> CommandHandlerScope.setupAssembly(assembly: RichComponent, commandName: String, key: Key<T>, assemblyKey: Key<T>, params: Params) {
     val assemblyParam = params.get(key)
     if (assemblyParam.isDefined) {
         val command = Setup(assembly.prefix.toString(), commandName).add(assemblyKey.set(assemblyParam.get().first))
-        val initialRes = assembly.submit(command)
-
-        loop(Duration.milliseconds(100)) {
-            val query = assembly.query(initialRes.runId())
-            stopWhen(!query.isStarted)
-        }
+        assembly.submitAndWait(command)
     } else throw Error("Param of $key not found for ${assembly.prefix}")
 }
 
@@ -43,11 +36,7 @@ suspend fun CommandHandlerScope.loadConfiguration(assembly: RichComponent, obsId
 }
 
 suspend fun CommandHandlerScope.startExposure(assembly: RichComponent, obsId: ObsId?) {
-    val initialRes = assembly.submit(Observe(assembly.prefix.toString(), "START_EXPOSURE", obsId?.toString()))
-    loop(Duration.milliseconds(100)) {
-        val query = assembly.query(initialRes.runId())
-        stopWhen(!query.isStarted)
-    }
+    assembly.submitAndWait(Observe(assembly.prefix.toString(), "START_EXPOSURE", obsId?.toString()))
 }
 
 suspend fun CommandHandlerScope.setupAdcAssembly(adcAssembly: RichComponent, params: Params) {
@@ -75,13 +64,13 @@ suspend fun HandlerScope.retractAdcAssembly(adcAssembly: RichComponent, position
     adcAssembly.submitAndWait(retractCommand)
 }
 
-suspend fun HandlerScope.sendCommandToAssembly(assembly: RichComponent, commandName: String) {
+suspend fun HandlerScope.sendSetupCommandToAssembly(assembly: RichComponent, commandName: String) {
     assembly.submitAndWait(Setup(this.prefix, commandName))
 }
 
 suspend fun HandlerScope.cleanUp(imagerDetector: RichComponent, adcAssembly: RichComponent, ifsDetector: RichComponent? = null) {
-    ifsDetector?.let { ifsAssembly -> sendCommandToAssembly(ifsAssembly, "SHUTDOWN") }
-    sendCommandToAssembly(imagerDetector, "SHUTDOWN")
-    sendCommandToAssembly(adcAssembly, "PRISM_STOP")
+    ifsDetector?.let { ifsAssembly -> sendSetupCommandToAssembly(ifsAssembly, "SHUTDOWN") }
+    sendSetupCommandToAssembly(imagerDetector, "SHUTDOWN")
+    sendSetupCommandToAssembly(adcAssembly, "PRISM_STOP")
     retractAdcAssembly(adcAssembly, "OUT")
 }

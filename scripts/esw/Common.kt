@@ -30,7 +30,7 @@ fun commonHandlers(sequencer: RichSequencer): ReusableScriptResult {
         onSetup("observationStart") { command ->
             val obsId = getObsId(command)
             publishEvent(observationStart(obsId))
-            submitAndWaitForStart(sequencer, command)
+            sequencer.submitAndWait(sequenceOf(command))
         }
 
         onSetup("preset") { command ->
@@ -39,7 +39,7 @@ fun commonHandlers(sequencer: RichSequencer): ReusableScriptResult {
             publishEvent(presetStart(obsId))
             val setup = Setup(command.source().toString(), "setupAcquisition", command.obsId).madd(command.paramSet())
 
-            submitAndWaitForStart(sequencer, setup)
+            sequencer.submitAndWait(sequenceOf(setup))
 
             publishEvent(presetEnd(obsId))
         }
@@ -51,14 +51,14 @@ fun commonHandlers(sequencer: RichSequencer): ReusableScriptResult {
         onSetup("setupObservation") { command ->
             val obsId = getObsId(command)
             publishEvent(scitargetAcqStart(obsId))
-            submitAndWaitForStart(sequencer, command)
+            sequencer.submitAndWait(sequenceOf(command))
 
             publishEvent(scitargetAcqEnd(obsId))
         }
 
         onSetup("observationEnd") { command ->
             val obsId = getObsId(command)
-            submitAndWaitForStart(sequencer, command)
+            sequencer.submitAndWait(sequenceOf(command))
             publishEvent(observationEnd(obsId))
         }
     }
@@ -77,13 +77,3 @@ fun observeWithExposureId(observe: Observe, observeCounter: Int, det: String, ex
     val obsId = getObsId(observe).toString()
     return getExposureId(obsId, imageExposureType, observeCounter, det)
 }
-
-
-suspend fun CommandHandlerScope.submitAndWaitForStart(sequencer: RichSequencer, command: SequenceCommand) {
-    val initialRes = sequencer.submit(sequenceOf(command))
-    loop(Duration.milliseconds(100)) {
-        val query = sequencer.query(initialRes.runId())
-        stopWhen(!query.isStarted)
-    }
-}
-
