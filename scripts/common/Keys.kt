@@ -24,7 +24,6 @@ val spectralResolutionKey = choiceKey("spectralResolution", JUnits.NoUnits, spec
 
 //******************iris adc keys******************************\\
 val scienceAdcFollowKey = booleanKey("scienceAdcFollow")
-val targetAngleKey = doubleKey("targetAngle")
 //*************************************************************\\
 
 //**********************common detector keys***************************\\
@@ -78,3 +77,19 @@ val redNumRampsKey = intKey("redNumRamps")
 val blueExposureTypeKey = stringKey("blueExposureType")
 val redExposureTypeKey = stringKey("redExposureType")
 //*************************************************************\\
+
+//*******************tcs keys***********************\\
+//sequencer keys
+val targetCoordKey = coordKey("targetCoords")
+val baseCoordKey = coordKey("baseCoords")
+
+//Assmebly commands keys
+val baseKey = coordKey("base")
+val currentAltAzCoordKey = altAzCoordKey("current")
+val demandAltAzCoordKey = altAzCoordKey("demand")
+val baseCurrentKey = doubleKey("baseCurrent")
+val capCurrentKey = doubleKey("capCurrent")
+val baseDemandKey = doubleKey("baseDemand")
+val capDemandKey = doubleKey("capDemand")
+//*************************************************************\\
+
