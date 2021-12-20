@@ -82,8 +82,12 @@ val redExposureTypeKey = stringKey("redExposureType")
 //sequencer keys
 val targetCoordKey = coordKey("targetCoords")
 val baseCoordKey = coordKey("baseCoords")
+val pKey = floatKey("p")
+val qKey = floatKey("q")
+val xCoordinateKey = floatKey("Xcoordinate")
+val yCoordinateKey = floatKey("Ycoordinate")
 
-//Assmebly commands keys
+//Assembly commands keys
 val baseKey = coordKey("base")
 val currentAltAzCoordKey = altAzCoordKey("current")
 val demandAltAzCoordKey = altAzCoordKey("demand")
