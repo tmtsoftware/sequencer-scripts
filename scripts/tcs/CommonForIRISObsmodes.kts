@@ -11,13 +11,16 @@ import kotlin.math.abs
 script {
     val pkAssembly = Assembly(TCS, "PointingKernelAssembly")
 
+    val tolerance = actorSystem.settings().config().getString("tcs.position_tolerance").toDouble()
+
     onSetup("preset") { command ->
+        println("command received:" + command)
         val obsId = getObsId(command).toString()
         val incomingBaseParamValue = command.params(baseCoordKey).head()
         val parameterTobeSend = baseKey.set(incomingBaseParamValue)
         val slewToTarget = Setup(prefix, "SlewToTarget", obsId).madd(parameterTobeSend)
         val submitAndWait = pkAssembly.submitAndWait(slewToTarget)
-        println("submitAndWait" + submitAndWait.toString())
+        println("submitAndWait:" + submitAndWait.toString())
 
         var mcsMountPositionWithinError = false
         var encBasePositionWithinError = false
@@ -31,11 +34,13 @@ script {
                     when (event.eventName().name()) {
                         "MountPosition" -> {
 
+
                             println("receicved1: " + event.toString())
                             val error = getMountPositionError(event)
-                            val tolerance = actorSystem.settings().config().getString("tcs.position_tolerance")
-                            println("tollerance from config: " + tolerance)
-                            mcsMountPositionWithinError = error < 0.5
+
+                            mcsMountPositionWithinError = error < (tolerance * tolerance)
+                            println("mcsMountPositionWithinError:" + mcsMountPositionWithinError + ":" + error)
+
                         }
                         "CurrentPosition" -> {
                             println("receicved2: " + event.toString())
@@ -45,9 +50,13 @@ script {
                             val baseDemandValue = event(baseDemandKey).head()
                             val capDemandValue = event(capDemandKey).head()
 
-                            encCapPositionWithinError = abs(capCurrentValue - capDemandValue) < 0.5
-                            encBasePositionWithinError = abs(baseCurrentValue - baseDemandValue) < 0.5
+                            val abs = abs(capCurrentValue - capDemandValue)
+                            encCapPositionWithinError = abs < tolerance
+                            val abs1 = abs(baseCurrentValue - baseDemandValue)
+                            encBasePositionWithinError = abs1 < tolerance
 
+                            println("encCapPositionWithinError:" + encCapPositionWithinError + ":" + abs)
+                            println("encBasePositionWithinError:" + encBasePositionWithinError + ":" + abs1)
                         }
                     }
             }
@@ -80,9 +89,7 @@ script {
                     println("receicved3: " + event.toString())
 
                     val error = getMountPositionError(event)
-                    val tolerance = actorSystem.settings().config().getString("tcs.position_tolerance")
-                    println("tollerance from config: " + tolerance)
-                    withinError = error < 0.5
+                    withinError = error < (tolerance * tolerance)
                 }
             }
         }
