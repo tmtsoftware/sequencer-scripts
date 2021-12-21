@@ -40,7 +40,12 @@ suspend fun CommandHandlerScope.startExposure(assembly: RichComponent, obsId: Ob
 }
 
 suspend fun CommandHandlerScope.setupAdcAssembly(adcAssembly: RichComponent, params: Params) {
+    //if true do PRISM_FOLLOW
+    //if false do nothing
+    //if not present - show error
     val followParam = params(scienceAdcFollowKey).head()
+            ?: throw Error("Param of $scienceAdcFollowKey not found for ${adcAssembly.prefix}")
+
     if (followParam) {
         val followCommand = Setup(adcAssembly.prefix.toString(), "PRISM_FOLLOW")
         adcAssembly.submitAndWait(followCommand)
@@ -55,7 +60,7 @@ suspend fun CommandHandlerScope.setupAdcAssembly(adcAssembly: RichComponent, par
             }
             onTarget
         }
-    } else throw Error("Param of $scienceAdcFollowKey not found for ${adcAssembly.prefix}")
+    }
 }
 
 suspend fun HandlerScope.retractAdcAssembly(adcAssembly: RichComponent, position: String) {
