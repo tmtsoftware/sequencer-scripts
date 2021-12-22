@@ -82,10 +82,10 @@ val redExposureTypeKey = stringKey("redExposureType")
 //sequencer keys
 val targetCoordKey = coordKey("targetCoords")
 val baseCoordKey = coordKey("baseCoords")
-val pKey = floatKey("p")
-val qKey = floatKey("q")
-val xCoordinateKey = floatKey("Xcoordinate")
-val yCoordinateKey = floatKey("Ycoordinate")
+val pKey = doubleKey("p")
+val qKey = doubleKey("q")
+val xCoordinateKey = doubleKey("Xcoordinate")
+val yCoordinateKey = doubleKey("Ycoordinate")
 
 //Assembly commands keys
 val baseKey = coordKey("base")
