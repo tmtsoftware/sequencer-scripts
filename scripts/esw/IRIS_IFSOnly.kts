@@ -3,13 +3,15 @@ package esw
 import common.*
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.IRIS
+import esw.ocs.dsl.highlevel.models.TCS
 
 script {
     val irisSequencer = Sequencer(IRIS, obsMode)
+    val tcsSequencer = Sequencer(TCS, obsMode)
     var observeCounter = 0
     // sequence :  Preset CoarseAcquisition FineAcquisition setupObservation Observe setupObservation Observe setupObservation Observe
 
-    loadScripts(commonHandlers(irisSequencer))
+    loadScripts(commonHandlers(irisSequencer, tcsSequencer))
 
     onObserve("coarseAcquisition") { command ->
         val obsId = getObsId(command)

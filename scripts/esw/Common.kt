@@ -1,24 +1,22 @@
 package esw
 
+import common.baseCoordKey
 import common.getObsId
+import common.targetCoordKey
 import csw.params.commands.Observe
-import csw.params.commands.SequenceCommand
 import csw.params.core.generics.Key
 import csw.params.core.models.StandaloneExposureId
 import csw.time.core.models.UTCTime
-import esw.ocs.dsl.core.CommandHandlerScope
 import esw.ocs.dsl.core.ReusableScriptResult
 import esw.ocs.dsl.core.reusableScript
 import esw.ocs.dsl.highlevel.RichSequencer
 import esw.ocs.dsl.highlevel.models.ExposureNumber
 import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.highlevel.models.TYPLevel
-import esw.ocs.dsl.isStarted
 import esw.ocs.dsl.params.invoke
-import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
+import esw.ocs.dsl.params.params
 
-fun commonHandlers(sequencer: RichSequencer): ReusableScriptResult {
+fun commonHandlers(irisSequencer: RichSequencer, tcsSequencer: RichSequencer): ReusableScriptResult {
     return reusableScript {
 
         onGlobalError { exception ->
@@ -30,16 +28,20 @@ fun commonHandlers(sequencer: RichSequencer): ReusableScriptResult {
         onSetup("observationStart") { command ->
             val obsId = getObsId(command)
             publishEvent(observationStart(obsId))
-            sequencer.submitAndWait(sequenceOf(command))
+            irisSequencer.submitAndWait(sequenceOf(command))
         }
 
         onSetup("preset") { command ->
             val obsId = getObsId(command)
 
             publishEvent(presetStart(obsId))
-            val setup = Setup(command.source().toString(), "setupAcquisition", command.obsId).madd(command.paramSet())
+            val incomingParamValue = command.params(targetCoordKey).head()
+            val parameterTobeSend = baseCoordKey.set(incomingParamValue)
+            val tcsPreset = Setup(command.source().toString(), "preset", command.obsId).madd(parameterTobeSend)
+            val irisSetup = Setup(command.source().toString(), "setupAcquisition", command.obsId).madd(command.paramSet())
 
-            sequencer.submitAndWait(sequenceOf(setup))
+            tcsSequencer.submitAndWait(sequenceOf(tcsPreset))
+            irisSequencer.submitAndWait(sequenceOf(irisSetup))
 
             publishEvent(presetEnd(obsId))
         }
@@ -51,14 +53,16 @@ fun commonHandlers(sequencer: RichSequencer): ReusableScriptResult {
         onSetup("setupObservation") { command ->
             val obsId = getObsId(command)
             publishEvent(scitargetAcqStart(obsId))
-            sequencer.submitAndWait(sequenceOf(command))
+
+            tcsSequencer.submitAndWait(sequenceOf(command))
+            irisSequencer.submitAndWait(sequenceOf(command))
 
             publishEvent(scitargetAcqEnd(obsId))
         }
 
         onSetup("observationEnd") { command ->
             val obsId = getObsId(command)
-            sequencer.submitAndWait(sequenceOf(command))
+            irisSequencer.submitAndWait(sequenceOf(command))
             publishEvent(observationEnd(obsId))
         }
     }

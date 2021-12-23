@@ -2,7 +2,6 @@ import common.currentAltAzCoordKey
 import common.demandAltAzCoordKey
 import csw.params.events.SystemEvent
 import esw.ocs.dsl.params.invoke
-import kotlin.math.sqrt
 
 fun getMountPositionError(event: SystemEvent): Double {
     val current = event(currentAltAzCoordKey).head()
