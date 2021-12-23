@@ -4,7 +4,8 @@ import common.*
 import csw.params.events.SystemEvent
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.TCS
-import esw.ocs.dsl.params.*
+import esw.ocs.dsl.params.invoke
+import esw.ocs.dsl.params.params
 import getMountPositionError
 import kotlin.math.abs
 
@@ -18,7 +19,7 @@ script {
         val incomingBaseParamValue = command.params(baseCoordKey).head()
         val parameterTobeSend = baseKey.set(incomingBaseParamValue)
         val slewToTarget = Setup(prefix, "SlewToTarget", obsId).madd(parameterTobeSend)
-        val submitAndWait = pkAssembly.submitAndWait(slewToTarget)
+        pkAssembly.submitAndWait(slewToTarget)
 
         var mcsMountPositionWithinError = false
         var encBasePositionWithinError = false
@@ -59,9 +60,7 @@ script {
         }
 
         waitFor {
-            //TODO uncomment this once CurrentPosition is getting published by TCS Assembly
-            mcsMountPositionWithinError
-            // && encBasePositionWithinError && encCapPositionWithinError
+            mcsMountPositionWithinError && encBasePositionWithinError && encCapPositionWithinError
         }
         subscription.cancel()
     }
@@ -73,7 +72,7 @@ script {
         val parameterXCoordinate = xCoordinateKey.set(pParamValue)
         val parameterYCoordinate = yCoordinateKey.set(qParamValue)
         val setOffset = Setup(prefix, "SetOffset", obsId).madd(parameterXCoordinate, parameterYCoordinate)
-        val submitAndWait = pkAssembly.submitAndWait(setOffset)
+        pkAssembly.submitAndWait(setOffset)
 
         var withinError = false
 
