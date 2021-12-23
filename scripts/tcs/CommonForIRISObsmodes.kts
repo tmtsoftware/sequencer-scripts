@@ -12,7 +12,8 @@ import kotlin.math.abs
 script {
     val pkAssembly = Assembly(TCS, "PointingKernelAssembly")
 
-    val tolerance = actorSystem.settings().config().getString("tcs.position_tolerance").toDouble()
+    val slewToTargetTolerance = actorSystem.settings().config().getString("tcs.slew_to_target_tolerance").toDouble()
+    val setOffsetTolerance = actorSystem.settings().config().getString("tcs.set_offset_tolerance").toDouble()
 
     onSetup("preset") { command ->
         val obsId = getObsId(command).toString()
@@ -36,7 +37,7 @@ script {
                             if (event.paramSet().size() >= 2) {
                                 val error = getMountPositionError(event)
 
-                                mcsMountPositionWithinError = error < (tolerance * tolerance)
+                                mcsMountPositionWithinError = error < (slewToTargetTolerance * slewToTargetTolerance)
                             }
                         }
                         "CurrentPosition" -> {
@@ -49,9 +50,9 @@ script {
                                 val capDemandValue = event(capDemandKey).head()
 
                                 val capError = abs(capCurrentValue - capDemandValue)
-                                encCapPositionWithinError = capError < tolerance
+                                encCapPositionWithinError = capError < slewToTargetTolerance
                                 val baseError = abs(baseCurrentValue - baseDemandValue)
-                                encBasePositionWithinError = baseError < tolerance
+                                encBasePositionWithinError = baseError < slewToTargetTolerance
 
                             }
                         }
@@ -81,7 +82,7 @@ script {
             when (event) {
                 is SystemEvent -> {
                     val error = getMountPositionError(event)
-                    withinError = error < (tolerance * tolerance)
+                    withinError = error < (setOffsetTolerance * setOffsetTolerance)
                 }
             }
         }
