@@ -72,7 +72,8 @@ script {
         val qParamValue = command.params(qKey).head()
         val parameterXCoordinate = xCoordinateKey.set(pParamValue)
         val parameterYCoordinate = yCoordinateKey.set(qParamValue)
-        val setOffset = Setup(prefix, "SetOffset", obsId).madd(parameterXCoordinate, parameterYCoordinate)
+        val icrsFrame = refFrameKey.set(icrsChoice)
+        val setOffset = Setup(prefix, "SetOffset", obsId).madd(parameterXCoordinate, parameterYCoordinate, icrsFrame)
         pkAssembly.submitAndWait(setOffset)
 
         var withinError = false

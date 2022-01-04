@@ -1,5 +1,6 @@
 package common
 
+import csw.params.core.models.Choice
 import csw.params.javadsl.JUnits
 import esw.ocs.dsl.params.*
 
@@ -82,6 +83,8 @@ val redExposureTypeKey = stringKey("redExposureType")
 //sequencer keys
 val targetCoordKey = coordKey("targetCoords")
 val baseCoordKey = coordKey("baseCoords")
+val icrsChoice = Choice("ICRS")
+val refFrameKey = choiceKey("Refframe", icrsChoice)
 val pKey = doubleKey("p")
 val qKey = doubleKey("q")
 val xCoordinateKey = doubleKey("Xcoordinate")
