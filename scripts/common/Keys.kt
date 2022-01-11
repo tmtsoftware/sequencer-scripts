@@ -25,6 +25,7 @@ val spectralResolutionKey = choiceKey("spectralResolution", JUnits.NoUnits, spec
 
 //******************iris adc keys******************************\\
 val scienceAdcFollowKey = booleanKey("scienceAdcFollow")
+val followingKey = choiceKey("following", JUnits.NoUnits, choicesOf("FOLLOWING", "STOPPED"))
 //*************************************************************\\
 
 //**********************common detector keys***************************\\

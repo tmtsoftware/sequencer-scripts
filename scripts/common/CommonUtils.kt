@@ -54,7 +54,8 @@ suspend fun CommandHandlerScope.setupAdcAssembly(adcAssembly: RichComponent, par
             onEvent(EventKey(Prefix(IRIS, "imager.adc"), EventName("prism_state")).key()) { event ->
                 when (event) {
                     is SystemEvent -> {
-                        event(booleanKey("onTarget")).head()?.let { x -> onTarget = x }
+                        val state = event(followingKey).head()
+                        event(booleanKey("onTarget")).head()?.let { x -> onTarget = state.name() == "FOLLOWING" && x }
                     }
                 }
             }

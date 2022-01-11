@@ -13,6 +13,7 @@ import esw.ocs.dsl.highlevel.RichSequencer
 import esw.ocs.dsl.highlevel.models.ExposureNumber
 import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.highlevel.models.TYPLevel
+import esw.ocs.dsl.par
 import esw.ocs.dsl.params.invoke
 import esw.ocs.dsl.params.params
 
@@ -40,8 +41,10 @@ fun commonHandlers(irisSequencer: RichSequencer, tcsSequencer: RichSequencer): R
             val tcsPreset = Setup(command.source().toString(), "preset", command.obsId).madd(parameterTobeSend)
             val irisSetup = Setup(command.source().toString(), "setupAcquisition", command.obsId).madd(command.paramSet())
 
-            tcsSequencer.submitAndWait(sequenceOf(tcsPreset))
-            irisSequencer.submitAndWait(sequenceOf(irisSetup))
+            par(
+                    { tcsSequencer.submitAndWait(sequenceOf(tcsPreset)) },
+                    { irisSequencer.submitAndWait(sequenceOf(irisSetup)) }
+            )
 
             publishEvent(presetEnd(obsId))
         }
@@ -54,9 +57,10 @@ fun commonHandlers(irisSequencer: RichSequencer, tcsSequencer: RichSequencer): R
             val obsId = getObsId(command)
             publishEvent(scitargetAcqStart(obsId))
 
-            tcsSequencer.submitAndWait(sequenceOf(command))
-            irisSequencer.submitAndWait(sequenceOf(command))
-
+            par(
+                    { tcsSequencer.submitAndWait(sequenceOf(command)) },
+                    { irisSequencer.submitAndWait(sequenceOf(command)) }
+            )
             publishEvent(scitargetAcqEnd(obsId))
         }
 
