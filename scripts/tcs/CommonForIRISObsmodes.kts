@@ -37,7 +37,7 @@ script {
                             if (event.paramSet().size() >= 2) {
                                 val error = getMountPositionError(event)
 
-                                mcsMountPositionWithinError = error < (slewToTargetTolerance * slewToTargetTolerance)
+                                mcsMountPositionWithinError = error < slewToTargetTolerance
                             }
                         }
                         "CurrentPosition" -> {
@@ -83,7 +83,7 @@ script {
             when (event) {
                 is SystemEvent -> {
                     val error = getMountPositionError(event)
-                    withinError = error < (setOffsetTolerance * setOffsetTolerance)
+                    withinError = error < setOffsetTolerance
                 }
             }
         }
