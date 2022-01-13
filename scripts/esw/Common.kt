@@ -41,9 +41,23 @@ fun commonHandlers(irisSequencer: RichSequencer, tcsSequencer: RichSequencer): R
             val tcsPreset = Setup(command.source().toString(), "preset", command.obsId).madd(parameterTobeSend)
             val irisSetup = Setup(command.source().toString(), "setupAcquisition", command.obsId).madd(command.paramSet())
 
+            //We want to do tcs and iris adc movement in parallel, so that adc does not wait until tcs has finished its movement.
+            //However, adc need to know that target has been set by tcs to avoid false positives, hence we wait tcs to send MountPosition
+            //once this happens target should have been updated in adc also, so it can start its movement now.
             par(
                     { tcsSequencer.submitAndWait(sequenceOf(tcsPreset)) },
-                    { irisSequencer.submitAndWait(sequenceOf(irisSetup)) }
+                    {
+                        var tcsMovementStarted = false
+                        val mcsMountPositionKey = EventKey("TCS.MCSAssembly.MountPosition").key()
+                        val subscription = onEvent(mcsMountPositionKey) { _ ->
+                            tcsMovementStarted = true
+                        }
+                        waitFor {
+                            if (tcsMovementStarted) subscription.cancel()
+                            tcsMovementStarted
+                        }
+                        irisSequencer.submitAndWait(sequenceOf(irisSetup))
+                    }
             )
 
             publishEvent(presetEnd(obsId))
