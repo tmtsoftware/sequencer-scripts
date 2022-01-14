@@ -1,11 +1,15 @@
 package esw
 
 import common.baseCoordKey
+import common.followingKey
 import common.getObsId
 import common.targetCoordKey
 import csw.params.commands.Observe
 import csw.params.core.generics.Key
 import csw.params.core.models.StandaloneExposureId
+import csw.params.events.EventName
+import csw.params.events.SystemEvent
+import csw.prefix.models.Prefix
 import csw.time.core.models.UTCTime
 import esw.ocs.dsl.core.ReusableScriptResult
 import esw.ocs.dsl.core.reusableScript
@@ -14,6 +18,7 @@ import esw.ocs.dsl.highlevel.models.ExposureNumber
 import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.highlevel.models.TYPLevel
 import esw.ocs.dsl.par
+import esw.ocs.dsl.params.booleanKey
 import esw.ocs.dsl.params.invoke
 import esw.ocs.dsl.params.params
 
@@ -46,20 +51,20 @@ fun commonHandlers(irisSequencer: RichSequencer, tcsSequencer: RichSequencer): R
             //once this happens target should have been updated in adc also, so it can start its movement now.
             par(
                     { tcsSequencer.submitAndWait(sequenceOf(tcsPreset)) },
-                    {
-                        var tcsMovementStarted = false
-                        val mcsMountPositionKey = EventKey("TCS.MCSAssembly.MountPosition").key()
-                        val subscription = onEvent(mcsMountPositionKey) { _ ->
-                            tcsMovementStarted = true
-                        }
-                        waitFor {
-                            if (tcsMovementStarted) subscription.cancel()
-                            tcsMovementStarted
-                        }
-                        irisSequencer.submitAndWait(sequenceOf(irisSetup))
-                    }
+                    { irisSequencer.submitAndWait(sequenceOf(irisSetup)) }
             )
-
+            waitFor {
+                var onTarget = false
+                onEvent(csw.params.events.EventKey(Prefix(IRIS, "imager.adc"), EventName("prism_state")).key()) { event ->
+                    when (event) {
+                        is SystemEvent -> {
+                            val state = event(followingKey).head()
+                            event(booleanKey("onTarget")).head()?.let { x -> onTarget = state.name() == "FOLLOWING" && x }
+                        }
+                    }
+                }
+                onTarget
+            }
             publishEvent(presetEnd(obsId))
         }
 

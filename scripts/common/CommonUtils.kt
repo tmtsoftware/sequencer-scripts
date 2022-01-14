@@ -4,16 +4,10 @@ import csw.params.core.generics.Key
 import csw.params.core.models.Choice
 import csw.params.core.models.ExposureId
 import csw.params.core.models.ObsId
-import csw.params.events.EventKey
-import csw.params.events.EventName
-import csw.params.events.SystemEvent
-import csw.prefix.models.Prefix
 import esw.ocs.dsl.core.CommandHandlerScope
 import esw.ocs.dsl.core.HandlerScope
 import esw.ocs.dsl.highlevel.RichComponent
-import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.params.Params
-import esw.ocs.dsl.params.booleanKey
 import esw.ocs.dsl.params.first
 import esw.ocs.dsl.params.invoke
 
@@ -49,18 +43,6 @@ suspend fun CommandHandlerScope.setupAdcAssembly(adcAssembly: RichComponent, par
     if (followParam) {
         val followCommand = Setup(adcAssembly.prefix.toString(), "PRISM_FOLLOW")
         adcAssembly.submitAndWait(followCommand)
-        waitFor {
-            var onTarget = false
-            onEvent(EventKey(Prefix(IRIS, "imager.adc"), EventName("prism_state")).key()) { event ->
-                when (event) {
-                    is SystemEvent -> {
-                        val state = event(followingKey).head()
-                        event(booleanKey("onTarget")).head()?.let { x -> onTarget = state.name() == "FOLLOWING" && x }
-                    }
-                }
-            }
-            onTarget
-        }
     }
 }
 
