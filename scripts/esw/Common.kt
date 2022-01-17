@@ -5,12 +5,14 @@ import common.followingKey
 import common.getObsId
 import common.targetCoordKey
 import csw.params.commands.Observe
+import csw.params.commands.Setup
 import csw.params.core.generics.Key
 import csw.params.core.models.StandaloneExposureId
 import csw.params.events.EventName
 import csw.params.events.SystemEvent
 import csw.prefix.models.Prefix
 import csw.time.core.models.UTCTime
+import esw.ocs.dsl.core.CommandHandlerScope
 import esw.ocs.dsl.core.ReusableScriptResult
 import esw.ocs.dsl.core.reusableScript
 import esw.ocs.dsl.highlevel.RichSequencer
@@ -49,22 +51,7 @@ fun commonHandlers(irisSequencer: RichSequencer, tcsSequencer: RichSequencer): R
             //We want to do tcs and iris adc movement in parallel, so that adc does not wait until tcs has finished its movement.
             //However, adc need to know that target has been set by tcs to avoid false positives, hence we wait tcs to send MountPosition
             //once this happens target should have been updated in adc also, so it can start its movement now.
-            par(
-                    { tcsSequencer.submitAndWait(sequenceOf(tcsPreset)) },
-                    { irisSequencer.submitAndWait(sequenceOf(irisSetup)) }
-            )
-            waitFor {
-                var onTarget = false
-                onEvent(csw.params.events.EventKey(Prefix(IRIS, "imager.adc"), EventName("prism_state")).key()) { event ->
-                    when (event) {
-                        is SystemEvent -> {
-                            val state = event(followingKey).head()
-                            event(booleanKey("onTarget")).head()?.let { x -> onTarget = state.name() == "FOLLOWING" && x }
-                        }
-                    }
-                }
-                onTarget
-            }
+            submitCommandsAndWaitForAdcOnTarget(tcsSequencer, irisSequencer, tcsPreset, irisSetup)
             publishEvent(presetEnd(obsId))
         }
 
@@ -76,10 +63,7 @@ fun commonHandlers(irisSequencer: RichSequencer, tcsSequencer: RichSequencer): R
             val obsId = getObsId(command)
             publishEvent(scitargetAcqStart(obsId))
 
-            par(
-                    { tcsSequencer.submitAndWait(sequenceOf(command)) },
-                    { irisSequencer.submitAndWait(sequenceOf(command)) }
-            )
+            submitCommandsAndWaitForAdcOnTarget(tcsSequencer, irisSequencer, command, command)
             publishEvent(scitargetAcqEnd(obsId))
         }
 
@@ -88,6 +72,25 @@ fun commonHandlers(irisSequencer: RichSequencer, tcsSequencer: RichSequencer): R
             irisSequencer.submitAndWait(sequenceOf(command))
             publishEvent(observationEnd(obsId))
         }
+    }
+}
+
+private suspend fun CommandHandlerScope.submitCommandsAndWaitForAdcOnTarget(tcsSequencer: RichSequencer, irisSequencer: RichSequencer, tcsCommand: Setup, irisCommand: Setup) {
+    par(
+            { tcsSequencer.submitAndWait(sequenceOf(tcsCommand)) },
+            { irisSequencer.submitAndWait(sequenceOf(irisCommand)) }
+    )
+    waitFor {
+        var onTarget = false
+        onEvent(csw.params.events.EventKey(Prefix(IRIS, "imager.adc"), EventName("prism_state")).key()) { event ->
+            when (event) {
+                is SystemEvent -> {
+                    val state = event(followingKey).head()
+                    event(booleanKey("onTarget")).head()?.let { x -> onTarget = state.name() == "FOLLOWING" && x }
+                }
+            }
+        }
+        onTarget
     }
 }
 
