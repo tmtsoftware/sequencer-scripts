@@ -1,6 +1,8 @@
 package common
 
+import csw.params.commands.ControlCommand
 import csw.params.core.generics.Key
+import csw.params.core.generics.ParameterSetType
 import csw.params.core.models.Choice
 import csw.params.core.models.ExposureId
 import csw.params.core.models.ObsId
@@ -10,13 +12,17 @@ import esw.ocs.dsl.highlevel.RichComponent
 import esw.ocs.dsl.params.Params
 import esw.ocs.dsl.params.first
 import esw.ocs.dsl.params.invoke
+import esw.ocs.dsl.params.params
 
 suspend fun <T> CommandHandlerScope.setupAssembly(assembly: RichComponent, commandName: String, key: Key<T>, assemblyKey: Key<T>, params: Params) {
     val assemblyParam = params.get(key)
     if (assemblyParam.isDefined) {
         val command = Setup(assembly.prefix.toString(), commandName).add(assemblyKey.set(assemblyParam.get().first))
-        assembly.submitAndWait(command)
-    } else throw Error("Param of $key not found for ${assembly.prefix}")
+        sendCommandAndLog(assembly, command)
+    } else {
+        logger.error("${this.prefix}: Param of $key not found for ${assembly.prefix}")
+        throw Error("Param of $key not found for ${assembly.prefix}")
+    }
 }
 
 suspend fun CommandHandlerScope.loadConfiguration(assembly: RichComponent, obsId: ObsId?, directory: String, exposureId: ExposureId, rampIntegrationTime: Int, ramps: Int) {
@@ -26,11 +32,13 @@ suspend fun CommandHandlerScope.loadConfiguration(assembly: RichComponent, obsId
     val rampIntegrationTimeParam = rampIntegrationTimeKey.set(rampIntegrationTime)
     val rampsParam = rampsKey.set(ramps)
     val command = Setup(assembly.prefix.toString(), "LOAD_CONFIGURATION", obsId?.toString()).madd(exposureIdParam, fileNameParam, rampIntegrationTimeParam, rampsParam)
-    assembly.submitAndWait(command)
+    sendCommandAndLog(assembly, command)
 }
 
 suspend fun CommandHandlerScope.startExposure(assembly: RichComponent, obsId: ObsId?) {
-    assembly.submitAndWait(Observe(assembly.prefix.toString(), "START_EXPOSURE", obsId?.toString()))
+    logger.info("${this.prefix}: send START_EXPOSURE command to ${assembly.prefix} with obsId $obsId")
+    val subRes = assembly.submitAndWait(Observe(assembly.prefix.toString(), "START_EXPOSURE", obsId?.toString()))
+    logger.info("${this.prefix}: command START_EXPOSURE sent to ${assembly.prefix} completed with $subRes")
 }
 
 suspend fun CommandHandlerScope.setupAdcAssembly(adcAssembly: RichComponent, params: Params) {
@@ -42,18 +50,27 @@ suspend fun CommandHandlerScope.setupAdcAssembly(adcAssembly: RichComponent, par
 
     if (followParam) {
         val followCommand = Setup(adcAssembly.prefix.toString(), "PRISM_FOLLOW")
-        adcAssembly.submitAndWait(followCommand)
+        sendCommandAndLog(adcAssembly, followCommand)
     }
 }
 
 suspend fun HandlerScope.retractAdcAssembly(adcAssembly: RichComponent, position: String) {
     val retractParam = retractSelectKey.set(Choice(position))
     val retractCommand = Setup(adcAssembly.prefix.toString(), "RETRACT_SELECT").add(retractParam)
-    adcAssembly.submitAndWait(retractCommand)
+    sendCommandAndLog(adcAssembly, retractCommand)
 }
 
+suspend fun <T> HandlerScope.sendCommandAndLog(assembly: RichComponent, command: T) where T : ControlCommand, T : ParameterSetType<T> {
+    logger.info("${this.prefix}: send ${command.commandName()} command to ${assembly.prefix} with param: ${command.params.format()}")
+    val subRes = assembly.submitAndWait(command)
+    logger.info("${this.prefix}: command ${command.commandName()} sent to ${assembly.prefix} completed with $subRes")
+}
+
+
 suspend fun HandlerScope.sendSetupCommandToAssembly(assembly: RichComponent, commandName: String) {
-    assembly.submitAndWait(Setup(this.prefix, commandName))
+    logger.info("${this.prefix}: send $commandName command to ${assembly.prefix}")
+    val subRes = assembly.submitAndWait(Setup(this.prefix, commandName))
+    logger.info("${this.prefix}: command $commandName sent to ${assembly.prefix} completed with $subRes")
 }
 
 suspend fun HandlerScope.cleanUp(imagerDetector: RichComponent, adcAssembly: RichComponent, ifsDetector: RichComponent? = null) {

@@ -50,7 +50,7 @@ script {
     }
 
     onShutdown {
-        blueDetector.submitAndWait(Setup(this.prefix, "SHUTDOWN"))
-        redDetector.submitAndWait(Setup(this.prefix, "SHUTDOWN"))
+        sendSetupCommandToAssembly(blueDetector, "SHUTDOWN")
+        sendSetupCommandToAssembly(redDetector, "SHUTDOWN")
     }
 }

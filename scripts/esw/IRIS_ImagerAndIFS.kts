@@ -19,8 +19,7 @@ script {
         observeCounter++
         val imgExposureId = observeWithExposureId(command, observeCounter, IRISDET.IMG.name, imagerExposureTypeKey)
         val observe = Observe(command.source().toString(), "acquisitionExposure", command.obsId).madd(command.paramSet())
-        irisSequencer.submitAndWait(sequenceOf(observe.madd(imagerExposureIdKey.set(imgExposureId))))
-
+        sendSingleCommandToSequencer(IRIS, irisSequencer, observe.add(imagerExposureIdKey.set(imgExposureId)))
         publishEvent(guidestarAcqEnd(obsId))
     }
 
@@ -35,7 +34,7 @@ script {
         val imgExposureId = observeWithExposureId(command, observeCounter, IRISDET.IMG.name, imagerExposureTypeKey)
 
         val observe = Observe(command.source().toString(), "singleExposure", command.obsId).madd(command.paramSet())
-        irisSequencer.submitAndWait(sequenceOf(observe.madd(ifsExposureIdKey.set(ifsExposureId), imagerExposureIdKey.set(imgExposureId))))
+        sendSingleCommandToSequencer(IRIS, irisSequencer, observe.madd(ifsExposureIdKey.set(ifsExposureId), imagerExposureIdKey.set(imgExposureId)))
 
         publishEvent(observeEnd(obsId))
     }

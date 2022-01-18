@@ -1,16 +1,16 @@
 package esw
 
-import common.baseCoordKey
-import common.followingKey
-import common.getObsId
-import common.targetCoordKey
+import common.*
 import csw.params.commands.Observe
+import csw.params.commands.SequenceCommand
 import csw.params.commands.Setup
 import csw.params.core.generics.Key
+import csw.params.core.generics.ParameterSetType
 import csw.params.core.models.StandaloneExposureId
 import csw.params.events.EventName
 import csw.params.events.SystemEvent
 import csw.prefix.models.Prefix
+import csw.prefix.models.Subsystem
 import csw.time.core.models.UTCTime
 import esw.ocs.dsl.core.CommandHandlerScope
 import esw.ocs.dsl.core.ReusableScriptResult
@@ -18,11 +18,10 @@ import esw.ocs.dsl.core.reusableScript
 import esw.ocs.dsl.highlevel.RichSequencer
 import esw.ocs.dsl.highlevel.models.ExposureNumber
 import esw.ocs.dsl.highlevel.models.IRIS
+import esw.ocs.dsl.highlevel.models.TCS
 import esw.ocs.dsl.highlevel.models.TYPLevel
 import esw.ocs.dsl.par
-import esw.ocs.dsl.params.booleanKey
-import esw.ocs.dsl.params.invoke
-import esw.ocs.dsl.params.params
+import esw.ocs.dsl.params.*
 
 fun commonHandlers(irisSequencer: RichSequencer, tcsSequencer: RichSequencer): ReusableScriptResult {
     return reusableScript {
@@ -36,7 +35,7 @@ fun commonHandlers(irisSequencer: RichSequencer, tcsSequencer: RichSequencer): R
         onSetup("observationStart") { command ->
             val obsId = getObsId(command)
             publishEvent(observationStart(obsId))
-            irisSequencer.submitAndWait(sequenceOf(command))
+            sendSingleCommandToSequencer(IRIS, irisSequencer, command)
         }
 
         onSetup("preset") { command ->
@@ -69,16 +68,22 @@ fun commonHandlers(irisSequencer: RichSequencer, tcsSequencer: RichSequencer): R
 
         onSetup("observationEnd") { command ->
             val obsId = getObsId(command)
-            irisSequencer.submitAndWait(sequenceOf(command))
+            sendSingleCommandToSequencer(IRIS, irisSequencer, command)
             publishEvent(observationEnd(obsId))
         }
     }
 }
 
+suspend fun <T> CommandHandlerScope.sendSingleCommandToSequencer(subsystem: Subsystem, sequencer: RichSequencer, command: T) where T : SequenceCommand, T : ParameterSetType<T> {
+    logger.info("${this.prefix}: send ${command.commandName()} command to $subsystem.$obsMode with param: ${command.params.format()}")
+    val subRes = sequencer.submitAndWait(sequenceOf(command))
+    logger.info("${this.prefix}: command ${command.commandName()} sent to $subsystem.$obsMode completed with $subRes")
+}
+
 private suspend fun CommandHandlerScope.submitCommandsAndWaitForAdcOnTarget(tcsSequencer: RichSequencer, irisSequencer: RichSequencer, tcsCommand: Setup, irisCommand: Setup) {
     par(
-            { tcsSequencer.submitAndWait(sequenceOf(tcsCommand)) },
-            { irisSequencer.submitAndWait(sequenceOf(irisCommand)) }
+            { sendSingleCommandToSequencer(TCS, tcsSequencer, tcsCommand) },
+            { sendSingleCommandToSequencer(IRIS, irisSequencer, irisCommand) }
     )
     waitFor {
         var onTarget = false

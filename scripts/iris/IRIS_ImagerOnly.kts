@@ -14,7 +14,7 @@ script {
     val imagerDetector = Assembly(IRIS, "imager.detector")
 
     onSetup("observationStart") {
-        imagerDetector.submitAndWait(Setup(this.prefix, "INIT"))
+        sendSetupCommandToAssembly(imagerDetector, "INIT")
         retractAdcAssembly(adcAssembly, "IN")
     }
 

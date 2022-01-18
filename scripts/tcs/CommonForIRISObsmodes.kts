@@ -20,7 +20,7 @@ script {
         val incomingBaseParamValue = command.params(baseCoordKey).head()
         val parameterTobeSend = baseKey.set(incomingBaseParamValue)
         val slewToTarget = Setup(prefix, "SlewToTarget", obsId).madd(parameterTobeSend)
-        pkAssembly.submitAndWait(slewToTarget)
+        sendCommandAndLog(pkAssembly, slewToTarget)
 
         var mcsMountPositionWithinError = false
         var encBasePositionWithinError = false
@@ -36,7 +36,7 @@ script {
 
                             if (event.paramSet().size() >= 2) {
                                 val error = getMountPositionError(event)
-
+                                logger.info("$prefix : MountPosition error: $error")
                                 mcsMountPositionWithinError = error < slewToTargetTolerance
                             }
                         }
@@ -50,8 +50,10 @@ script {
                                 val capDemandValue = event(capDemandKey).head()
 
                                 val capError = abs(capCurrentValue - capDemandValue)
+                                logger.info("$prefix : cap current error: $capError")
                                 encCapPositionWithinError = capError < slewToTargetTolerance
                                 val baseError = abs(baseCurrentValue - baseDemandValue)
+                                logger.info("$prefix : base current error: $baseError")
                                 encBasePositionWithinError = baseError < slewToTargetTolerance
 
                             }
@@ -74,7 +76,7 @@ script {
         val parameterYCoordinate = yCoordinateKey.set(qParamValue)
         val icrsFrame = refFrameKey.set(icrsChoice)
         val setOffset = Setup(prefix, "SetOffset", obsId).madd(parameterXCoordinate, parameterYCoordinate, icrsFrame)
-        pkAssembly.submitAndWait(setOffset)
+        sendCommandAndLog(pkAssembly, setOffset)
 
         var withinError = false
 
@@ -83,6 +85,7 @@ script {
             when (event) {
                 is SystemEvent -> {
                     val error = getMountPositionError(event)
+                    logger.info("$prefix : MountPosition error: $error")
                     withinError = error < setOffsetTolerance
                 }
             }

@@ -23,7 +23,7 @@ script {
     onSetup("setupObservation") { command ->
         val obsId = getObsId(command)
         publishEvent(scitargetAcqStart(obsId))
-        wfosSequencer.submitAndWait(sequenceOf(command))
+        sendSingleCommandToSequencer(WFOS, wfosSequencer, command)
 
         publishEvent(scitargetAcqEnd(obsId))
     }
@@ -38,7 +38,7 @@ script {
         val blueExposureId = observeWithExposureId(command, observeCounter, WFOSDET.BLU.name, blueExposureTypeKey)
 
         val observe = Observe(command.source().toString(), "singleExposure", command.obsId).madd(command.paramSet())
-        wfosSequencer.submitAndWait(sequenceOf(observe.madd(redExposureIdKey.set(redExposureId), blueExposureIdKey.set(blueExposureId))))
+        sendSingleCommandToSequencer(WFOS, wfosSequencer,observe.madd(redExposureIdKey.set(redExposureId), blueExposureIdKey.set(blueExposureId)))
 
         publishEvent(observeEnd(obsId))
     }
