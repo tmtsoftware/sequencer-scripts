@@ -15,8 +15,8 @@ script {
     val blueDetector = Assembly(WFOS, "blue.detector")
     val redDetector = Assembly(WFOS, "red.detector")
 
-    blueDetector.submitAndWait(Setup(this.prefix, "INIT"))
-    redDetector.submitAndWait(Setup(this.prefix, "INIT"))
+    sendCommandAndLog(blueDetector, Setup(this.prefix, "INIT"))
+    sendCommandAndLog(redDetector, Setup(this.prefix, "INIT"))
 
     onSetup("setupAcquisition") { command ->
         setupAssembly(blueFilterAssembly, "SELECT", wfosBlueFilterKey, wfosBlueWheel1Key, command.params)

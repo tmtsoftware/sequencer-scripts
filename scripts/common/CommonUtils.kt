@@ -8,6 +8,7 @@ import csw.params.core.models.ExposureId
 import csw.params.core.models.ObsId
 import esw.ocs.dsl.core.CommandHandlerScope
 import esw.ocs.dsl.core.HandlerScope
+import esw.ocs.dsl.core.ScriptScope
 import esw.ocs.dsl.highlevel.RichComponent
 import esw.ocs.dsl.params.Params
 import esw.ocs.dsl.params.first
@@ -61,6 +62,12 @@ suspend fun HandlerScope.retractAdcAssembly(adcAssembly: RichComponent, position
 }
 
 suspend fun <T> HandlerScope.sendCommandAndLog(assembly: RichComponent, command: T) where T : ControlCommand, T : ParameterSetType<T> {
+    logger.info("${this.prefix}: send ${command.commandName()} command to ${assembly.prefix} with param: ${command.params.format()}")
+    val subRes = assembly.submitAndWait(command)
+    logger.info("${this.prefix}: command ${command.commandName()} sent to ${assembly.prefix} completed with $subRes")
+}
+
+suspend fun <T> ScriptScope.sendCommandAndLog(assembly: RichComponent, command: T) where T : ControlCommand, T : ParameterSetType<T> {
     logger.info("${this.prefix}: send ${command.commandName()} command to ${assembly.prefix} with param: ${command.params.format()}")
     val subRes = assembly.submitAndWait(command)
     logger.info("${this.prefix}: command ${command.commandName()} sent to ${assembly.prefix} completed with $subRes")

@@ -85,16 +85,16 @@ private suspend fun CommandHandlerScope.submitCommandsAndWaitForAdcOnTarget(tcsS
             { sendSingleCommandToSequencer(TCS, tcsSequencer, tcsCommand) },
             { sendSingleCommandToSequencer(IRIS, irisSequencer, irisCommand) }
     )
-    waitFor {
-        var onTarget = false
-        onEvent(csw.params.events.EventKey(Prefix(IRIS, "imager.adc"), EventName("prism_state")).key()) { event ->
-            when (event) {
-                is SystemEvent -> {
-                    val state = event(followingKey).head()
-                    event(booleanKey("onTarget")).head()?.let { x -> onTarget = state.name() == "FOLLOWING" && x }
-                }
+    var onTarget = false
+    onEvent(csw.params.events.EventKey(Prefix(IRIS, "imager.adc"), EventName("prism_state")).key()) { event ->
+        when (event) {
+            is SystemEvent -> {
+                val state = event(followingKey).head()
+                event(booleanKey("onTarget")).head()?.let { x -> onTarget = state.name() == "FOLLOWING" && x }
             }
         }
+    }
+    waitFor {
         onTarget
     }
 }
