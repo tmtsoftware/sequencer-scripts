@@ -9,8 +9,8 @@ import esw.ocs.dsl.highlevel.models.IRIS
 script {
     println("[ESW IRIS_ImagerAndIFS]: script loaded")
 
-    val irisImagerSequencer = Sequencer(IRIS, obsMode, Variation("IRIS_IMAGER"))
-    val irisIfsSequencer = Sequencer(IRIS, obsMode, Variation("IRIS_IFS"))
+    val irisImagerSequencer = Sequencer(IRIS, obsMode, Variation("imager"))
+    val irisIfsSequencer = Sequencer(IRIS, obsMode, Variation("ifs"))
     val delayDuration = 30000L //30sec
 
     onSetup("setup-iris-variation") { command1 ->
