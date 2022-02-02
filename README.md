@@ -5,7 +5,8 @@ This repo contains subsystem specific sequencer scripts.
 ## Version Compatibility
 
 | sequencer-scripts | esw        | csw        |
-| ----------------- | ---------- | ---------- |
+|-------------------|------------|------------|
+| v0.4.0-RC1        | v0.4.0-RC1 | v4.0.1-RC1 |
 | v0.3.0            | v0.3.0     | v4.0.0     |
 | v0.3.0-RC2        | v0.3.0-RC2 | v4.0.0-RC2 |
 | v0.3.0-RC1        | v0.3.0-RC1 | v4.0.0-RC1 |

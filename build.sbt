@@ -3,13 +3,13 @@ lazy val `sequencer-scripts` = project
   .enablePlugins(KotlinPlugin)
   .aggregate(`ignore`)
   .settings(
-    kotlinVersion := "1.5.20",
+    kotlinVersion := "1.6.10",
     kotlincOptions ++= Seq("-Xopt-in=kotlin.time.ExperimentalTime", "-jvm-target", "1.8"),
     inThisBuild(
       List(
         organization := "com.github.tmtsoftware.sequencer-scripts",
-        scalaVersion := "2.13.6",
-        version := "0.3.0"
+        scalaVersion := "2.13.8",
+        version := "0.4.0-RC1"
       )
     ),
     Compile / unmanagedSourceDirectories += (Compile / baseDirectory)(_ / "scripts").value,
