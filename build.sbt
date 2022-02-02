@@ -1,5 +1,5 @@
 val KotlincOptions = Seq("-Xopt-in=kotlin.time.ExperimentalTime", "-jvm-target", "1.8")
-val KotlinVersion  = "1.5.20"
+val KotlinVersion  = "1.6.10"
 
 lazy val `sequencer-scripts` = project
   .in(file("."))
@@ -11,7 +11,7 @@ lazy val `sequencer-scripts` = project
     inThisBuild(
       List(
         organization := "com.github.tmtsoftware.sequencer-scripts",
-        scalaVersion := "2.13.6",
+        scalaVersion := "2.13.8",
         version := "0.1.0-SNAPSHOT"
       )
     ),
