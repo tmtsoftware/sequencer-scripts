@@ -93,8 +93,8 @@ val yCoordinateKey = doubleKey("Ycoordinate")
 
 //Assembly commands keys
 val baseKey = coordKey("base")
-val currentAltAzCoordKey = altAzCoordKey("current")
-val demandAltAzCoordKey = altAzCoordKey("demand")
+val currentEqCoordKey = eqCoordKey("currentPos")
+val demandEqCoordKey = eqCoordKey("demandPos")
 val baseCurrentKey = doubleKey("baseCurrent")
 val capCurrentKey = doubleKey("capCurrent")
 val baseDemandKey = doubleKey("baseDemand")
