@@ -1,7 +1,9 @@
 package tcs
 
 import common.*
+import csw.params.core.models.Angle
 import csw.params.events.SystemEvent
+import degreeToArcSec
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.TCS
 import esw.ocs.dsl.params.invoke
@@ -33,11 +35,10 @@ script {
                 is SystemEvent ->
                     when (event.eventName().name()) {
                         "MountPosition" -> {
-
                             if (event.paramSet().size() >= 2) {
                                 val error = getMountPositionError(event)
                                 logger.info("$prefix : MountPosition error: $error")
-                                mcsMountPositionWithinError = error < slewToTargetTolerance
+                                mcsMountPositionWithinError = error.toArcSec() < slewToTargetTolerance
                             }
                         }
                         "CurrentPosition" -> {
@@ -49,10 +50,10 @@ script {
                                 val baseDemandValue = event(baseDemandKey).head()
                                 val capDemandValue = event(capDemandKey).head()
 
-                                val capError = abs(capCurrentValue - capDemandValue)
+                                val capError = abs(degreeToArcSec(capCurrentValue) - degreeToArcSec(capDemandValue))
                                 logger.info("$prefix : cap current error: $capError")
                                 encCapPositionWithinError = capError < slewToTargetTolerance
-                                val baseError = abs(baseCurrentValue - baseDemandValue)
+                                val baseError = abs(degreeToArcSec(baseCurrentValue) - degreeToArcSec(baseDemandValue))
                                 logger.info("$prefix : base current error: $baseError")
                                 encBasePositionWithinError = baseError < slewToTargetTolerance
 
@@ -86,7 +87,7 @@ script {
                 is SystemEvent -> {
                     val error = getMountPositionError(event)
                     logger.info("$prefix : MountPosition error: $error")
-                    withinError = error < setOffsetTolerance
+                    withinError = error.toArcSec() < setOffsetTolerance
                 }
             }
         }
