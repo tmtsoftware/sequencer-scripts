@@ -7,14 +7,15 @@ import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.par
 import esw.ocs.dsl.params.invoke
 import esw.ocs.dsl.params.params
+import kotlin.time.Duration.Companion.minutes
 
 script {
     val imagerAssembly = Assembly(IRIS, "imager.filter")
     val gratingAssembly = Assembly(IRIS, "ifs.res")
     val scaleAssembly = Assembly(IRIS, "ifs.scale")
     val adcAssembly = Assembly(IRIS, "imager.adc")
-    val imagerDetector = Assembly(IRIS, "imager.detector")
-    val ifsDetector = Assembly(IRIS, "ifs.detector")
+    val imagerDetector = Assembly(IRIS, "imager.detector", 5.minutes)
+    val ifsDetector = Assembly(IRIS, "ifs.detector", 5.minutes)
 
 
     onSetup("observationStart") {

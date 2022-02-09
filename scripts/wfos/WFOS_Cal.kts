@@ -7,13 +7,14 @@ import esw.ocs.dsl.highlevel.models.WFOS
 import esw.ocs.dsl.par
 import esw.ocs.dsl.params.invoke
 import esw.ocs.dsl.params.params
+import kotlin.time.Duration.Companion.minutes
 
 script {
 
     val blueFilterAssembly = Assembly(WFOS, "blue.filter")
     val redFilterAssembly = Assembly(WFOS, "red.filter")
-    val blueDetector = Assembly(WFOS, "blue.detector")
-    val redDetector = Assembly(WFOS, "red.detector")
+    val blueDetector = Assembly(WFOS, "blue.detector", 5.minutes)
+    val redDetector = Assembly(WFOS, "red.detector", 5.minutes)
 
     sendCommandAndLog(blueDetector, Setup(this.prefix, "INIT"))
     sendCommandAndLog(redDetector, Setup(this.prefix, "INIT"))
