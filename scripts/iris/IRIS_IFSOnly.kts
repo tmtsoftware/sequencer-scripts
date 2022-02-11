@@ -7,15 +7,14 @@ import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.par
 import esw.ocs.dsl.params.invoke
 import esw.ocs.dsl.params.params
-import kotlin.time.Duration.Companion.minutes
 
 script {
     val imagerAssembly = Assembly(IRIS, "imager.filter")
     val gratingAssembly = Assembly(IRIS, "ifs.res")
     val scaleAssembly = Assembly(IRIS, "ifs.scale")
     val adcAssembly = Assembly(IRIS, "imager.adc")
-    val ifsDetector = Assembly(IRIS, "ifs.detector", 5.minutes)
-    val imagerDetector = Assembly(IRIS, "imager.detector", 5.minutes)
+    val ifsDetector = Assembly(IRIS, "ifs.detector")
+    val imagerDetector = Assembly(IRIS, "imager.detector")
 
     onSetup("observationStart") {
         sendSetupCommandToAssembly(ifsDetector, "INIT")
@@ -52,7 +51,7 @@ script {
         val imagerNumRamps = command(imagerNumRampsKey).head()
 
         loadConfiguration(imagerDetector, obsId, directory, ExposureId(imagerExposureId), imagerIntegrationTime, imagerNumRamps)
-        startExposure(imagerDetector, obsId)
+        startExposure(imagerDetector, obsId, exposureTimeoutFrom(imagerNumRamps, imagerIntegrationTime))
     }
 
     onObserve("singleExposure") { command ->
@@ -64,7 +63,7 @@ script {
         val ifsNumRamps = command(ifsNumRampsKey).head()
 
         loadConfiguration(ifsDetector, obsId, directory, ExposureId(ifsExposureId), ifsIntegrationTime, ifsNumRamps)
-        startExposure(ifsDetector, obsId)
+        startExposure(ifsDetector, obsId, exposureTimeoutFrom(ifsNumRamps, ifsIntegrationTime))
     }
 
     onGlobalError { exception ->
@@ -72,6 +71,10 @@ script {
         publishEvent(errorEvent)
         error(exception.reason, exception.cause)
         cleanUp(imagerDetector, adcAssembly, ifsDetector)
+    }
+
+    onShutdown {
+        cleanUp(imagerDetector, adcAssembly)
     }
 
     onSetup("observationEnd") {

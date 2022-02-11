@@ -37,7 +37,7 @@ script {
                         "MountPosition" -> {
                             if (event.paramSet().size() >= 2) {
                                 val error = getMountPositionError(event)
-                                logger.info("$prefix : MountPosition error: $error")
+                                logger.info("$prefix : MountPosition error: ${error.toArcSec()}")
                                 mcsMountPositionWithinError = error.toArcSec() < slewToTargetTolerance
                             }
                         }
@@ -86,7 +86,7 @@ script {
             when (event) {
                 is SystemEvent -> {
                     val error = getMountPositionError(event)
-                    logger.info("$prefix : MountPosition error: $error")
+                    logger.info("$prefix : MountPosition error: ${error.toArcSec()}")
                     withinError = error.toArcSec() < setOffsetTolerance
                 }
             }

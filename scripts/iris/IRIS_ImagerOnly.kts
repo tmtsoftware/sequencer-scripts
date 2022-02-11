@@ -7,12 +7,11 @@ import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.par
 import esw.ocs.dsl.params.invoke
 import esw.ocs.dsl.params.params
-import kotlin.time.Duration.Companion.minutes
 
 script {
     val imagerAssembly = Assembly(IRIS, "imager.filter")
     val adcAssembly = Assembly(IRIS, "imager.adc")
-    val imagerDetector = Assembly(IRIS, "imager.detector",5.minutes)
+    val imagerDetector = Assembly(IRIS, "imager.detector")
 
     onSetup("observationStart") {
         sendSetupCommandToAssembly(imagerDetector, "INIT")
@@ -46,7 +45,7 @@ script {
         val imagerNumRamps = command(imagerNumRampsKey).head()
 
         loadConfiguration(imagerDetector, obsId, directory, ExposureId(imagerExposureId), imagerIntegrationTime, imagerNumRamps)
-        startExposure(imagerDetector, obsId)
+        startExposure(imagerDetector, obsId, exposureTimeoutFrom(imagerNumRamps, imagerIntegrationTime))
     }
 
     onObserve("singleExposure") { command ->
@@ -58,7 +57,7 @@ script {
         val imagerNumRamps = command(imagerNumRampsKey).head()
 
         loadConfiguration(imagerDetector, obsId, directory, ExposureId(imagerExposureId), imagerIntegrationTime, imagerNumRamps)
-        startExposure(imagerDetector, obsId)
+        startExposure(imagerDetector, obsId, exposureTimeoutFrom(imagerNumRamps, imagerIntegrationTime))
 
     }
 
@@ -66,6 +65,10 @@ script {
         val errorEvent = SystemEvent(this.prefix, "onError-event")
         publishEvent(errorEvent)
         error(exception.reason, exception.cause)
+        cleanUp(imagerDetector, adcAssembly)
+    }
+
+    onShutdown {
         cleanUp(imagerDetector, adcAssembly)
     }
 

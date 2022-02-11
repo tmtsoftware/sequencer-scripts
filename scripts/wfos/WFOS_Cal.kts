@@ -37,15 +37,14 @@ script {
         val redExposureId = command(redExposureIdKey).head()
         val redIntegrationTime = command(redIntegrationTimeKey).head()
         val redNumRamps = command(redNumRampsKey).head()
-
         par(
                 { loadConfiguration(blueDetector, obsId, directory, ExposureId(blueExposureId), blueIntegrationTime, blueNumRamps) },
                 { loadConfiguration(redDetector, obsId, directory, ExposureId(redExposureId), redIntegrationTime, redNumRamps) }
         )
 
         par(
-                { startExposure(blueDetector, obsId) },
-                { startExposure(redDetector, obsId) }
+                { startExposure(blueDetector, obsId, exposureTimeoutFrom(blueNumRamps, blueIntegrationTime)) },
+                { startExposure(redDetector, obsId, exposureTimeoutFrom(redNumRamps, redIntegrationTime)) }
         )
     }
 

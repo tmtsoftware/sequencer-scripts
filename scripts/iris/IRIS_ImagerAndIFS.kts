@@ -7,15 +7,14 @@ import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.par
 import esw.ocs.dsl.params.invoke
 import esw.ocs.dsl.params.params
-import kotlin.time.Duration.Companion.minutes
 
 script {
     val imagerAssembly = Assembly(IRIS, "imager.filter")
     val gratingAssembly = Assembly(IRIS, "ifs.res")
     val scaleAssembly = Assembly(IRIS, "ifs.scale")
     val adcAssembly = Assembly(IRIS, "imager.adc")
-    val imagerDetector = Assembly(IRIS, "imager.detector", 5.minutes)
-    val ifsDetector = Assembly(IRIS, "ifs.detector", 5.minutes)
+    val imagerDetector = Assembly(IRIS, "imager.detector")
+    val ifsDetector = Assembly(IRIS, "ifs.detector")
 
 
     onSetup("observationStart") {
@@ -51,9 +50,8 @@ script {
         val imagerExposureId = command(imagerExposureIdKey).head()
         val imagerIntegrationTime = command(imagerIntegrationTimeKey).head()
         val imagerNumRamps = command(imagerNumRampsKey).head()
-
         loadConfiguration(imagerDetector, obsId, directory, ExposureId(imagerExposureId), imagerIntegrationTime, imagerNumRamps)
-        startExposure(imagerDetector, obsId)
+        startExposure(imagerDetector, obsId, exposureTimeoutFrom(imagerNumRamps, imagerIntegrationTime))
     }
 
     onObserve("singleExposure") { command ->
@@ -67,15 +65,14 @@ script {
         val ifsExposureId = command(ifsExposureIdKey).head()
         val ifsIntegrationTime = command(ifsIntegrationTimeKey).head()
         val ifsNumRamps = command(ifsNumRampsKey).head()
-
         par(
                 { loadConfiguration(imagerDetector, obsId, directory, ExposureId(imagerExposureId), imagerIntegrationTime, imagerNumRamps) },
                 { loadConfiguration(ifsDetector, obsId, directory, ExposureId(ifsExposureId), ifsIntegrationTime, ifsNumRamps) }
         )
 
         par(
-                { startExposure(imagerDetector, obsId) },
-                { startExposure(ifsDetector, obsId) }
+                { startExposure(imagerDetector, obsId, exposureTimeoutFrom(imagerNumRamps, imagerIntegrationTime)) },
+                { startExposure(ifsDetector, obsId, exposureTimeoutFrom(ifsNumRamps, ifsIntegrationTime)) }
         )
     }
 
@@ -83,6 +80,10 @@ script {
         val errorEvent = SystemEvent(this.prefix, "onError-event")
         publishEvent(errorEvent)
         error(exception.reason, exception.cause)
+        cleanUp(imagerDetector, adcAssembly, ifsDetector)
+    }
+
+    onShutdown {
         cleanUp(imagerDetector, adcAssembly, ifsDetector)
     }
 

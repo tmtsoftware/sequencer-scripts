@@ -39,7 +39,7 @@ script {
         val blueNumRamps = command(blueNumRampsKey).head()
 
         loadConfiguration(blueDetector, obsId, directory, ExposureId(blueExposureId), blueIntegrationTime, blueNumRamps)
-        startExposure(blueDetector, obsId)
+        startExposure(blueDetector, obsId, exposureTimeoutFrom(blueNumRamps, blueIntegrationTime))
     }
 
     onObserve("singleExposure") { command ->
@@ -60,8 +60,8 @@ script {
         )
 
         par(
-                { startExposure(blueDetector, obsId) },
-                { startExposure(redDetector, obsId) }
+                { startExposure(blueDetector, obsId, exposureTimeoutFrom(blueNumRamps, blueIntegrationTime)) },
+                { startExposure(redDetector, obsId, exposureTimeoutFrom(redNumRamps, redIntegrationTime)) }
         )
     }
 

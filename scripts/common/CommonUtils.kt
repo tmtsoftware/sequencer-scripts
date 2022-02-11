@@ -14,6 +14,8 @@ import esw.ocs.dsl.params.Params
 import esw.ocs.dsl.params.first
 import esw.ocs.dsl.params.invoke
 import esw.ocs.dsl.params.params
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
 
 suspend fun <T> CommandHandlerScope.setupAssembly(assembly: RichComponent, commandName: String, key: Key<T>, assemblyKey: Key<T>, params: Params) {
     val assemblyParam = params.get(key)
@@ -36,9 +38,9 @@ suspend fun CommandHandlerScope.loadConfiguration(assembly: RichComponent, obsId
     sendCommandAndLog(assembly, command)
 }
 
-suspend fun CommandHandlerScope.startExposure(assembly: RichComponent, obsId: ObsId?) {
+suspend fun CommandHandlerScope.startExposure(assembly: RichComponent, obsId: ObsId?, timeout: Duration) {
     logger.info("${this.prefix}: send START_EXPOSURE command to ${assembly.prefix} with obsId $obsId")
-    val subRes = assembly.submitAndWait(Observe(assembly.prefix.toString(), "START_EXPOSURE", obsId?.toString()))
+    val subRes = assembly.submitAndWait(Observe(assembly.prefix.toString(), "START_EXPOSURE", obsId?.toString()), timeout = timeout)
     logger.info("${this.prefix}: command START_EXPOSURE sent to ${assembly.prefix} completed with $subRes")
 }
 
@@ -85,4 +87,9 @@ suspend fun HandlerScope.cleanUp(imagerDetector: RichComponent, adcAssembly: Ric
     sendSetupCommandToAssembly(imagerDetector, "SHUTDOWN")
     sendSetupCommandToAssembly(adcAssembly, "PRISM_STOP")
     retractAdcAssembly(adcAssembly, "OUT")
+}
+
+fun exposureTimeoutFrom(ramps: Int, integrationTime: Int): Duration {
+    val timeout = ramps * (integrationTime / 1000) + 30  // integration time will be coming in terms of milliseconds.
+    return timeout.seconds
 }
