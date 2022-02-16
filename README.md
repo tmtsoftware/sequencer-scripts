@@ -4,17 +4,18 @@ This repo contains subsystem specific sequencer scripts.
 
 ## Version Compatibility
 
-| sequencer-scripts | esw        | csw        |
-|-------------------|------------|------------|
+| sequencer-scripts | esw       | csw        |
+|-------------------|-----------|------------|
+| v0.4.0            | v0.4.0    | v4.0.1     |
 | v0.4.0-RC1        | v0.4.0-RC1 | v4.0.1-RC1 |
-| v0.3.0            | v0.3.0     | v4.0.0     |
+| v0.3.0            | v0.3.0    | v4.0.0     |
 | v0.3.0-RC2        | v0.3.0-RC2 | v4.0.0-RC2 |
 | v0.3.0-RC1        | v0.3.0-RC1 | v4.0.0-RC1 |
-| v0.3.0-M1         | v0.3.0-M1  | v4.0.0-M1  |
-| v0.2.0            | v0.2.1     | v3.0.1     |
+| v0.3.0-M1         | v0.3.0-M1 | v4.0.0-M1  |
+| v0.2.0            | v0.2.1    | v3.0.1     |
 | v0.2.0-RC1        | v0.2.0-RC1 | v3.0.0-RC1 |
-| v0.2.0-M1         | v0.2.0-M1  | v3.0.0-M1  |
-| v0.1.0            | v0.1.0     | v2.0.0     |
+| v0.2.0-M1         | v0.2.0-M1 | v3.0.0-M1  |
+| v0.1.0            | v0.1.0    | v2.0.0     |
 | v0.1.0-RC3        | v0.1.0-RC3 | v2.0.0-RC3 |
 | v0.1.0-RC2        | v0.1.0-RC2 | v2.0.0-RC2 |
 | v0.1.0-RC1        | v0.1.0-RC1 | v2.0.0-RC1 |
@@ -29,9 +30,16 @@ Script writers should follow steps mentioned below to add/update scripts:
     1. You can fork it to your personal repository and keep working on that fork.
     1. Or you can fork it under your own organization.
 
-1. Add new scripts into the `scripts` directory under the specific `subsystem` directory.  If the subsystem directory doesn't exist yet, create a directory with the name of your subsystem under the `scripts` directory, e.g. `scripts/wfos`.  Also add an observing mode mapping configuration file in your new directory, named `subsystem`.conf , e.g. `scripts/wfos/wfos.conf`.  This provides a mapping from observing modes to script files. Then, include the new configuration file in the `scripts/application.conf`. For example, if you have created `scripts/wfos/wfos.conf`, then add line `include "wfos/wfos.conf"` in the `scripts/application.conf` file.
+1. Add new scripts into`scripts` directory under specific `subsystem`. If 
+   your subsystem doesn't exist, create a directory with the name of your subsystem in the `scripts` directory, 
+   e.g. `scripts/wfos`. Also add an observing mode mapping configuration file to provide a mapping from 
+   observing modes to scripts in your new directory named your subsystem with the `.conf` extension, 
+   e.g. `scripts/wfos/wfos.conf`. Then, include the new configuration file in the `scripts/application.conf`, 
+   for example, if you have newly created `scripts/wfos/wfos.conf`, 
+   then add line `include "wfos/wfos.conf"` in `scripts/application.conf` file
 
-1. Add an entry for each observing mode into the subsystem-specific observing mode mapping configuration file.  It should include a `scriptClass` property pointing to script file where script logic resides, for example,
+1. Add an entry for each observing mode into the subsystem-specific observing mode mapping configuration. It 
+   should include a `scriptClass` property pointing to script file where script logic resides, for example,
 
     ```hocon
       scripts {
@@ -45,7 +53,8 @@ Script writers should follow steps mentioned below to add/update scripts:
 
     Note: the same script class can be used for multiple observing modes.
 
-1. Once all the changes are completed in a forked repo, you can submit a pull request to the upstream repository, which is `tmtsoftware/sequencer-scripts` in this case.
+1. Once all the changes are completed in a forked repo, then you can submit 
+   a pull request to upstream which is `tmtsoftware/sequencer-scripts` repo in this case
 
 1. Admins of the `sequencer-scripts` repo will then review the changes and merge them to `master`.
 
@@ -53,13 +62,14 @@ Script writers should follow steps mentioned below to add/update scripts:
 
 ### Prerequisite
 
-The [CSW](https://github.com/tmtsoftware/csw) services need to be running before starting the sequencer scripts.
-A compatible version of `csw-services` (See [version compatibility section](#-version-compaibilty)) can be started using `Coursier` (using the `cs` command).
-To install `Coursier` and add the TMT apps channel, see [here](https://tmtsoftware.github.io/esw//technical/apps/getting-apps.html#1-install-coursier)
+The [CSW](https://github.com/tmtsoftware/csw) services need to be running before starting the components.
+This is done by starting the `csw-services`
+If you are not building csw from the sources, you can run `csw-services` as follows:
 
-For help on using csw-services, run `cs launch csw-services:<version|SHA> -- --help`.
-
-To start all the csw services, for example, _Location, Config, Alarm, AAS service_ etc, run `cs launch csw-services:<version|SHA> -- start`.
+- Install `coursier` using steps described [here](https://tmtsoftware.github.io/csw/apps/csinstallation.html) and add TMT channel.
+- Run `cs install csw-services`. This will create an executable file named `csw-services` in the default installation directory.
+- Run `csw-services --help` to get more information.
+- Run `csw-services start` to start all the csw services, for example, Location, Config, Alarm, AAS service etc
 
 ### Running Sequencer App with script
 
