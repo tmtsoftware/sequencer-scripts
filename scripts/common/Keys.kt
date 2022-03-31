@@ -78,6 +78,7 @@ val redIntegrationTimeKey = intKey("redIntegrationTime")
 val redNumRampsKey = intKey("redNumRamps")
 val blueExposureTypeKey = stringKey("blueExposureType")
 val redExposureTypeKey = stringKey("redExposureType")
+val repeatsKey = intKey("repeats")
 //*************************************************************\\
 
 //*******************tcs keys***********************\\
