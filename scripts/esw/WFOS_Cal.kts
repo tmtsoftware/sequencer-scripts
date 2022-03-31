@@ -3,7 +3,6 @@ package esw
 import common.*
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.WFOS
-import esw.ocs.dsl.params.invoke
 
 script {
     val wfosSequencer = Sequencer(WFOS, obsMode)
@@ -32,23 +31,16 @@ script {
 
         publishEvent(observeStart(obsId))
 
-        var repeats = command(repeatsKey).head()
-        if (repeats < 1) error("A repeats value less than zero was used in the WFOS CAL sequence.")
+        observeCounter++
+        val redExposureId = observeWithExposureId(command, observeCounter, WFOSDET.RED.name, redExposureTypeKey)
+        val blueExposureId = observeWithExposureId(command, observeCounter, WFOSDET.BLU.name, blueExposureTypeKey)
 
-        while (repeats > 0) {
-
-            observeCounter++
-            val redExposureId = observeWithExposureId(command, observeCounter, WFOSDET.RED.name, redExposureTypeKey)
-            val blueExposureId = observeWithExposureId(command, observeCounter, WFOSDET.BLU.name, blueExposureTypeKey)
-
-            val observe = Observe(command.source().toString(), "singleExposure", command.obsId).madd(command.paramSet())
-            sendSingleCommandToSequencer(
-                WFOS,
-                wfosSequencer,
-                observe.madd(redExposureIdKey.set(redExposureId), blueExposureIdKey.set(blueExposureId))
-            )
-            repeats--
-        }
+        val observe = Observe(command.source().toString(), "singleExposure", command.obsId).madd(command.paramSet())
+        sendSingleCommandToSequencer(
+            WFOS,
+            wfosSequencer,
+            observe.madd(redExposureIdKey.set(redExposureId), blueExposureIdKey.set(blueExposureId))
+        )
 
         publishEvent(observeEnd(obsId))
     }
