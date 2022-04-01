@@ -1,10 +1,10 @@
 package tcs
 
 import common.*
-import csw.params.core.models.Angle
 import csw.params.events.SystemEvent
 import degreeToArcSec
 import esw.ocs.dsl.core.script
+import esw.ocs.dsl.highlevel.models.RADEC
 import esw.ocs.dsl.highlevel.models.TCS
 import esw.ocs.dsl.params.invoke
 import esw.ocs.dsl.params.params
@@ -70,13 +70,17 @@ script {
     }
 
     onSetup("setupObservation") { command ->
-        val obsId = getObsId(command).toString()
+        val obsId = getObsId(command)
         val pParamValue = command.params(pKey).head()
         val qParamValue = command.params(qKey).head()
         val parameterXCoordinate = xCoordinateKey.set(pParamValue)
         val parameterYCoordinate = yCoordinateKey.set(qParamValue)
         val icrsFrame = refFrameKey.set(icrsChoice)
-        val setOffset = Setup(prefix, "SetOffset", obsId).madd(parameterXCoordinate, parameterYCoordinate, icrsFrame)
+        val publishOffsetEvents = pParamValue > 0 || qParamValue > 0
+        if(publishOffsetEvents) {
+            publishEvent(offsetStart(obsId, RADEC, pParamValue, qParamValue))
+        }
+        val setOffset = Setup(prefix, "SetOffset", obsId.toString()).madd(parameterXCoordinate, parameterYCoordinate, icrsFrame)
         sendCommandAndLog(pkAssembly, setOffset)
 
         var withinError = false
@@ -95,5 +99,8 @@ script {
             withinError
         }
         subscription.cancel()
+        if(publishOffsetEvents) {
+            publishEvent(offsetEnd(obsId))
+        }
     }
 }

@@ -21,7 +21,10 @@ import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.highlevel.models.TCS
 import esw.ocs.dsl.highlevel.models.TYPLevel
 import esw.ocs.dsl.par
-import esw.ocs.dsl.params.*
+import esw.ocs.dsl.params.booleanKey
+import esw.ocs.dsl.params.invoke
+import esw.ocs.dsl.params.params
+import kotlinx.coroutines.delay
 
 fun commonHandlers(irisSequencer: RichSequencer, tcsSequencer: RichSequencer): ReusableScriptResult {
     return reusableScript {
@@ -54,16 +57,17 @@ fun commonHandlers(irisSequencer: RichSequencer, tcsSequencer: RichSequencer): R
             publishEvent(presetEnd(obsId))
         }
 
-        onObserve("fineAcquisition") {
+        onObserve("fineAcquisition") { command ->
+            val obsId = getObsId(command)
+            publishEvent(scitargetAcqStart(obsId))
             info("In FineAcquisition handler. Currently NOOP.")
+            // purposely added delay for simulating some functionality
+            delay(500)
+            publishEvent(scitargetAcqEnd(obsId))
         }
 
         onSetup("setupObservation") { command ->
-            val obsId = getObsId(command)
-            publishEvent(scitargetAcqStart(obsId))
-
             submitCommandsAndWaitForAdcOnTarget(tcsSequencer, irisSequencer, command, command)
-            publishEvent(scitargetAcqEnd(obsId))
         }
 
         onSetup("observationEnd") { command ->
