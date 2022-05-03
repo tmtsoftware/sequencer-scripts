@@ -6,28 +6,29 @@ lazy val `sequencer-scripts` = project
   .enablePlugins(KotlinPlugin)
   .aggregate(`ignore`)
   .settings(
-    kotlinVersion := KotlinVersion,
+    kotlinVersion                                := KotlinVersion,
     kotlincOptions ++= KotlincOptions,
     inThisBuild(
       List(
         organization := "com.github.tmtsoftware.sequencer-scripts",
         scalaVersion := "2.13.8",
-        version := "0.4.0"
+        version      := "0.1.0-SNAPSHOT"
       )
     ),
-    Compile / unmanagedSourceDirectories += (Compile / baseDirectory)(_ / "scripts").value,
-    Compile / unmanagedSources / excludeFilter := "*.conf",
+//    Compile / unmanagedSourceDirectories += (Compile / baseDirectory)(_ / "scripts").value,
+    Compile / unmanagedSources / excludeFilter   := "*.conf",
     Test / unmanagedSourceDirectories += (Test / baseDirectory)(_ / "tests").value,
-    Compile / unmanagedResourceDirectories += (Compile / baseDirectory)(_ / "scripts").value,
-    Compile / unmanagedResources / includeFilter := "*.conf",
-    Compile / mainClass := Some("esw.ocs.app.SequencerApp"),
-    name := "sequencer-scripts",
+//    Compile / unmanagedResourceDirectories += (Compile / baseDirectory)(_ / "scripts").value,
+//    Compile / unmanagedResources / includeFilter := "*.conf",
+    Compile / mainClass                          := Some("esw.ocs.app.SequencerApp"),
+    name                                         := "sequencer-scripts",
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
       Libs.`esw-ocs-dsl-kt`,
+      Libs.`esw-ocs-script-kt`,
       Libs.`esw-ocs-app`
     ),
-    Test / fork := true
+    Test / fork                                  := true
   )
 
 lazy val `ignore` = project.in(file(".ignore"))
