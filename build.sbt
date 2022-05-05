@@ -22,7 +22,7 @@ lazy val `sequencer-scripts` = project
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
       Libs.`esw-ocs-dsl-kt`,
-      Libs.`esw-ocs-script-kt`,
+      Libs.`esw-ocs-script-host-kt`,
       Libs.`esw-ocs-app`
     ),
     Test / fork                                  := true
@@ -32,7 +32,6 @@ lazy val `sequencer-scripts` = project
 lazy val `sequencer-scripts-ignored` = project
   .in(file("scripts"))
   .enablePlugins(KotlinPlugin)
-  .aggregate(`ignore`)
   .settings(
     kotlinVersion                                := KotlinVersion,
     kotlincOptions ++= KotlincOptions,
