@@ -1,3 +1,5 @@
+@file:Import("test.seq.kts")
+
 package esw
 
 import common.IRISDET
@@ -7,6 +9,10 @@ import common.imagerExposureTypeKey
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.highlevel.models.TCS
+
+println("XXX test1 = $test1, test2 = $test2")
+
+val x = 1
 
 script {
     val irisSequencer = Sequencer(IRIS, obsMode)

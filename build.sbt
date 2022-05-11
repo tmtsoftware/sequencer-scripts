@@ -23,7 +23,8 @@ lazy val `sequencer-scripts` = project
     libraryDependencies ++= Seq(
       Libs.`esw-ocs-dsl-kt`,
       Libs.`esw-ocs-script-kt`,
-      Libs.`esw-ocs-app`
+      Libs.`esw-ocs-app`,
+      Libs.`junit` % Test
     ),
     Test / fork                                  := true
   )
