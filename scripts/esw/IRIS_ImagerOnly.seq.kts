@@ -1,9 +1,9 @@
 //@file:Repository("https://jitpack.io/")
 //@file:Repository("file://home/abrighto/.ivy2")
 //@file:Repository("file://home/abrighto/.m2/repository")
-@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-script-kt_2.13:6934692f76eb406b73402153eefb3ca0e9f8133f")
-@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-dsl-kt_2.13:6934692f76eb406b73402153eefb3ca0e9f8133f")
-@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-app_2.13:6934692f76eb406b73402153eefb3ca0e9f8133f")
+//@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-script-kt_2.13:6934692f76eb406b73402153eefb3ca0e9f8133f")
+@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-dsl-kt_2.13:685d44a517e5775e09fbc836b476fcdd43824c66")
+@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-app_2.13:685d44a517e5775e09fbc836b476fcdd43824c66")
 
 @file:Import("Common.seq.kts")
 
