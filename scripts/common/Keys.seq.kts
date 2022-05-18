@@ -1,4 +1,3 @@
-package common
 
 import csw.params.core.models.Choice
 import csw.params.javadsl.JUnits

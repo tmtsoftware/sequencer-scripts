@@ -1,18 +1,17 @@
-@file:Import("test.seq.kts")
+//@file:Repository("https://jitpack.io/")
+//@file:Repository("file://home/abrighto/.ivy2")
+//@file:Repository("file://home/abrighto/.m2/repository")
+@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-script-kt_2.13:bba6282a50c34d26d91e70b74f776ca87f17effd")
+@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-dsl-kt_2.13:bba6282a50c34d26d91e70b74f776ca87f17effd")
+@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-app_2.13:bba6282a50c34d26d91e70b74f776ca87f17effd")
 
-package esw
+@file:Import("Common.seq.kts")
 
-import common.IRISDET
-import common.getObsId
-import common.imagerExposureIdKey
-import common.imagerExposureTypeKey
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.highlevel.models.TCS
 
-println("XXX test1 = $test1, test2 = $test2")
-
-val x = 1
+println("XXX in esw/IRIS_ImagerOnly.seq.kts")
 
 script {
     val irisSequencer = Sequencer(IRIS, obsMode)

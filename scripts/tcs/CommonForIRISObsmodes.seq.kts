@@ -1,6 +1,5 @@
-package tcs
+@file:Import("Common.seq.kts")
 
-import common.*
 import csw.params.events.SystemEvent
 import degreeToArcSec
 import esw.ocs.dsl.core.script

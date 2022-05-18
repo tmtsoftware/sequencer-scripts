@@ -1,6 +1,5 @@
-package esw
+@file:Import("../common/CommonUtils.seq.kts")
 
-import common.*
 import csw.params.commands.Observe
 import csw.params.commands.SequenceCommand
 import csw.params.commands.Setup
@@ -84,7 +83,7 @@ suspend fun <T> CommandHandlerScope.sendSingleCommandToSequencer(subsystem: Subs
     logger.info("${this.prefix}: command ${command.commandName()} sent to $subsystem.$obsMode completed with $subRes")
 }
 
-private suspend fun CommandHandlerScope.submitCommandsAndWaitForAdcOnTarget(tcsSequencer: RichSequencer, irisSequencer: RichSequencer, tcsCommand: Setup, irisCommand: Setup) {
+suspend fun CommandHandlerScope.submitCommandsAndWaitForAdcOnTarget(tcsSequencer: RichSequencer, irisSequencer: RichSequencer, tcsCommand: Setup, irisCommand: Setup) {
     par(
             { sendSingleCommandToSequencer(TCS, tcsSequencer, tcsCommand) },
             { sendSingleCommandToSequencer(IRIS, irisSequencer, irisCommand) }

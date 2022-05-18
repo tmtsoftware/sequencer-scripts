@@ -1,6 +1,5 @@
-package esw
+@file:Import("Common.seq.kts")
 
-import common.*
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.highlevel.models.TCS

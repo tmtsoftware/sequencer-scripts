@@ -1,5 +1,5 @@
-import common.currentEqCoordKey
-import common.demandEqCoordKey
+@file:Import("../common/CommonUtils.seq.kts")
+
 import csw.params.core.models.Angle
 import csw.params.events.SystemEvent
 import esw.ocs.dsl.params.invoke

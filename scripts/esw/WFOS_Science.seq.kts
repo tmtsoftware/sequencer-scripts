@@ -1,6 +1,3 @@
-package esw
-
-import common.*
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.Prefix
 import esw.ocs.dsl.highlevel.models.WFOS

@@ -1,4 +1,3 @@
-package common
 
 import csw.params.commands.SequenceCommand
 import csw.params.core.models.ObsId

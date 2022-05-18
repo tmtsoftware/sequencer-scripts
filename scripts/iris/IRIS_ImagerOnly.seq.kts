@@ -1,6 +1,5 @@
-package iris
+@file:Import("../common/CommonUtils.seq.kts")
 
-import common.*
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.ExposureId
 import esw.ocs.dsl.highlevel.models.IRIS

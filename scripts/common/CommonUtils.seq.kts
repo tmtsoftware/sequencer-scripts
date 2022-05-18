@@ -1,4 +1,5 @@
-package common
+@file:Import("Keys.seq.kts")
+@file:Import("Utils.seq.kts")
 
 import csw.params.commands.ControlCommand
 import csw.params.core.generics.Key
