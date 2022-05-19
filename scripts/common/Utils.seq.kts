@@ -1,3 +1,5 @@
+@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-dsl-kt_2.13:b964c761e4f998d64306dd70298da577558a42f2")
+@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-app_2.13:b964c761e4f998d64306dd70298da577558a42f2")
 
 import csw.params.commands.SequenceCommand
 import csw.params.core.models.ObsId
