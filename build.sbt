@@ -26,30 +26,31 @@ lazy val `sequencer-scripts` = project
       Libs.`esw-ocs-dsl-kt`,
       Libs.`esw-ocs-script-kt`,
       Libs.`esw-ocs-app`,
-      Libs.`ivy`,
+      Libs.`esw-ocs-impl`,
+//      Libs.`ivy`,
       Libs.`junit` % Test
     ),
     Test / fork                                := true
   )
 
-// This project is only defined so that Intellij Idea highlights errors in sequence scripts
-lazy val `sequencer-scripts-ignored` = project
-  .in(file("scripts"))
-  .enablePlugins(KotlinPlugin)
-  .settings(
-    kotlinVersion := KotlinVersion,
-    kotlincOptions ++= KotlincOptions,
-    inThisBuild(
-      List(
-        organization := "com.github.tmtsoftware.sequencer-scripts",
-        scalaVersion := "2.13.8",
-        version      := "0.1.0-SNAPSHOT"
-      )
-    ),
-    Compile / unmanagedSourceDirectories += (Compile / baseDirectory)(_ / ".").value,
-    name          := "sequencer-scripts-ignore",
-    resolvers += "jitpack" at "https://jitpack.io"
-  )
-  .dependsOn(`sequencer-scripts`)
+//// This project is only defined so that Intellij Idea highlights errors in sequence scripts
+//lazy val `sequencer-scripts-ignored` = project
+//  .in(file("scripts"))
+//  .enablePlugins(KotlinPlugin)
+//  .settings(
+//    kotlinVersion := KotlinVersion,
+//    kotlincOptions ++= KotlincOptions,
+//    inThisBuild(
+//      List(
+//        organization := "com.github.tmtsoftware.sequencer-scripts",
+//        scalaVersion := "2.13.8",
+//        version      := "0.1.0-SNAPSHOT"
+//      )
+//    ),
+//    Compile / unmanagedSourceDirectories += (Compile / baseDirectory)(_ / ".").value,
+//    name          := "sequencer-scripts-ignore",
+//    resolvers += "jitpack" at "https://jitpack.io"
+//  )
+//  .dependsOn(`sequencer-scripts`)
 
 lazy val `ignore` = project.in(file(".ignore"))

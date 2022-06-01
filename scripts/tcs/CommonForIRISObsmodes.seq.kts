@@ -1,4 +1,9 @@
+// @file:Repository("https://jitpack.io/")
+@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-dsl-kt_2.13:0.4.0")
+@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-app_2.13:0.4.0")
+
 @file:Import("Common.seq.kts")
+@file:Import("../common/CommonUtils.seq.kts")
 @file:Import("../common/Keys.seq.kts")
 @file:Import("../common/Utils.seq.kts")
 

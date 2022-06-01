@@ -6,6 +6,7 @@ import java.io.File
 import kotlin.script.experimental.api.EvaluationResult
 import kotlin.script.experimental.api.ResultWithDiagnostics
 import esw.ocs.script.evalFile
+import kotlin.script.experimental.api.valueOrThrow
 
 class ScriptTest {
     private fun assertSucceeded(res: ResultWithDiagnostics<EvaluationResult>) {
@@ -26,11 +27,12 @@ class ScriptTest {
 
     @Test
     fun testEvalScript() {
-        println("XXX Testing...")
-//        val res = evalFile(File("scripts/iris/IRIS_ImagerOnly.seq.kts"))
+        println("XXX Testing 4...")
+        val res = evalFile(File("scripts/iris/IRIS_ImagerOnly.seq.kts"))
 //        val res = evalFile(File("scripts/tcs/CommonForIRISObsmodes.seq.kts"))
-        val res = evalFile(File("scripts/wfos/WFOS_Science.seq.kts"))
-        println("XXX res = ${res}")
+//        val res = evalFile(File("scripts/wfos/WFOS_Science.seq.kts"))
         assertSucceeded(res)
+        println("XXX results:")
+        println("XXX res = ${res.valueOrThrow().returnValue.toString()}")
     }
 }
