@@ -25,8 +25,11 @@ class ScriptTest {
     }
 
     @Test
-    fun testResolveJunit() {
-        val res = evalFile(File("scripts/esw/IRIS_ImagerOnly.seq.kts"))
+    fun testEvalScript() {
+        println("XXX Testing...")
+//        val res = evalFile(File("scripts/iris/IRIS_ImagerOnly.seq.kts"))
+//        val res = evalFile(File("scripts/tcs/CommonForIRISObsmodes.seq.kts"))
+        val res = evalFile(File("scripts/wfos/WFOS_Science.seq.kts"))
         println("XXX res = ${res}")
         assertSucceeded(res)
     }

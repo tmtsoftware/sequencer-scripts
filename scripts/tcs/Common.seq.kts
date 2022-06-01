@@ -1,4 +1,12 @@
 @file:Import("../common/CommonUtils.seq.kts")
+@file:Import("../common/Keys.seq.kts")
+@file:Import("../common/Utils.seq.kts")
+
+//package tcs
+//import common.*
+//
+//import common.currentEqCoordKey
+//import common.demandEqCoordKey
 
 import csw.params.core.models.Angle
 import csw.params.events.SystemEvent

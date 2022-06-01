@@ -1,13 +1,19 @@
 @file:Import("Common.seq.kts")
+@file:Import("../common/Keys.seq.kts")
+@file:Import("../common/Utils.seq.kts")
+
+//package tcs
+
+//import common.*
+//import degreeToArcSec
+//import getMountPositionError
 
 import csw.params.events.SystemEvent
-import degreeToArcSec
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.RADEC
 import esw.ocs.dsl.highlevel.models.TCS
 import esw.ocs.dsl.params.invoke
 import esw.ocs.dsl.params.params
-import getMountPositionError
 import kotlin.math.abs
 
 script {

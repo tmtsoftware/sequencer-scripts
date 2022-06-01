@@ -1,7 +1,7 @@
-val KotlincOptions = Seq("-Xopt-in=kotlin.time.ExperimentalTime", "-jvm-target", "1.8")
-val KotlinVersion  = "1.6.10"
-
-val saveDependencyClasspath = taskKey[Unit]("Saves location of the dependencies to file")
+//val KotlincOptions = Seq("-Xopt-in=kotlin.time.ExperimentalTime", "-jvm-target", "1.8")
+val KotlincOptions = Seq("-opt-in=kotlin.time.ExperimentalTime", "-jvm-target", "17")
+//val KotlinVersion  = "1.6.10"
+val KotlinVersion  = "1.7.0-RC"
 
 lazy val `sequencer-scripts` = project
   .in(file("."))
@@ -26,36 +26,30 @@ lazy val `sequencer-scripts` = project
       Libs.`esw-ocs-dsl-kt`,
       Libs.`esw-ocs-script-kt`,
       Libs.`esw-ocs-app`,
+      Libs.`ivy`,
       Libs.`junit` % Test
     ),
-    Test / fork                                := true,
-    saveDependencyClasspath                    := {
-      val cp = (Compile / dependencyClasspath).value
-      val x  = cp.map(_.data).mkString(",")
-      reflect.io.File("seq.kts.classpath").writeAll(x)
-      sLog.value.info("Wrote seq.kts.classpath")
-    },
-    (Compile / compile)                        := ((Compile / compile) dependsOn saveDependencyClasspath).value
+    Test / fork                                := true
   )
 
-//// This project is only defined so that Intellij Idea highlights errors in sequence scripts
-//lazy val `sequencer-scripts-ignored` = project
-//  .in(file("scripts"))
-//  .enablePlugins(KotlinPlugin)
-//  .settings(
-//    kotlinVersion := KotlinVersion,
-//    kotlincOptions ++= KotlincOptions,
-//    inThisBuild(
-//      List(
-//        organization := "com.github.tmtsoftware.sequencer-scripts",
-//        scalaVersion := "2.13.8",
-//        version      := "0.1.0-SNAPSHOT"
-//      )
-//    ),
-//    Compile / unmanagedSourceDirectories += (Compile / baseDirectory)(_ / ".").value,
-//    name          := "sequencer-scripts-ignore",
-//    resolvers += "jitpack" at "https://jitpack.io"
-//  )
-//  .dependsOn(`sequencer-scripts`)
+// This project is only defined so that Intellij Idea highlights errors in sequence scripts
+lazy val `sequencer-scripts-ignored` = project
+  .in(file("scripts"))
+  .enablePlugins(KotlinPlugin)
+  .settings(
+    kotlinVersion := KotlinVersion,
+    kotlincOptions ++= KotlincOptions,
+    inThisBuild(
+      List(
+        organization := "com.github.tmtsoftware.sequencer-scripts",
+        scalaVersion := "2.13.8",
+        version      := "0.1.0-SNAPSHOT"
+      )
+    ),
+    Compile / unmanagedSourceDirectories += (Compile / baseDirectory)(_ / ".").value,
+    name          := "sequencer-scripts-ignore",
+    resolvers += "jitpack" at "https://jitpack.io"
+  )
+  .dependsOn(`sequencer-scripts`)
 
 lazy val `ignore` = project.in(file(".ignore"))

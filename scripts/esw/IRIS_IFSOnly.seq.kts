@@ -1,7 +1,11 @@
-@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-dsl-kt_2.13:b964c761e4f998d64306dd70298da577558a42f2")
-@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-app_2.13:b964c761e4f998d64306dd70298da577558a42f2")
+//@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-dsl-kt_2.13:b964c761e4f998d64306dd70298da577558a42f2")
+//@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-app_2.13:b964c761e4f998d64306dd70298da577558a42f2")
+
+// XXX TODO try using a tag for esw deps
 
 @file:Import("Common.seq.kts")
+package esw
+import common.*
 
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.IRIS
