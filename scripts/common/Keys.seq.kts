@@ -1,6 +1,7 @@
-// @file:Repository("https://jitpack.io/")
-@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-dsl-kt_2.13:0.4.0")
-@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-app_2.13:0.4.0")
+@file:Repository("https://jitpack.io/")
+@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-dsl-kt_2.13:adc26faf3413a9e70a6627c397563e88ea04afb6")
+@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-app_2.13:adc26faf3413a9e70a6627c397563e88ea04afb6")
+//@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-app_2.13:0.4.0")
 
 import csw.params.core.models.Choice
 import csw.params.javadsl.JUnits
