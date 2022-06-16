@@ -110,7 +110,7 @@ suspend fun CommandHandlerScope.submitCommandsAndWaitForAdcOnTarget(tcsSequencer
 
 fun getExposureId(obsId: String?, typLevel: String, observeCounter: Int, det: String): String {
     val exposureNumber = ExposureNumber("%04d".format(observeCounter))
-    val typLevelStr = TYPLevel(typLevel + 1)
+    val typLevelStr = TYPLevel("${typLevel}1")
     return obsId?.let { "$it-$IRIS-$det-$typLevelStr-$exposureNumber" }
             ?: StandaloneExposureId(UTCTime.now(), IRIS, det, typLevelStr, exposureNumber).toString()
 

@@ -11,7 +11,7 @@ import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.IRIS
 import esw.ocs.dsl.highlevel.models.TCS
 
-println("XXX in esw/IRIS_ImagerOnly.seq.kts")
+println("XXX 1 in esw/IRIS_ImagerOnly.seq.kts")
 
 script {
     val irisSequencer = Sequencer(IRIS, obsMode)
