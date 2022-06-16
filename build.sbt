@@ -1,6 +1,4 @@
-//val KotlincOptions = Seq("-Xopt-in=kotlin.time.ExperimentalTime", "-jvm-target", "1.8")
 val KotlincOptions = Seq("-opt-in=kotlin.time.ExperimentalTime", "-jvm-target", "17")
-//val KotlinVersion  = "1.6.10"
 val KotlinVersion  = "1.7.0"
 
 lazy val `sequencer-scripts` = project
@@ -27,7 +25,6 @@ lazy val `sequencer-scripts` = project
       Libs.`esw-ocs-script-kt`,
       Libs.`esw-ocs-app`,
       Libs.`esw-ocs-impl`,
-//      Libs.`ivy`,
       Libs.`junit` % Test
     ),
     Test / fork                                := true

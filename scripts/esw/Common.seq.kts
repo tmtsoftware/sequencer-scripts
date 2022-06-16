@@ -1,6 +1,6 @@
 //@file:Repository("https://jitpack.io/")
-//@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-dsl-kt_2.13:adc26faf3413a9e70a6627c397563e88ea04afb6")
-//@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-app_2.13:adc26faf3413a9e70a6627c397563e88ea04afb6")
+//@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-dsl-kt_2.13:d08b0359adada2fe521243aaf85347337369feb4")
+//@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-app_2.13:d08b0359adada2fe521243aaf85347337369feb4")
 
 @file:Import("../common/CommonUtils.seq.kts")
 @file:Import("../common/Keys.seq.kts")
@@ -30,6 +30,10 @@ import esw.ocs.dsl.params.booleanKey
 import esw.ocs.dsl.params.invoke
 import esw.ocs.dsl.params.params
 import kotlinx.coroutines.delay
+
+fun testXXX(): Unit {
+    println("XXX 2 in esw/Common.seq.kts")
+}
 
 fun commonHandlers(irisSequencer: RichSequencer, tcsSequencer: RichSequencer): ReusableScriptResult {
     return reusableScript {
