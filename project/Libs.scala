@@ -2,7 +2,7 @@ import sbt._
 
 object Libs {
   private val Org     = "com.github.tmtsoftware.esw"
-  private val Version = "d08b0359adada2fe521243aaf85347337369feb4"
+  private val Version = "8345ed8"
 //  private val Version = "0.1.0-SNAPSHOT"
 
   val `esw-ocs-dsl-kt`    = Org             %% "esw-ocs-dsl-kt"    % Version
