@@ -1,5 +1,5 @@
 
-import java
+# import java
 import polyglot
 
 print('Hello from InheritTest.py')

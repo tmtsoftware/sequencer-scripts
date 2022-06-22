@@ -18,7 +18,7 @@ object PyTestInherit extends App {
     build();
   context.eval("python", "print('Hello from Python!')")
 
-  val source = Source.newBuilder("python", new File("pyScripts/common/InheritTest.py")).build();
+  val source = Source.newBuilder("python", new File("pyScripts/common/InheritTest.py")).build()
 
   val x = context.eval(source)
   println(s"XXX x = $x")

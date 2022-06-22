@@ -18,6 +18,6 @@ object PyTest extends App {
 
   val source = Source.newBuilder("python", new File("pyScripts/common/Utils.py")).build();
   val res = context.eval(source).asHostObject[ObsId]()
-  println(s"XXX res = $res")
+  println(s"XXX res = $res (${res.getClass})")
 }
 
