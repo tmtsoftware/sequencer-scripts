@@ -1,4 +1,5 @@
 import java
+import polyglot
 
 print('Hello from PyScriptApiTest.py')
 SequenceCommand = java.type('csw.params.commands.SequenceCommand')

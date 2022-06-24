@@ -1,13 +1,4 @@
-# import site
-import java
-import polyglot
-
-from common.ScriptBase import ScriptBase
-
-Setup = java.type('csw.params.commands.Setup')
-Observe = java.type('csw.params.commands.Observe')
-JKeyType = java.type('csw.params.javadsl.JKeyType')
-
+from common.ScriptBase import *
 
 class MyPyScript(ScriptBase):
 
