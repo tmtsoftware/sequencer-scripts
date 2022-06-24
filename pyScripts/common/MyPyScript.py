@@ -2,16 +2,18 @@ from common.ScriptBase import *
 
 class MyPyScript(ScriptBase):
 
-    def onSetup(self, command: Setup):
-        print(f"Called onSetup {command})")
-        print(f"Command name = {command.commandName().name()}")
-        print(f"obsId = {command.maybeObsId().get()}")
-        print(f"source = {command.source()}")
-        temperatureFsmKey = JKeyType.IntKey().make("temperatureFsm")
-        print(f"temperatureFsm = {command.get(temperatureFsmKey).get()}")
-        print(f"temperatureFsm units = {command.get(temperatureFsmKey).get().units()}")
-        print(f"temperatureFsm value = {command.get(temperatureFsmKey).get().head()}")
-        print(f"temperatureFsm value (using apply) = {command.apply(temperatureFsmKey).head()}")
+    def onSetup(self, setup: Setup):
+        print(f"Called onSetup {setup})")
+        print(f"Command name = {setup.commandName()}")
+        print(f"obsId = {setup.obsId()}")
+        print(f"source = {setup.source()}")
+        temperatureFsmKey = IntKey.make("temperatureFsm")
+        print(f"temperatureFsm units = {setup(temperatureFsmKey).units()}")
+        print(f"temperatureFsm head = {setup(temperatureFsmKey).head()}")
+        print(f"temperatureFsm source = {setup.source()}")
+        print(f"temperatureFsm size = {setup.size()}")
+        print(f"temperatureFsm paramset = {setup.paramset()}")
+
 
 
 polyglot.export_value("MyPyScript", MyPyScript)
