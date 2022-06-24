@@ -1,5 +1,6 @@
 .idea
 logs
+project/project/project
 project/project/target
 project/target
 target
@@ -18,3 +19,7 @@ gradlew
 gradlew.bat
 gradle/
 .bsp/
+venv
+
+/project/project/metals.sbt
+/project/metals.sbt
