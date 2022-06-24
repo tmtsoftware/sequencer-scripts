@@ -11,14 +11,16 @@ import org.graalvm.polyglot._
 
 import java.io.File
 
+// XXX TODO FIXME: Make paths absolute!
 object PyScriptApiTest extends App {
   println("Hello from Scala!")
   //  val context = Context.create()
-  val context =  Context.newBuilder("python").
-    allowAllAccess(true).
-    option("python.ForceImportSite", "true").
-    option("python.Executable", "pyScripts/venv/bin/graalpython").
-    build()
+  val context =  Context.newBuilder("python")
+    .allowAllAccess(true)
+    .option("python.PythonPath", "pyScripts")
+    .option("python.ForceImportSite", "true")
+    .option("python.Executable", "pyScripts/venv/bin/graalpython")
+    .build()
   context.eval("python", "print('Hello from Python!')")
 
 //  val baseClass = Source.newBuilder("python", new File("pyScripts/common/ScriptBase.py")).build()

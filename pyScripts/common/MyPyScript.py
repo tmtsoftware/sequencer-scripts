@@ -1,3 +1,4 @@
+# import site
 import java
 import polyglot
 
@@ -11,7 +12,7 @@ JKeyType = java.type('csw.params.javadsl.JKeyType')
 class MyPyScript(ScriptBase):
 
     def onSetup(self, command: Setup):
-        print(f"Called execute {command})")
+        print(f"Called onSetup {command})")
         print(f"Command name = {command.commandName().name()}")
         print(f"obsId = {command.maybeObsId().get()}")
         print(f"source = {command.source()}")
