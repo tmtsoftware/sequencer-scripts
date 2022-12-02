@@ -11,7 +11,7 @@ val irisFilterKey = choiceKey("filter", JUnits.NoUnits, irisFilterChoices)
 //******************************************************************\\
 
 //************************iris scale keys************************\\
-val scaleKey = choiceKey("scale", JUnits.marcsec, choicesOf("4", "9", "25", "50"))
+val scaleKey = choiceKey("scale", JUnits.mas, choicesOf("4", "9", "25", "50"))
 //***********************************************************\\
 
 //************************iris adc keys************************\\
