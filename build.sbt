@@ -1,5 +1,6 @@
-val KotlincOptions = Seq("-Xopt-in=kotlin.time.ExperimentalTime", "-jvm-target", "1.8")
-val KotlinVersion  = "1.6.10"
+val KotlincOptions = Seq("-Xopt-in=kotlin.time.ExperimentalTime", "-jvm-target", "17")
+val KotlinVersion  = "1.9.20"
+kotlinLib("stdlib")
 
 lazy val `sequencer-scripts` = project
   .in(file("."))
@@ -11,8 +12,8 @@ lazy val `sequencer-scripts` = project
     inThisBuild(
       List(
         organization := "com.github.tmtsoftware.sequencer-scripts",
-        scalaVersion := "2.13.8",
-        version := "0.4.0"
+        scalaVersion := "3.3.0",
+        version := "0.5.0"
       )
     ),
     Compile / unmanagedSourceDirectories += (Compile / baseDirectory)(_ / "scripts").value,
