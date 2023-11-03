@@ -13,20 +13,21 @@ lazy val `sequencer-scripts` = project
       List(
         organization := "com.github.tmtsoftware.sequencer-scripts",
         scalaVersion := "3.3.0",
-        version := "0.5.1"
+        version      := "0.1.0-SNAPSHOT"
+//        version := "0.5.1"
       )
     ),
-    Compile / unmanagedSourceDirectories += (Compile / baseDirectory)(_ / "scripts").value,
     Compile / unmanagedSources / excludeFilter := "*.conf",
     Test / unmanagedSourceDirectories += (Test / baseDirectory)(_ / "tests").value,
-    Compile / unmanagedResourceDirectories += (Compile / baseDirectory)(_ / "scripts").value,
-    Compile / unmanagedResources / includeFilter := "*.conf",
     Compile / mainClass := Some("esw.ocs.app.SequencerApp"),
     name := "sequencer-scripts",
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
       Libs.`esw-ocs-dsl-kt`,
-      Libs.`esw-ocs-app`
+      Libs.`esw-ocs-script-kt`,
+      Libs.`esw-ocs-app`,
+      Libs.`esw-ocs-impl`,
+      Libs.`junit` % Test
     ),
     Test / fork := true
   )

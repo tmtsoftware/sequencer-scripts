@@ -1,5 +1,17 @@
-import common.currentEqCoordKey
-import common.demandEqCoordKey
+//@file:Repository("https://jitpack.io/")
+//@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-dsl-kt_2.13:d08b0359adada2fe521243aaf85347337369feb4")
+//@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-app_2.13:d08b0359adada2fe521243aaf85347337369feb4")
+
+@file:Import("../common/CommonUtils.seq.kts")
+@file:Import("../common/Keys.seq.kts")
+@file:Import("../common/Utils.seq.kts")
+
+//package tcs
+//import common.*
+//
+//import common.currentEqCoordKey
+//import common.demandEqCoordKey
+
 import csw.params.core.models.Angle
 import csw.params.events.SystemEvent
 import esw.ocs.dsl.params.invoke

@@ -18,3 +18,8 @@ gradlew
 gradlew.bat
 gradle/
 .bsp/
+pyScripts/
+metals.sbt
+x.sh
+seq.kts.classpath
+

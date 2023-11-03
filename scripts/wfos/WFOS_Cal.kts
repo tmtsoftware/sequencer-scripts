@@ -1,6 +1,8 @@
 package wfos
 
-import common.*
+//package wfos
+//import common.*
+
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.ExposureId
 import esw.ocs.dsl.highlevel.models.WFOS

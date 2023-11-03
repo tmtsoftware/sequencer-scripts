@@ -1,6 +1,11 @@
-package iris
+//@file:Repository("https://jitpack.io/")
+//@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-dsl-kt_2.13:d08b0359adada2fe521243aaf85347337369feb4")
+//@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-app_2.13:d08b0359adada2fe521243aaf85347337369feb4")
 
-import common.*
+@file:Import("../common/CommonUtils.seq.kts")
+@file:Import("../common/Keys.seq.kts")
+@file:Import("../common/Utils.seq.kts")
+
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.ExposureId
 import esw.ocs.dsl.highlevel.models.IRIS

@@ -1,14 +1,19 @@
-package tcs
+//@file:Repository("https://jitpack.io/")
+//@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-dsl-kt_2.13:d08b0359adada2fe521243aaf85347337369feb4")
+//@file:DependsOn("com.github.tmtsoftware.esw:esw-ocs-app_2.13:d08b0359adada2fe521243aaf85347337369feb4")
 
-import common.*
+@file:Import("Common.seq.kts")
+@file:Import("../common/CommonUtils.seq.kts")
+@file:Import("../common/Keys.seq.kts")
+@file:Import("../common/Utils.seq.kts")
+
+//import common.*
 import csw.params.events.SystemEvent
-import degreeToArcSec
 import esw.ocs.dsl.core.script
 import esw.ocs.dsl.highlevel.models.RADEC
 import esw.ocs.dsl.highlevel.models.TCS
 import esw.ocs.dsl.params.invoke
 import esw.ocs.dsl.params.params
-import getMountPositionError
 import kotlin.math.abs
 
 script {
