@@ -1,4 +1,9 @@
-val KotlincOptions = Seq("-Xopt-in=kotlin.time.ExperimentalTime", "-jvm-target", "17")
+val KotlincOptions = Seq(
+  "-opt-in=kotlin.time.ExperimentalTime",
+  "-Xallow-any-scripts-in-source-roots",
+  "-jvm-target",
+  "17"
+)
 val KotlinVersion  = "1.9.20"
 kotlinLib("stdlib")
 
