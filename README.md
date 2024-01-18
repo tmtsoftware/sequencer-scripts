@@ -5,7 +5,13 @@ This repo contains subsystem specific sequencer scripts.
 ## Version Compatibility
 
 | sequencer-scripts | esw        | csw        |
-| ----------------- | ---------- | ---------- |
+|-------------------|------------|------------|
+| v0.4.0            | v0.4.0     | v4.0.1     |
+| v0.4.0-RC1        | v0.4.0-RC1 | v4.0.1-RC1 |
+| v0.3.0            | v0.3.0     | v4.0.0     |
+| v0.3.0-RC2        | v0.3.0-RC2 | v4.0.0-RC2 |
+| v0.3.0-RC1        | v0.3.0-RC1 | v4.0.0-RC1 |
+| v0.3.0-M1         | v0.3.0-M1  | v4.0.0-M1  |
 | v0.2.0            | v0.2.1     | v3.0.1     |    
 | v0.2.0-RC1        | v0.2.0-RC1 | v3.0.0-RC1 |    
 | v0.2.0-M1         | v0.2.0-M1  | v3.0.0-M1  |
@@ -96,10 +102,11 @@ This setup assumes the `esw`, `csw`, and `sequencer-script` repos are available 
 ### Script development flow
 To develop a script so that the changes are reflected in the Sequencer and UI:
 1. Unload the Sequencer being developed, for example ESW.IRIS_Darknight.
-1. Since the script under development will be in a specific directory, eg: `scripts/esw`, the changes in other directories should not cause the sequencer to restart.
-1. This can be done using the `watchSources` task in sbt, which defines the sources that will be watched while using sbt revolver. Since we need to watch changes only of a specific directory we can set it accordingly.
+2. Go to the Sequencer-scripts repo
+3. since the script under development will be in a specific directory, eg: `scripts/esw`, the changes in other directories should not cause the sequencer to restart.
+4. This can be done using the `watchSources` task in sbt, which defines the sources that will be watched while using sbt revolver. Since we need to watch changes only of a specific directory we can set it accordingly.
    For eg: `set watchSources := Seq(WatchSource(baseDirectory.value /"scripts/esw/"))`
-1. Go to the Sequencer-scripts repo and start the Sequencer in watch mode by executing `sbt -Ddev=true ~reStart sequencer -s ESW -m IRIS_Darknight`
+5. Start the Sequencer in watch mode by executing `sbt ~reStart sequencer -s ESW -m IRIS_Darknight`
 
 
 ## Submitting Sequence to Sequencer

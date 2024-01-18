@@ -1,3 +1,4 @@
+@file:Suppress("INLINE_FROM_HIGHER_PLATFORM")
 package esw
 
 import csw.params.commands.Observe
