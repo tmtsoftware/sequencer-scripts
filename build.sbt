@@ -1,10 +1,12 @@
 val KotlincOptions = Seq(
   "-opt-in=kotlin.time.ExperimentalTime",
   "-Xallow-any-scripts-in-source-roots",
+  "-Xuse-fir-lt=false",
   "-jvm-target",
   "17"
 )
-val KotlinVersion  = "1.9.20"
+//val KotlinVersion  = "1.9.20"
+val KotlinVersion  = "2.0.0"
 //kotlinLib("stdlib")
 
 lazy val `sequencer-scripts` = project
