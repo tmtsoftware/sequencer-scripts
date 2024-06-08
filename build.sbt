@@ -18,7 +18,8 @@ lazy val `sequencer-scripts` = project
     inThisBuild(
       List(
         organization := "com.github.tmtsoftware.sequencer-scripts",
-        scalaVersion := "3.4.2",
+//        scalaVersion := "3.4.2",
+        scalaVersion := "3.3.3",
         version      := "0.1.0-SNAPSHOT"
       )
     ),
