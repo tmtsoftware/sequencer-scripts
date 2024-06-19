@@ -30,12 +30,12 @@ lazy val `sequencer-scripts` = project
     Test / unmanagedSourceDirectories += (Test / baseDirectory)(_ / "tests").value,
     Compile / unmanagedResourceDirectories += (Compile / baseDirectory)(_ / "scripts").value,
     Compile / unmanagedResources / includeFilter := "*.conf",
-    reStart / mainClass                          := Some("esw.ocs.app.SequencerApp"),
+    reStart / mainClass                          := Some("esw.ocs.script.server.OcsScriptServerApp"),
     name                                         := "sequencer-scripts",
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
       Libs.`esw-ocs-dsl-kt`,
-      Libs.`esw-ocs-app`
+      Libs.`esw-ocs-script-server`
     ),
     Test / fork                                  := true
   )

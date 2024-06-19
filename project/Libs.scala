@@ -13,7 +13,7 @@ object Libs {
     }
 
   val `esw-ocs-dsl-kt` = Org %% "esw-ocs-dsl-kt" % Version
-  val `esw-ocs-app`    = Org %% "esw-ocs-app"    % Version
+  val `esw-ocs-script-server`    = Org %% "esw-ocs-script-server"    % Version
 }
 
 object BuildProperties {
