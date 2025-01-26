@@ -12,7 +12,7 @@ object Libs {
       case _            => BuildProperties.read("esw.version")
     }
 
-  val `esw-ocs-dsl-kt` = Org %% "esw-ocs-dsl-kt" % Version
+  val `esw-ocs-dsl-kt` = Org % "esw-ocs-dsl-kt" % Version
   val `esw-ocs-app`    = Org %% "esw-ocs-app"    % Version
 }
 
