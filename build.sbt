@@ -1,5 +1,14 @@
-val KotlincOptions = Seq("-Xopt-in=kotlin.time.ExperimentalTime", "-jvm-target", "1.8")
-val KotlinVersion  = "1.6.10"
+import kotlin.Keys._
+
+val KotlincOptions = Seq(
+  "-opt-in=kotlin.time.ExperimentalTime",
+  "-Xallow-any-scripts-in-source-roots",
+  "-Xuse-fir-lt=false",
+  "-jvm-target",
+  "21"
+)
+val KotlinVersion  = "2.1.0"
+//kotlinLib("stdlib")
 
 lazy val `sequencer-scripts` = project
   .in(file("."))
@@ -7,12 +16,14 @@ lazy val `sequencer-scripts` = project
   .aggregate(`ignore`)
   .settings(
     kotlinVersion := KotlinVersion,
+    kotlincJvmTarget                             := "21",
     kotlincOptions ++= KotlincOptions,
+    kotlinLib("stdlib"),
     inThisBuild(
       List(
         organization := "com.github.tmtsoftware.sequencer-scripts",
-        scalaVersion := "2.13.8",
-        version := "0.4.0"
+        scalaVersion := "3.6.2",
+        version      := "0.1.0-SNAPSHOT"
       )
     ),
     Compile / unmanagedSourceDirectories += (Compile / baseDirectory)(_ / "scripts").value,
@@ -20,7 +31,7 @@ lazy val `sequencer-scripts` = project
     Test / unmanagedSourceDirectories += (Test / baseDirectory)(_ / "tests").value,
     Compile / unmanagedResourceDirectories += (Compile / baseDirectory)(_ / "scripts").value,
     Compile / unmanagedResources / includeFilter := "*.conf",
-    Compile / mainClass := Some("esw.ocs.app.SequencerApp"),
+    reStart / mainClass                          := Some("esw.ocs.app.SequencerApp"),
     name := "sequencer-scripts",
     resolvers += "jitpack" at "https://jitpack.io",
     libraryDependencies ++= Seq(
