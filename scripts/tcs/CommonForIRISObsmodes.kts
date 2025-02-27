@@ -93,6 +93,8 @@ script {
                     logger.info("$prefix : MountPosition error: ${error.toArcSec()}")
                     withinError = error.toArcSec() < setOffsetTolerance
                 }
+
+                else -> {}
             }
         }
         waitFor {

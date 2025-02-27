@@ -20,7 +20,7 @@ import kotlin.time.Duration.Companion.seconds
 suspend fun <T> CommandHandlerScope.setupAssembly(assembly: RichComponent, commandName: String, key: Key<T>, assemblyKey: Key<T>, params: Params) {
     val assemblyParam = params.get(key)
     if (assemblyParam.isDefined) {
-        val command = Setup(assembly.prefix.toString(), commandName).add(assemblyKey.set(assemblyParam.get().first))
+        val command = Setup(assembly.prefix.toString(), commandName).add(assemblyKey.setAll(assemblyParam.get().values()))
         sendCommandAndLog(assembly, command)
     } else {
         logger.error("${this.prefix}: Param of $key not found for ${assembly.prefix}")
