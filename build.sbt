@@ -7,7 +7,7 @@ val KotlincOptions = Seq(
   "-jvm-target",
   "21"
 )
-val KotlinVersion  = "2.1.0"
+val KotlinVersion  = "2.1.10"
 //kotlinLib("stdlib")
 
 lazy val `sequencer-scripts` = project
@@ -22,7 +22,7 @@ lazy val `sequencer-scripts` = project
     inThisBuild(
       List(
         organization := "com.github.tmtsoftware.sequencer-scripts",
-        scalaVersion := "3.6.2",
+        scalaVersion := "3.6.4",
         version      := "0.1.0-SNAPSHOT"
       )
     ),
