@@ -1,14 +1,18 @@
+import kotlin.Keys._
+
 lazy val `sequencer-scripts` = project
   .in(file("."))
   .enablePlugins(KotlinPlugin)
   .aggregate(`ignore`)
   .settings(
-    kotlinVersion := "1.6.10",
-    kotlincOptions ++= Seq("-Xopt-in=kotlin.time.ExperimentalTime", "-jvm-target", "1.8"),
+    kotlinLib("stdlib"),
+    kotlinVersion := "2.1.10",
+    kotlincJvmTarget := "21",
+    kotlincOptions ++= Seq("-opt-in=kotlin.time.ExperimentalTime", "-Xallow-any-scripts-in-source-roots"),
     inThisBuild(
       List(
         organization := "com.github.tmtsoftware.sequencer-scripts",
-        scalaVersion := "2.13.8",
+        scalaVersion := "3.6.4",
         version := "0.4.0"
       )
     ),
