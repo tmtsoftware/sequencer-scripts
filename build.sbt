@@ -3,7 +3,7 @@ import kotlin.Keys._
 lazy val `sequencer-scripts` = project
   .in(file("."))
   .enablePlugins(KotlinPlugin)
-  .aggregate(`ignore`)
+//  .aggregate(`ignore`)
   .settings(
     kotlinLib("stdlib"),
     kotlinVersion := "2.1.10",
@@ -31,4 +31,4 @@ lazy val `sequencer-scripts` = project
     Test / fork := true
   )
 
-lazy val `ignore` = project.in(file(".ignore"))
+//lazy val `ignore` = project.in(file(".ignore"))
