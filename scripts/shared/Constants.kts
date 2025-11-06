@@ -15,6 +15,7 @@ object aoesw {
 
         val lgsfSeqComponentName = "aosq.lgsf"
         val lgsfPrefix = aoeswPrefixStr(lgsfSeqComponentName)
+    }
     object rpg {
         val componentName = "rpg"
         val prefix = aoeswPrefixStr(componentName)
@@ -23,20 +24,10 @@ object aoesw {
         val componentName = "psfr"
         val prefix = aoeswPrefixStr(componentName)
     }
-
-    }
 }
 
 object nfiraos {
     val subsystem = "nfiraos"
-    object lgsTrombone {
-        val componentName = "lgsTrombone"
-        val prefix = nfiraosPrefixStr(componentName)
-    }
-    object power {
-        val componentName = "power"
-        val prefix = nfiraosPrefixStr(componentName)
-    }
     object at {
         val componentName = "at"
         val prefix = nfiraosPrefixStr(componentName)
@@ -53,6 +44,14 @@ object nfiraos {
         val componentName = "ism"
         val prefix = nfiraosPrefixStr(componentName)
     }
+    object lgsTrombone {
+        val componentName = "lgsTrombone"
+        val prefix = nfiraosPrefixStr(componentName)
+    }
+    object lgsWfs {
+        val componentName = "lgsWfs"
+        val prefix = nfiraosPrefixStr(componentName)
+    }
     object nscu {
         val componentName = "nscu"
         val prefix = nfiraosPrefixStr(componentName)
@@ -61,12 +60,28 @@ object nfiraos {
         val componentName = "nsen"
         val prefix = nfiraosPrefixStr(componentName)
     }
+    object power {
+        val componentName = "power"
+        val prefix = nfiraosPrefixStr(componentName)
+    }
+    object pwfs {
+        val componentName = "pwfs"
+        val prefix = nfiraosPrefixStr(componentName)
+    }
+    object rtc {
+        val componentName = "rtc"
+        val prefix = nfiraosPrefixStr(componentName)
+    }
     object ssLgs {
         val componentName = "ssLgs"
         val prefix = nfiraosPrefixStr(componentName)
     }
     object ssNgs {
         val componentName = "ssNgs"
+        val prefix = nfiraosPrefixStr(componentName)
+    }
+    object timing {
+        val componentName = "timing"
         val prefix = nfiraosPrefixStr(componentName)
     }
     object tts {
@@ -89,7 +104,46 @@ object nfiraos {
         val componentName = "vnwSsm"
         val prefix = nfiraosPrefixStr(componentName)
     }
+}
 
+object lgsf {
+    val subsystem = "lgsf"
+    object power {
+        val componentName = "power"
+        val prefix = lgsfPrefixStr(componentName)
+    }
+    object laser {
+        val componentName = "las"
+        val prefix = lgsfPrefixStr(componentName)
+    }
+    object lp {
+        val componentName = "lp"
+        val prefix = lgsfPrefixStr(componentName)
+    }
+    object op {
+        val componentName = "op"
+        val prefix = lgsfPrefixStr(componentName)
+    }
+    object te {
+        val componentName = "te"
+        val prefix = lgsfPrefixStr(componentName)
+    }
+    object bdm {
+        val componentName = "shutter"
+        val prefix = lgsfPrefixStr(componentName)
+    }
+    object focus {
+        val componentName = "focus"
+        val prefix = lgsfPrefixStr(componentName)
+    }
+    object dswfs {
+        val componentName = "dswfs"
+        val prefix = lgsfPrefixStr(componentName)
+    }
+    object acq {
+        val componentName = "acq"
+        val prefix = nfiraosPrefixStr(componentName)
+    }
 }
 
 object iris {
@@ -149,3 +203,4 @@ fun prefixStr(subsystem: String, compName: String) = "$subsystem.$compName"
 fun aoeswPrefixStr(compName: String) = prefixStr(aoesw.subsystem, compName)
 fun nfiraosPrefixStr(compName: String) = prefixStr(nfiraos.subsystem, compName)
 fun irisPrefixStr(compName: String) = prefixStr(iris.subsystem, compName)
+fun lgsfPrefixStr(compName: String) = prefixStr(lgsf.subsystem, compName)
