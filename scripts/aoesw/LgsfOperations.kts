@@ -382,6 +382,7 @@ script {
             ONLOW -> return newState == ON || newState == READY
             ON -> return newState == OBSERVATION || newState == READY
             OBSERVATION -> return newState == ON || newState == STANDBY
+            else -> return false
         }
     }
 
