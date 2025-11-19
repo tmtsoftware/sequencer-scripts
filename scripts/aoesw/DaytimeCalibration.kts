@@ -12,6 +12,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import shared.Constants
 import kotlin.time.Duration.Companion.seconds
+import esw.ocs.dsl.params.intKey
 
 script {
     println("********** Loaded AOESW Daytime Calibration script *********")
@@ -222,7 +223,133 @@ script {
 
     }
 
-
+    onSetup("DetermineDmsToWfsInteractionMatrices") { command ->
+    
+    // Activate LGS calibration source - selectDeployment with deploy=true
+    val ssLgsSelectResponse = nfiraosSsLgs.submitAndWait(
+        Setup(myPrefix, "selectDeployment", command.obsId)
+            .add(booleanKey("deploy").set(true)),
+        defaultTimeout
+    )
+    // TODO: check ssLgsSelectResponse
+    
+    // Set LGS calibration source to zenith location
+    // TODO: Get actual altitude and zenithAngle values from command parameters or configuration
+    val ssLgsRangeResponse = nfiraosSsLgs.submitAndWait(
+        Setup(myPrefix, "setRangeDistance", command.obsId)
+            .add(doubleKey("altitude").set(90.0))      // Example: 90 km
+            .add(doubleKey("zenithAngle").set(0.0)),   // Example: 0 degrees (zenith)
+        defaultTimeout
+    )
+    // TODO: check ssLgsRangeResponse
+    
+    // Activate NGS calibration source - deploy with select=NGS
+    val ssNgsDeployResponse = nfiraosSsNgs.submitAndWait(
+        Setup(myPrefix, "deploy", command.obsId)
+            .add(choiceKey("select").set(Choice("NGS"))),
+        defaultTimeout
+    )
+    // TODO: check ssNgsDeployResponse
+    
+    // Turn on NGS calibration source
+    // TODO: Specify attenuation level if needed
+    val ssNgsSourceResponse = nfiraosSsNgs.submitAndWait(
+        Setup(myPrefix, "source", command.obsId)
+            .add(booleanKey("enable").set(true)),
+        defaultTimeout
+    )
+    // TODO: check ssNgsSourceResponse
+    
+    // Set LGS trombone to follow mode
+    // Optional: specify stream (TCS, SS, or OVERRIDE), defaults to TCS if not specified
+    val tromboneFollowResponse = nfiraosLgsTrombone.submitAndWait(
+        Setup(myPrefix, "follow", command.obsId),
+        defaultTimeout
+    )
+    // TODO: check tromboneFollowResponse
+    
+    // Enable PWFS continuous exposures
+    // TODO: Get actual integrationTime and frameRate from command parameters
+    val pwfsExposuresResponse = nfiraosPwfs.submitAndWait(
+        Setup(myPrefix, "startContinuousExposures", command.obsId)
+            .add(doubleKey("integrationTime").set(0.001))  // Example: 1ms
+            .add(doubleKey("frameRate").set(800.0)),       // Example: 800 Hz
+        defaultTimeout
+    )
+    // TODO: check pwfsExposuresResponse
+    
+    // Enable LGS WFS continuous exposures
+    // TODO: Get actual wfs, integration, and frameRate from command parameters
+    val lgsWfsExposuresResponse = nfiraosLgsWfs.submitAndWait(
+        Setup(myPrefix, "startContinuousExposures", command.obsId)
+            .add(choiceKey("wfs").set(Choice("ALL")))       // or specific WFS: A, B, C, D, E, F
+            .add(doubleKey("integration").set(0.001))       // Example: 1ms
+            .add(doubleKey("frameRate").set(800.0)),        // Example: 800 Hz
+        defaultTimeout
+    )
+    // TODO: check lgsWfsExposuresResponse
+    
+    // Enable HR WFS continuous exposures
+    // Note: HRWFS_expose uses the previous HRWFS_config_exposure configuration
+    // You may need to call HRWFS_config_exposure first if not already configured
+    val nsenExposuresResponse = nfiraosNsen.submitAndWait(
+        Setup(myPrefix, "HRWFS_expose", command.obsId),
+        defaultTimeout
+    )
+    // TODO: check nsenExposuresResponse
+    
+    // Command RTC to listen for DM poke commands
+    val rtcCalibModelWcResponse = nfiraosRtc.submitAndWait(
+        Setup(myPrefix, "calibModeWc", command.obsId)
+            .add(booleanKey("enable").set(true)),
+        defaultTimeout
+    )
+    // TODO: check rtcCalibModelWcResponse
+    
+    // RTC to gradient LGS/PWFS/HRWFS WFS pixels and send to RPG
+    val rtcCalibModeGradResponse = nfiraosRtc.submitAndWait(
+        Setup(myPrefix, "calibModeGrad", command.obsId)
+            .add(choiceKey("detector").set(Choice("ALL")))  // or specific: LGSWFS, ODGW, OIWFS, PWFS
+            .add(choiceKey("mode").set(Choice("CONTINUOUS")))
+            .add(intKey("avg").set(1)),                     // Number of frames to average
+        defaultTimeout
+    )
+    // TODO: check rtcCalibModeGradResponse
+    
+    // Loop for various LGS calibration source zenith angles
+    // TODO: Replace with actual zenith angle list from parameters
+    val zenithAngles = listOf(0.0, 15.0, 30.0, 45.0, 60.0) // Example zenith angles in degrees
+    
+    zenithAngles.forEachIndexed { index, zenithAngle ->
+        // Listen to RTC and provide RTC with DM Poke commands.
+        // Wait until complete and compute interaction matrices, etc.
+        val rpgCalibrationResponse = rpg.submitAndWait(
+            Setup(myPrefix, "calibrationInteractionMatrix", command.obsId),
+            defaultTimeout
+        )
+        // TODO: check rpgCalibrationResponse
+        
+        // Compute interaction matrices
+        val rpgPrepareResponse = rpg.submitAndWait(
+            Setup(myPrefix, "prepareHighInteractionMatrix", command.obsId),
+            defaultTimeout
+        )
+        // TODO: check rpgPrepareResponse
+        
+        // If more zenith angles, set LGS calibration source to next zenith location
+        if (index < zenithAngles.size - 1) {
+            val nextZenithAngle = zenithAngles[index + 1]
+            val ssLgsSetRangeResponse = nfiraosSsLgs.submitAndWait(
+                Setup(myPrefix, "setRangeDistance", command.obsId)
+                    .add(doubleKey("zenithAngle").set(nextZenithAngle)),
+                defaultTimeout
+            )
+            // TODO: check ssLgsSetRangeResponse
+        }
+    }
+    
+    // TODO: Return final completion status
+}
     onDiagnosticMode { startTime, hint ->
         // do some actions to go to diagnostic mode based on hint
     }
